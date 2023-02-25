@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    tools:context=".SignIn">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/_180sdp"
+                android:layout_height="@dimen/_180sdp"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign In"
+                android:textSize="@dimen/text_size_heading"
+                android:textColor="@color/colorSecondary"
+                android:fontFamily="@font/semibolditalic"
+                android:layout_marginTop="@dimen/_14sdp"/>
+
+            <EditText
+                android:id="@+id/editEmail"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_edit"
+                android:hint="Enter Email"
+                android:textSize="@dimen/text_size"
+                android:singleLine="true"
+                android:inputType="textEmailAddress"
+                android:paddingHorizontal="@dimen/_16sdp"
+                android:background="@drawable/custom_edit_text"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:fontFamily="@font/regular"
+                android:imeOptions="actionNext"/>
+
+            <EditText
+                android:id="@+id/editPassword"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_edit"
+                android:hint="Enter Password"
+                android:textSize="@dimen/text_size"
+                android:singleLine="true"
+                android:inputType="textPassword"
+                android:paddingHorizontal="@dimen/_16sdp"
+                android:background="@drawable/custom_edit_text"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:fontFamily="@font/regular"
+                android:imeOptions="actionDone"/>
+
+            <Button
+                android:id="@+id/btnSignIn"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_btn"
+                android:text="Sign In"
+                android:textSize="@dimen/text_size_btn"
+                android:background="@drawable/custom_button"
+                android:textColor="@color/colorWhite"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:fontFamily="@font/regular"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_10sdp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Don't have an Account? "
+                    android:textSize="@dimen/text_size_small"
+                    android:textColor="@color/colorGreyDark"
+                    android:fontFamily="@font/regular"/>
+
+                <TextView
+                    android:id="@+id/txtSignUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Create Now."
+                    android:textSize="@dimen/text_size_small"
+                    android:textColor="@color/colorSecondary"
+                    android:fontFamily="@font/regular"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>
