@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "344716410371",
+    "project_id": "studotest-cbf66",
+    "storage_bucket": "studotest-cbf66.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:344716410371:android:6a8512082e05495bcc1836",
+        "android_client_info": {
+          "package_name": "com.gakdevelopers.studotest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "344716410371-qb4tie3thop8oc87jf7436g23mktbfas.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAH3Jr_BfqfjXqgdT5EHgHtrZy80lse8Fo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "344716410371-qb4tie3thop8oc87jf7436g23mktbfas.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
