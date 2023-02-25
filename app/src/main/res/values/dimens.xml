@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="corner_radius">@dimen/_4sdp</dimen>
+
+    <dimen name="edit_height">@dimen/_42sdp</dimen>
+    <dimen name="btn_height">@dimen/_42sdp</dimen>
+
+    <dimen name="text_size">@dimen/_14sdp</dimen>
+    <dimen name="heading_text_size">@dimen/_22sdp</dimen>
+    <dimen name="btn_text_size">@dimen/_14sdp</dimen>
+</resources>
