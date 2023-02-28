@@ -57,6 +57,7 @@
                 android:textSize="@dimen/text_size"
                 android:singleLine="true"
                 android:inputType="textEmailAddress"
+                android:capitalize="words"
                 android:paddingHorizontal="@dimen/_16sdp"
                 android:background="@drawable/custom_edit_text"
                 android:layout_marginTop="@dimen/_12sdp"

@@ -1,7 +1,9 @@
 package com.gakdevelopers.studotest.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,6 +25,10 @@ public class Main extends AppCompatActivity {
     Leaderboard leaderboard = new Leaderboard();
     Profile profile = new Profile();
 
+    TextView txtUserName;
+
+    String userName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +37,11 @@ public class Main extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, home).commit();
+
+        txtUserName = (TextView) findViewById(R.id.txtUserName);
+
+        Intent intent = getIntent();
+        txtUserName.setText("" + intent.getStringExtra("fullName"));
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override

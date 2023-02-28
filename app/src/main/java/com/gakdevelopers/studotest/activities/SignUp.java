@@ -8,9 +8,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.gakdevelopers.studotest.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class SignUp extends AppCompatActivity {
 
@@ -19,6 +24,8 @@ public class SignUp extends AppCompatActivity {
     Button btnCreateAccount;
 
     TextView txtSignIn;
+
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +40,8 @@ public class SignUp extends AppCompatActivity {
 
         txtSignIn = (TextView) findViewById(R.id.txtSignIn);
 
+        mAuth = FirebaseAuth.getInstance();
+
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -45,6 +54,22 @@ public class SignUp extends AppCompatActivity {
                     return;
                 }
 
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(SignUp.this, "Account created successfully!", Toast.LENGTH_SHORT).show();
+
+                                    Intent intent = new Intent(SignUp.this, Main.class);
+                                    intent.putExtra("fullName", fullName);
+                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(SignUp.this, "Authentication failed!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
 
             }
         });
