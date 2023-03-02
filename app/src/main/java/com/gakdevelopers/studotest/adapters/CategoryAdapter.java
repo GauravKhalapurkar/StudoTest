@@ -1,5 +1,6 @@
 package com.gakdevelopers.studotest.adapters;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.gakdevelopers.studotest.R;
+import com.gakdevelopers.studotest.activities.Tests;
 import com.gakdevelopers.studotest.models.CategoryModel;
 
 import java.util.List;
@@ -35,7 +37,7 @@ public class CategoryAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
         View v;
 
         if (view == null) {
@@ -43,6 +45,15 @@ public class CategoryAdapter extends BaseAdapter {
         } else {
             v = view;
         }
+
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), Tests.class);
+                intent.putExtra("categoryIndex", i);
+                view.getContext().startActivity(intent);
+            }
+        });
 
         TextView txtCategoryName = v.findViewById(R.id.txtCategoryName);
         TextView txtNoOfTest = v.findViewById(R.id.txtNoOfTest);

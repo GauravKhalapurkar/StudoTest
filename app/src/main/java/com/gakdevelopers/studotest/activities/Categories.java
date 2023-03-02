@@ -23,7 +23,7 @@ public class Categories extends AppCompatActivity {
 
     GridView gridView;
 
-    private List<CategoryModel> categoryModelList = new ArrayList<>();
+    public static List<CategoryModel> categoryModelList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
