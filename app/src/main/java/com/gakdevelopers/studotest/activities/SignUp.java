@@ -1,5 +1,6 @@
 package com.gakdevelopers.studotest.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +27,8 @@ public class SignUp extends AppCompatActivity {
     TextView txtSignIn;
 
     private FirebaseAuth mAuth;
+
+    ProgressDialog loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,19 +57,21 @@ public class SignUp extends AppCompatActivity {
                     return;
                 }
 
+                loading =  ProgressDialog.show(SignUp.this,"Loading","Please Wait",false,false);
+
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    Toast.makeText(SignUp.this, "Account created successfully!", Toast.LENGTH_SHORT).show();
-
+                                    loading.dismiss();
                                     Intent intent = new Intent(SignUp.this, Main.class);
                                     intent.putExtra("fullName", fullName);
                                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     startActivity(intent);
                                 } else {
                                     Toast.makeText(SignUp.this, "Authentication failed!", Toast.LENGTH_SHORT).show();
+                                    loading.dismiss();
                                 }
                             }
                         });
