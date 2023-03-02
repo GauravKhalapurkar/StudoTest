@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 
 import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
 import com.gakdevelopers.studotest.models.CategoryModel;
+import com.gakdevelopers.studotest.models.Profile;
 import com.gakdevelopers.studotest.models.TestModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,7 +32,29 @@ public class DbQuery {
 
     public static List<TestModel> g_testList = new ArrayList<>();
 
-    public static void createUser(String email, String name, MyCompleteListener completeListener) {
+    public static Profile myProfile = new Profile("NA", null);
+
+    public static void getUserData(final MyCompleteListener completeListener) {
+        g_fireStore.collection("USERS").document(FirebaseAuth.getInstance().getUid())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        myProfile.setName(documentSnapshot.getString("NAME"));
+                        myProfile.setEmail(documentSnapshot.getString("EMAIL_ID"));
+
+                        completeListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        completeListener.onFailure();
+                    }
+                });
+    }
+
+    public static void createUser(String email, String name, final MyCompleteListener completeListener) {
         Map<String, Object> userData = new ArrayMap<>();
 
         userData.put("EMAIL_ID", email);
@@ -61,7 +84,7 @@ public class DbQuery {
                 });
     }
 
-    public static void loadCategories(String testType, MyCompleteListener completeListener) {
+    public static void loadCategories(String testType, final MyCompleteListener completeListener) {
         g_catList.clear();
 
         g_fireStore.collection(testType).get()
@@ -102,7 +125,7 @@ public class DbQuery {
 
     }
 
-    public static void loadTests(MyCompleteListener completeListener) {
+    public static void loadTests(final MyCompleteListener completeListener) {
         g_testList.clear();
 
         g_fireStore.collection("FREE_TESTS").document(g_catList.get(g_selected_cat_index).getDocId())
@@ -130,5 +153,19 @@ public class DbQuery {
                         completeListener.onFailure();
                     }
                 });
+    }
+
+    public static void loadData(String testType, final MyCompleteListener completeListener) {
+        loadCategories(testType, new MyCompleteListener() {
+            @Override
+            public void onSuccess() {
+                getUserData(completeListener);
+            }
+
+            @Override
+            public void onFailure() {
+                completeListener.onFailure();
+            }
+        });
     }
 }

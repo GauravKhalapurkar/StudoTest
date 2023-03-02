@@ -10,7 +10,8 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="#f1f1f1"/>
+        android:background="@color/colorWhite"
+        android:elevation="@dimen/toolbar_elevation"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

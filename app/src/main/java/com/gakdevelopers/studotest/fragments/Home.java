@@ -62,7 +62,8 @@ public class Home extends Fragment {
         cardFreeTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DbQuery.loadCategories("FREE_TESTS", new MyCompleteListener() {
+                //changed the loadcategories
+                DbQuery.loadData("FREE_TESTS", new MyCompleteListener() {
                     @Override
                     public void onSuccess() {
                         Intent intent = new Intent(getActivity(), Categories.class);

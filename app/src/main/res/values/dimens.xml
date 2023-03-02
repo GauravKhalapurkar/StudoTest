@@ -7,4 +7,6 @@
     <dimen name="text_size">@dimen/_14sdp</dimen>
     <dimen name="text_size_heading">@dimen/_22sdp</dimen>
     <dimen name="text_size_btn">@dimen/_14sdp</dimen>
+
+    <dimen name="toolbar_elevation">@dimen/_2sdp</dimen>
 </resources>

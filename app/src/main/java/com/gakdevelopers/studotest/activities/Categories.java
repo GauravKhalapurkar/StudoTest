@@ -1,6 +1,7 @@
 package com.gakdevelopers.studotest.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class Categories extends AppCompatActivity {
 
-    TextView txtCategoryName;
+    private Toolbar toolbar;
 
     String categoryName;
 
@@ -29,14 +30,17 @@ public class Categories extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_categories);
 
-        txtCategoryName = (TextView) findViewById(R.id.txtCategoryName);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         gridView = (GridView) findViewById(R.id.gridView);
 
         Intent intent = getIntent();
         categoryName = intent.getStringExtra("categoryName");
 
-        txtCategoryName.setText("" + categoryName);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        getSupportActionBar().setTitle("" + categoryName);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //loadCategories();
 
