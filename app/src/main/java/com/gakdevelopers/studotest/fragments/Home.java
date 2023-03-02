@@ -15,6 +15,8 @@ import androidx.viewpager.widget.ViewPager;
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.activities.Categories;
 import com.gakdevelopers.studotest.adapters.ViewPagerAdapter;
+import com.gakdevelopers.studotest.database.DbQuery;
+import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
 import com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator;
 
 import java.util.Timer;
@@ -60,9 +62,21 @@ public class Home extends Fragment {
         cardFreeTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Categories.class);
-                intent.putExtra("categoryName", "Free Tests");
-                startActivity(intent);
+                DbQuery.loadCategories("FREE_TESTS", new MyCompleteListener() {
+                    @Override
+                    public void onSuccess() {
+                        Intent intent = new Intent(getActivity(), Categories.class);
+                        intent.putExtra("categoryName", "free");
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        Toast.makeText(getActivity(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
             }
         });
 

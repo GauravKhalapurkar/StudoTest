@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.adapters.CategoryAdapter;
+import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.models.CategoryModel;
 
 import java.util.ArrayList;
@@ -23,8 +24,6 @@ public class Categories extends AppCompatActivity {
 
     GridView gridView;
 
-    public static List<CategoryModel> categoryModelList = new ArrayList<>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,22 +36,13 @@ public class Categories extends AppCompatActivity {
         Intent intent = getIntent();
         categoryName = intent.getStringExtra("categoryName");
 
-        txtCategoryName.setText(categoryName + " Categories");
+        txtCategoryName.setText("" + categoryName);
 
-        loadCategories();
+        //loadCategories();
 
-        CategoryAdapter adapter = new CategoryAdapter(categoryModelList);
+        CategoryAdapter adapter = new CategoryAdapter(DbQuery.g_catList);
         gridView.setAdapter(adapter);
 
-    }
-
-    private void loadCategories() {
-        categoryModelList.clear();
-
-        categoryModelList.add(new CategoryModel("1", "GK", 77));
-        categoryModelList.add(new CategoryModel("2", "SK", 21));
-        categoryModelList.add(new CategoryModel("3", "AK", 32));
-        categoryModelList.add(new CategoryModel("4", "QK", 12));
     }
 
     public void moveToPrevious(View view) {

@@ -23,7 +23,7 @@ public class Splash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         mAuth = FirebaseAuth.getInstance();
-        DbQuery.fStore = FirebaseFirestore.getInstance();
+        DbQuery.g_fireStore = FirebaseFirestore.getInstance();
 
         if (mAuth.getCurrentUser() != null) {
             intent = new Intent(Splash.this, Main.class);

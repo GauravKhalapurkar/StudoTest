@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.adapters.TestAdapter;
+import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.models.TestModel;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public class Tests extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle(Categories.categoryModelList.get(categoryIndex).getName());
+        getSupportActionBar().setTitle(DbQuery.g_catList.get(categoryIndex).getName());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
