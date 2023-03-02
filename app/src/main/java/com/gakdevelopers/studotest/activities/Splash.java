@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.gakdevelopers.studotest.R;
+import com.gakdevelopers.studotest.database.DbQuery;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Splash extends AppCompatActivity {
 
@@ -21,6 +23,7 @@ public class Splash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         mAuth = FirebaseAuth.getInstance();
+        DbQuery.fStore = FirebaseFirestore.getInstance();
 
         if (mAuth.getCurrentUser() != null) {
             intent = new Intent(Splash.this, Main.class);

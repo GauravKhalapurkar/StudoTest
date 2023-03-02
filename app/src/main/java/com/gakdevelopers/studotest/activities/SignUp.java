@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.gakdevelopers.studotest.R;
+import com.gakdevelopers.studotest.database.DbQuery;
+import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -65,10 +67,23 @@ public class SignUp extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
                                     loading.dismiss();
-                                    Intent intent = new Intent(SignUp.this, Main.class);
-                                    intent.putExtra("fullName", fullName);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(intent);
+
+                                    DbQuery.createUser(email, fullName, new MyCompleteListener() {
+                                        @Override
+                                        public void onSuccess() {
+                                            Intent intent = new Intent(SignUp.this, Main.class);
+                                            intent.putExtra("fullName", fullName);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(intent);
+                                        }
+
+                                        @Override
+                                        public void onFailure() {
+                                            Toast.makeText(SignUp.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                                            loading.dismiss();
+                                        }
+                                    });
+
                                 } else {
                                     Toast.makeText(SignUp.this, "Authentication failed!", Toast.LENGTH_SHORT).show();
                                     loading.dismiss();
