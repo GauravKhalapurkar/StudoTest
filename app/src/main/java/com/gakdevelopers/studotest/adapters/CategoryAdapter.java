@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.activities.Tests;
+import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.models.CategoryModel;
 
 import java.util.List;
@@ -49,8 +50,8 @@ public class CategoryAdapter extends BaseAdapter {
         v.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DbQuery.g_selected_cat_index = i;
                 Intent intent = new Intent(view.getContext(), Tests.class);
-                intent.putExtra("categoryIndex", i);
                 view.getContext().startActivity(intent);
             }
         });

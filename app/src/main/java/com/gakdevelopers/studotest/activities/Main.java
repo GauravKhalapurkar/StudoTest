@@ -1,5 +1,6 @@
 package com.gakdevelopers.studotest.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -28,6 +29,8 @@ public class Main extends AppCompatActivity {
     TextView txtUserName;
 
     String userName;
+
+    ProgressDialog loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

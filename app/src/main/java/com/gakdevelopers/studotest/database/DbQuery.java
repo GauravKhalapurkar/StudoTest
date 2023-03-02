@@ -6,10 +6,12 @@ import androidx.annotation.NonNull;
 
 import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
 import com.gakdevelopers.studotest.models.CategoryModel;
+import com.gakdevelopers.studotest.models.TestModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -24,6 +26,10 @@ public class DbQuery {
     public static FirebaseFirestore g_fireStore;
 
     public static List<CategoryModel> g_catList = new ArrayList<>();
+
+    public static int g_selected_cat_index = 0;
+
+    public static List<TestModel> g_testList = new ArrayList<>();
 
     public static void createUser(String email, String name, MyCompleteListener completeListener) {
         Map<String, Object> userData = new ArrayMap<>();
@@ -94,5 +100,35 @@ public class DbQuery {
                 });
 
 
+    }
+
+    public static void loadTests(MyCompleteListener completeListener) {
+        g_testList.clear();
+
+        g_fireStore.collection("FREE_TESTS").document(g_catList.get(g_selected_cat_index).getDocId())
+                .collection("TESTS_LIST").document("TEST_INFO")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        int noOfTests = g_catList.get(g_selected_cat_index).getNoOfTest();
+
+                        for (int i = 1; i <= noOfTests; i++) {
+                            g_testList.add(new TestModel(
+                                    documentSnapshot.getString("TEST" + String.valueOf(i) + "_ID"),
+                                    0,
+                                    documentSnapshot.getLong("TEST" + String.valueOf(i) + "_TIME").intValue()
+                            ));
+                        }
+
+                        completeListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        completeListener.onFailure();
+                    }
+                });
     }
 }

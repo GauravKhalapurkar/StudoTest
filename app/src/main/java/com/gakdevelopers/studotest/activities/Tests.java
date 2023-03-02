@@ -6,13 +6,16 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.adapters.TestAdapter;
 import com.gakdevelopers.studotest.database.DbQuery;
+import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
 import com.gakdevelopers.studotest.models.TestModel;
 
 import java.util.ArrayList;
@@ -24,7 +27,9 @@ public class Tests extends AppCompatActivity {
 
     private RecyclerView recyclerView;
 
-    private List<TestModel> testList;
+    private TestAdapter adapter;
+
+    ProgressDialog loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,30 +40,33 @@ public class Tests extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-        int categoryIndex = getIntent().getIntExtra("categoryIndex", 0);
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle(DbQuery.g_catList.get(categoryIndex).getName());
+        getSupportActionBar().setTitle(DbQuery.g_catList.get(DbQuery.g_selected_cat_index).getName());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
-        loadTestData();
+        loading =  ProgressDialog.show(Tests.this,"Loading","Please Wait",false,false);
 
-        TestAdapter adapter = new TestAdapter(testList);
-        recyclerView.setAdapter(adapter);
+        DbQuery.loadTests(new MyCompleteListener() {
+            @Override
+            public void onSuccess() {
+                adapter =new TestAdapter(DbQuery.g_testList);
+                recyclerView.setAdapter(adapter);
 
-    }
+                loading.dismiss();
+            }
 
-    private void loadTestData() {
-        testList = new ArrayList<>();
-        testList.add(new TestModel("1", 20, 90));
-        testList.add(new TestModel("2", 30, 90));
-        testList.add(new TestModel("3", 15, 60));
-        testList.add(new TestModel("4", 5, 90));
+            @Override
+            public void onFailure() {
+                Toast.makeText(Tests.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                loading.dismiss();
+            }
+        });
+
     }
 
     @Override

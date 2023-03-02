@@ -66,7 +66,7 @@ public class Home extends Fragment {
                     @Override
                     public void onSuccess() {
                         Intent intent = new Intent(getActivity(), Categories.class);
-                        intent.putExtra("categoryName", "free");
+                        intent.putExtra("categoryName", "Free Tests");
                         startActivity(intent);
                     }
 
