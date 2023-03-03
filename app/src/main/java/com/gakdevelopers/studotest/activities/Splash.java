@@ -17,8 +17,6 @@ public class Splash extends AppCompatActivity {
 
     FirebaseAuth mAuth;
 
-    Intent intent;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,20 +29,28 @@ public class Splash extends AppCompatActivity {
             DbQuery.loadData("FREE_TESTS", new MyCompleteListener() {
                 @Override
                 public void onSuccess() {
-                    intent = new Intent(Splash.this, Main.class);
+                    Intent intent = new Intent(Splash.this, Main.class);
+
+                    startTimer(intent);
                 }
                 @Override
                 public void onFailure() {
                     Toast.makeText(Splash.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
-                    intent = new Intent(Splash.this, SignIn.class);
+                    Intent intent = new Intent(Splash.this, SignIn.class);
+
+                    startTimer(intent);
                 }
             });
 
 
         } else {
-            intent = new Intent(Splash.this, SignIn.class);
-        }
+            Intent intent = new Intent(Splash.this, SignIn.class);
 
+            startTimer(intent);
+        }
+    }
+
+    private void startTimer(Intent intent) {
         Handler h = new Handler();
 
         h.postDelayed(new Runnable() {
@@ -56,6 +62,5 @@ public class Splash extends AppCompatActivity {
                 }
             }
         },3000);
-
     }
 }

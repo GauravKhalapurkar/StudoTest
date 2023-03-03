@@ -7,15 +7,17 @@ public class Question {
     private String optionC;
     private String optionD;
     private int answer;
+    private int selectedAnswer;
     private String explanation;
 
-    public Question(String question, String optionA, String optionB, String optionC, String optionD, int answer, String explanation) {
+    public Question(String question, String optionA, String optionB, String optionC, String optionD, int answer, int selectedAnswer, String explanation) {
         this.question = question;
         this.optionA = optionA;
         this.optionB = optionB;
         this.optionC = optionC;
         this.optionD = optionD;
         this.answer = answer;
+        this.selectedAnswer = selectedAnswer;
         this.explanation = explanation;
     }
 
@@ -65,6 +67,14 @@ public class Question {
 
     public void setAnswer(int answer) {
         this.answer = answer;
+    }
+
+    public int getSelectedAnswer() {
+        return selectedAnswer;
+    }
+
+    public void setSelectedAnswer(int selectedAnswer) {
+        this.selectedAnswer = selectedAnswer;
     }
 
     public String getExplanation() {

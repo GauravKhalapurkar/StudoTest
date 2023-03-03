@@ -1,5 +1,6 @@
 package com.gakdevelopers.studotest.adapters;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gakdevelopers.studotest.R;
+import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.models.Question;
 
 import java.util.List;
@@ -41,9 +43,9 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtQuestion;
+        private TextView txtQuestion;
 
-        Button btnOptionA, btnOptionB, btnOptionC, btnOptionD;
+        private Button btnOptionA, btnOptionB, btnOptionC, btnOptionD, btnPrevSelected;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -55,6 +57,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
             btnOptionC = (Button) itemView.findViewById(R.id.btnOptionC);
             btnOptionD = (Button) itemView.findViewById(R.id.btnOptionD);
 
+            btnPrevSelected = null;
+
         }
 
         private void setData(final int position) {
@@ -65,8 +69,64 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
             btnOptionC.setText(questionsList.get(position).getOptionC());
             btnOptionD.setText(questionsList.get(position).getOptionD());
 
+            btnOptionA.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    selectedOption(btnOptionA, 1, position);
+                }
+            });
+
+            btnOptionB.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    selectedOption(btnOptionB, 2, position);
+                }
+            });
+
+            btnOptionC.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    selectedOption(btnOptionC, 3, position);
+                }
+            });
+
+            btnOptionD.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    selectedOption(btnOptionD, 4, position);
+                }
+            });
 
         }
 
+        private void selectedOption(Button button, int option, int questionId) {
+            if (btnPrevSelected == null) {
+                button.setBackgroundResource(R.drawable.custom_button);
+                button.setTextColor(Color.parseColor("#ffffff"));
+                //btnPrevSelected.setTextColor(Color.parseColor("#000000"));
+                DbQuery.g_question_list.get(questionId).setSelectedAnswer(option);
+
+                btnPrevSelected = button;
+            } else {
+                if (btnPrevSelected.getId() == button.getId()) {
+                    button.setBackgroundResource(R.drawable.custom_button_unselected);
+                    btnPrevSelected.setTextColor(Color.parseColor("#000000"));
+                    DbQuery.g_question_list.get(questionId).setSelectedAnswer(-1);
+
+                    btnPrevSelected = null;
+                } else {
+                    btnPrevSelected.setBackgroundResource(R.drawable.custom_button_unselected);
+                    button.setBackgroundResource(R.drawable.custom_button);
+                    button.setTextColor(Color.parseColor("#ffffff"));
+                    btnPrevSelected.setTextColor(Color.parseColor("#000000"));
+
+                    DbQuery.g_question_list.get(questionId).setSelectedAnswer(option);
+
+                    btnPrevSelected = button;
+                }
+            }
+        }
+
     }
+
 }

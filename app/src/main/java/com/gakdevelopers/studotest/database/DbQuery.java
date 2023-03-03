@@ -192,6 +192,7 @@ public class DbQuery {
                                     doc.getString("C"),
                                     doc.getString("D"),
                                     doc.getLong("ANSWER").intValue(),
+                                    -1,
                                     doc.getString("EXPLANATION")
                             ));
                         }

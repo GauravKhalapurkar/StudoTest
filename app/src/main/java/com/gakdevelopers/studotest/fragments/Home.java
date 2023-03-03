@@ -62,7 +62,6 @@ public class Home extends Fragment {
         cardFreeTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //changed the loadcategories
                 DbQuery.loadData("FREE_TESTS", new MyCompleteListener() {
                     @Override
                     public void onSuccess() {
@@ -84,9 +83,10 @@ public class Home extends Fragment {
         cardTestSeries.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), Categories.class);
-                intent.putExtra("categoryName", "Test Series");
-                startActivity(intent);
+                Toast.makeText(getActivity(), "Coming soon...", Toast.LENGTH_SHORT).show();
+//                Intent intent = new Intent(getActivity(), Categories.class);
+//                intent.putExtra("categoryName", "Test Series");
+//                startActivity(intent);
             }
         });
 

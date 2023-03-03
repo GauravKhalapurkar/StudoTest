@@ -3,6 +3,8 @@ package com.gakdevelopers.studotest.activities;
 import static com.gakdevelopers.studotest.database.DbQuery.g_catList;
 import static com.gakdevelopers.studotest.database.DbQuery.g_question_list;
 import static com.gakdevelopers.studotest.database.DbQuery.g_selected_cat_index;
+import static com.gakdevelopers.studotest.database.DbQuery.g_selected_test_index;
+import static com.gakdevelopers.studotest.database.DbQuery.g_testList;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -19,6 +22,8 @@ import android.widget.TextView;
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.adapters.QuestionsAdapter;
 import com.gakdevelopers.studotest.database.DbQuery;
+
+import java.util.concurrent.TimeUnit;
 
 public class Question extends AppCompatActivity {
 
@@ -63,6 +68,10 @@ public class Question extends AppCompatActivity {
 
         setSnapHelper();
 
+        setOnClickListeners();
+
+        startTimer();
+
     }
 
     private void setSnapHelper() {
@@ -85,6 +94,49 @@ public class Question extends AppCompatActivity {
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
+    }
+
+    private void setOnClickListeners() {
+        imgPrevQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (questionId > 0) {
+                    recyclerQuestion.smoothScrollToPosition(questionId - 1);
+                }
+            }
+        });
+
+        imgNextQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (questionId < g_question_list.size() - 1) {
+                    recyclerQuestion.smoothScrollToPosition(questionId + 1);
+                }
+            }
+        });
+    }
+
+    private void startTimer() {
+        long totalTime = g_testList.get(g_selected_test_index).getTime() * 60 * 1000;
+
+        CountDownTimer timer = new CountDownTimer(totalTime + 1000, 1000) {
+            @Override
+            public void onTick(long remainingTime) {
+                String time = String.format("%02d:%02d mins",
+                        TimeUnit.MILLISECONDS.toMinutes(remainingTime),
+                        TimeUnit.MILLISECONDS.toSeconds(remainingTime) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(remainingTime)));
+
+                txtTimer.setText(time);
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        };
+
+        timer.start();
     }
 
 }
