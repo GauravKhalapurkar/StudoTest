@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.activities.Question;
+import com.gakdevelopers.studotest.activities.StartTest;
+import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.models.TestModel;
 
 import java.util.List;
@@ -33,8 +35,9 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull TestAdapter.ViewHolder holder, int position) {
+        String testTitle = testList.get(position).getTestId();
         int progress = testList.get(position).getTopScore();
-        holder.setData(position, progress);
+        holder.setData(position, testTitle, progress);
     }
 
     @Override
@@ -54,20 +57,21 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
             txtTestTitle = (TextView) itemView.findViewById(R.id.txtTestTitle);
             txtProgressPercent = (TextView) itemView.findViewById(R.id.txtProgressPercent);
             progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
+        }
+
+        private void setData(final int position, String testTitle, int progress) {
+            txtTestTitle.setText("" + testTitle);
+            txtProgressPercent.setText(String.valueOf(progress) + "% Completed");
+            progressBar.setProgress(progress);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(itemView.getContext(), Question.class);
+                    DbQuery.g_selected_test_index = position;
+                    Intent intent = new Intent(itemView.getContext(), StartTest.class);
                     itemView.getContext().startActivity(intent);
                 }
             });
-        }
-
-        private void setData(int position, int progress) {
-            txtTestTitle.setText("" + String.valueOf(position+1));
-            txtProgressPercent.setText(String.valueOf(progress) + "% Completed");
-            progressBar.setProgress(progress);
         }
     }
 }

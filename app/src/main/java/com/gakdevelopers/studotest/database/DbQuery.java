@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
 import com.gakdevelopers.studotest.models.CategoryModel;
 import com.gakdevelopers.studotest.models.Profile;
+import com.gakdevelopers.studotest.models.Question;
 import com.gakdevelopers.studotest.models.TestModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,6 +32,10 @@ public class DbQuery {
     public static int g_selected_cat_index = 0;
 
     public static List<TestModel> g_testList = new ArrayList<>();
+
+    public static int g_selected_test_index = 0;
+
+    public static List<Question> g_question_list = new ArrayList<>();
 
     public static Profile myProfile = new Profile("NA", null);
 
@@ -167,5 +172,35 @@ public class DbQuery {
                 completeListener.onFailure();
             }
         });
+    }
+
+    public static void loadQuestions(MyCompleteListener completeListener) {
+        g_fireStore.collection("QUESTIONS")
+                .whereEqualTo("CATEGORY", g_catList.get(g_selected_cat_index).getDocId())
+                .whereEqualTo("TEST", g_testList.get(g_selected_test_index).getTestId())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                            g_question_list.add(new Question(
+                                    doc.getString("QUESTION"),
+                                    doc.getString("A"),
+                                    doc.getString("B"),
+                                    doc.getString("C"),
+                                    doc.getString("D"),
+                                    doc.getLong("ANSWER").intValue(),
+                                    doc.getString("EXPLANATION")
+                            ));
+                        }
+                        completeListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        completeListener.onFailure();
+                    }
+                });
     }
 }

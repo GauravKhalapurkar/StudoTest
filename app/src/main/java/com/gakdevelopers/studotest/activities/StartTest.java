@@ -1,15 +1,22 @@
 package com.gakdevelopers.studotest.activities;
 
+import static com.gakdevelopers.studotest.database.DbQuery.g_catList;
+import static com.gakdevelopers.studotest.database.DbQuery.loadQuestions;
+
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gakdevelopers.studotest.R;
+import com.gakdevelopers.studotest.database.DbQuery;
+import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
 
 public class StartTest extends AppCompatActivity {
 
@@ -18,6 +25,8 @@ public class StartTest extends AppCompatActivity {
     private Button btnStartTest;
 
     private ImageView imgBack;
+
+    ProgressDialog loading;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,5 +59,30 @@ public class StartTest extends AppCompatActivity {
             }
         });
 
+        loading =  ProgressDialog.show(StartTest.this,"Loading","Please Wait",false,false);
+
+        loadQuestions(new MyCompleteListener() {
+            @Override
+            public void onSuccess() {
+                setData();
+                loading.dismiss();
+            }
+
+            @Override
+            public void onFailure() {
+                Toast.makeText(StartTest.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                loading.dismiss();
+            }
+        });
+
     }
+
+    private void setData() {
+        txtCategoryName.setText(g_catList.get(DbQuery.g_selected_cat_index).getName());
+        txtTestTitle.setText(String.valueOf(DbQuery.g_testList.get(DbQuery.g_selected_test_index).getTestId()));
+        txtQuestions.setText(String.valueOf(DbQuery.g_question_list.size()));
+        txtBestScore.setText(String.valueOf(DbQuery.g_testList.get(DbQuery.g_selected_test_index).getTopScore()));
+        txtTime.setText(String.valueOf(DbQuery.g_testList.get(DbQuery.g_selected_test_index).getTime()));
+    }
+
 }
