@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:backgroundTint="@color/colorBackground"
-    app:cardCornerRadius="@dimen/_4sdp"
+    app:cardCornerRadius="@dimen/card_corner_radius"
     app:cardElevation="0dp">
 
     <RelativeLayout

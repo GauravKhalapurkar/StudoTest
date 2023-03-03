@@ -175,6 +175,8 @@ public class DbQuery {
     }
 
     public static void loadQuestions(MyCompleteListener completeListener) {
+        g_question_list.clear();
+
         g_fireStore.collection("QUESTIONS")
                 .whereEqualTo("CATEGORY", g_catList.get(g_selected_cat_index).getDocId())
                 .whereEqualTo("TEST", g_testList.get(g_selected_test_index).getTestId())
