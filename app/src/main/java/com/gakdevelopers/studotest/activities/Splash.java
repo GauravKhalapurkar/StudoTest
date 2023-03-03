@@ -36,6 +36,7 @@ public class Splash extends AppCompatActivity {
                 @Override
                 public void onFailure() {
                     Toast.makeText(Splash.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                    intent = new Intent(Splash.this, SignIn.class);
                 }
             });
 
@@ -49,8 +50,10 @@ public class Splash extends AppCompatActivity {
         h.postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(intent);
-                finish();
+                if(intent != null) {
+                    startActivity(intent);
+                    finish();
+                }
             }
         },2000);
 

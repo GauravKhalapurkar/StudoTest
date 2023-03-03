@@ -1,5 +1,6 @@
 package com.gakdevelopers.studotest.adapters;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gakdevelopers.studotest.R;
+import com.gakdevelopers.studotest.activities.Question;
 import com.gakdevelopers.studotest.models.TestModel;
 
 import java.util.List;
@@ -52,6 +54,14 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
             txtTestTitle = (TextView) itemView.findViewById(R.id.txtTestTitle);
             txtProgressPercent = (TextView) itemView.findViewById(R.id.txtProgressPercent);
             progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(itemView.getContext(), Question.class);
+                    itemView.getContext().startActivity(intent);
+                }
+            });
         }
 
         private void setData(int position, int progress) {

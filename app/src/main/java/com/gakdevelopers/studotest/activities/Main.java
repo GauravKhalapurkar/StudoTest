@@ -98,11 +98,13 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.item_home: Toast.makeText(this, "Home clicked", Toast.LENGTH_SHORT).show();
+            case R.id.item_home: getSupportFragmentManager().beginTransaction().replace(R.id.container, home).commit();
                 break;
-            case R.id.item_leaderboard: Toast.makeText(this, "Leaderboard clicked", Toast.LENGTH_SHORT).show();
+            case R.id.item_my_courses: getSupportFragmentManager().beginTransaction().replace(R.id.container, myCourses).commit();
                 break;
-            case R.id.item_profile: Toast.makeText(this, "Profile clicked", Toast.LENGTH_SHORT).show();
+            case R.id.item_leaderboard: getSupportFragmentManager().beginTransaction().replace(R.id.container, leaderboard).commit();
+                break;
+            case R.id.item_profile: getSupportFragmentManager().beginTransaction().replace(R.id.container, profile).commit();
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
