@@ -11,18 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gakdevelopers.studotest.R;
-import com.gakdevelopers.studotest.activities.Question;
 import com.gakdevelopers.studotest.activities.StartTest;
 import com.gakdevelopers.studotest.database.DbQuery;
-import com.gakdevelopers.studotest.models.TestModel;
+import com.gakdevelopers.studotest.models.FreeTestsModel;
 
 import java.util.List;
 
 public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
 
-    private List<TestModel> testList;
+    private List<FreeTestsModel> testList;
 
-    public TestAdapter(List<TestModel> testList) {
+    public TestAdapter(List<FreeTestsModel> testList) {
         this.testList = testList;
     }
 

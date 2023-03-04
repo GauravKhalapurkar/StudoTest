@@ -9,17 +9,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.adapters.TestAdapter;
 import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
-import com.gakdevelopers.studotest.models.TestModel;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class Tests extends AppCompatActivity {
 

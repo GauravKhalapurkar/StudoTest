@@ -8,7 +8,7 @@ import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
 import com.gakdevelopers.studotest.models.CategoryModel;
 import com.gakdevelopers.studotest.models.Profile;
 import com.gakdevelopers.studotest.models.Question;
-import com.gakdevelopers.studotest.models.TestModel;
+import com.gakdevelopers.studotest.models.FreeTestsModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,7 +31,7 @@ public class DbQuery {
 
     public static int g_selected_cat_index = 0;
 
-    public static List<TestModel> g_testList = new ArrayList<>();
+    public static List<FreeTestsModel> g_testList = new ArrayList<>();
 
     public static int g_selected_test_index = 0;
 
@@ -142,7 +142,7 @@ public class DbQuery {
                         int noOfTests = g_catList.get(g_selected_cat_index).getNoOfTest();
 
                         for (int i = 1; i <= noOfTests; i++) {
-                            g_testList.add(new TestModel(
+                            g_testList.add(new FreeTestsModel(
                                     documentSnapshot.getString("TEST" + String.valueOf(i) + "_ID"),
                                     0,
                                     documentSnapshot.getLong("TEST" + String.valueOf(i) + "_TIME").intValue()

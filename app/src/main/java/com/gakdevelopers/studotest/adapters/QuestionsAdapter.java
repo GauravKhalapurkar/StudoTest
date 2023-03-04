@@ -69,6 +69,11 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
             btnOptionC.setText(questionsList.get(position).getOptionC());
             btnOptionD.setText(questionsList.get(position).getOptionD());
 
+            setOptions(btnOptionA, 1, position);
+            setOptions(btnOptionB, 2, position);
+            setOptions(btnOptionC, 3, position);
+            setOptions(btnOptionD, 4, position);
+
             btnOptionA.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -124,6 +129,15 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
 
                     btnPrevSelected = button;
                 }
+            }
+        }
+
+        private void setOptions(Button button, int option, int questionId) {
+            if (DbQuery.g_question_list.get(questionId).getSelectedAnswer() == option) {
+                button.setBackgroundResource(R.drawable.custom_button);
+            } else {
+                button.setBackgroundResource(R.drawable.custom_button_unselected);
+                button.setTextColor(Color.parseColor("#000000"));
             }
         }
 
