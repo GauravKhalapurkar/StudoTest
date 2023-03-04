@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -13,11 +14,17 @@ import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.activities.Main;
 import com.gakdevelopers.studotest.activities.SignIn;
 import com.gakdevelopers.studotest.activities.SignUp;
+import com.gakdevelopers.studotest.database.DbQuery;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Profile extends Fragment {
 
-    CardView cardLogout;
+    private TextView txtFirstLetter, txtName, txtRank, txtScore;
+
+    private CardView cardLogout, cardLeaderboard, cardEditProfile;
+
+    private BottomNavigationView bottomNavigationView;
 
     public Profile() {
     }
@@ -38,7 +45,37 @@ public class Profile extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
+        txtFirstLetter = (TextView) view.findViewById(R.id.txtFirstLetter);
+        txtName = (TextView) view.findViewById(R.id.txtName);
+        txtRank = (TextView) view.findViewById(R.id.txtRank);
+        txtScore = (TextView) view.findViewById(R.id.txtScore);
+
+        cardLeaderboard = (CardView) view.findViewById(R.id.cardLeaderboard);
         cardLogout = (CardView) view.findViewById(R.id.cardLogout);
+        cardEditProfile = (CardView) view.findViewById(R.id.cardEditProfile);
+
+        bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationView);
+
+
+        String username = DbQuery.myProfile.getName();
+        txtFirstLetter.setText(username.toUpperCase().substring(0,1));
+        txtName.setText(username);
+
+        txtScore.setText(String.valueOf(DbQuery.myPerformance.getScore()));
+
+        cardEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        cardLeaderboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomNavigationView.setSelectedItemId(R.id.item_leaderboard);
+            }
+        });
 
         cardLogout.setOnClickListener(new View.OnClickListener() {
             @Override

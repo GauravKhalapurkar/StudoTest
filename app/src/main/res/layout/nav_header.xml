@@ -34,7 +34,7 @@
         android:id="@+id/txtEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Your Email"
+        android:text="Your Name"
         android:textSize="@dimen/text_size"
         android:textColor="@color/colorBlack"
         android:fontFamily="@font/bold"
