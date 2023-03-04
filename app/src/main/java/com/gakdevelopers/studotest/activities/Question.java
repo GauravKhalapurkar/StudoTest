@@ -47,6 +47,8 @@ public class Question extends AppCompatActivity {
 
     private CountDownTimer timer;
 
+    private long timeLeft;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -176,6 +178,8 @@ public class Question extends AppCompatActivity {
                         finish();
 
                         Intent intent = new Intent(Question.this, Score.class);
+                        long totalTime = g_testList.get(g_selected_test_index).getTime() * 60 * 1000;
+                        intent.putExtra("timeTaken", totalTime - timeLeft);
                         startActivity(intent);
                         Question.this.finish();
                     }
@@ -190,6 +194,8 @@ public class Question extends AppCompatActivity {
         timer = new CountDownTimer(totalTime + 1000, 1000) {
             @Override
             public void onTick(long remainingTime) {
+                timeLeft = remainingTime;
+
                 String time = String.format("%02d:%02d mins",
                         TimeUnit.MILLISECONDS.toMinutes(remainingTime),
                         TimeUnit.MILLISECONDS.toSeconds(remainingTime) -
@@ -201,6 +207,8 @@ public class Question extends AppCompatActivity {
             @Override
             public void onFinish() {
                 Intent intent = new Intent(Question.this, Score.class);
+                long totalTime = g_testList.get(g_selected_test_index).getTime() * 60 * 1000;
+                intent.putExtra("timeTaken", totalTime - timeLeft);
                 startActivity(intent);
                 Question.this.finish();
             }

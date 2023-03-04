@@ -42,6 +42,7 @@
                 android:textColor="@color/colorGreyDark"
                 android:fontFamily="@font/regular"
                 android:layout_weight="1"
+                android:progressTint="@color/colorSecondary"
                 style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
 
             <TextView

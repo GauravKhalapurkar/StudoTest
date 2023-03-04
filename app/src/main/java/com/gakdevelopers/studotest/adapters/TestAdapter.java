@@ -60,7 +60,7 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
 
         private void setData(final int position, String testTitle, int progress) {
             txtTestTitle.setText("" + testTitle);
-            txtProgressPercent.setText(String.valueOf(progress) + "% Completed");
+            txtProgressPercent.setText(String.valueOf(progress) + "% Marks Obtained");
             progressBar.setProgress(progress);
 
             itemView.setOnClickListener(new View.OnClickListener() {

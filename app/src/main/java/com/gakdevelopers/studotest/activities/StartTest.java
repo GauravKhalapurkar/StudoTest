@@ -81,8 +81,10 @@ public class StartTest extends AppCompatActivity {
         txtCategoryName.setText(g_catList.get(DbQuery.g_selected_cat_index).getName());
         txtTestTitle.setText(String.valueOf(DbQuery.g_testList.get(DbQuery.g_selected_test_index).getTestId()));
         txtQuestions.setText(String.valueOf(DbQuery.g_question_list.size()));
-        txtBestScore.setText(String.valueOf(DbQuery.g_testList.get(DbQuery.g_selected_test_index).getTopScore()));
-        txtTime.setText(String.valueOf(DbQuery.g_testList.get(DbQuery.g_selected_test_index).getTime()));
+
+        txtBestScore.setText(String.valueOf(DbQuery.g_testList.get(DbQuery.g_selected_test_index).getTopScore()) + "%");
+
+        txtTime.setText(String.valueOf(DbQuery.g_testList.get(DbQuery.g_selected_test_index).getTime()) + " m");
     }
 
 }

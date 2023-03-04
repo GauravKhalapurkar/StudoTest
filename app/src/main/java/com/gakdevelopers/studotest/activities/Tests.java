@@ -49,10 +49,23 @@ public class Tests extends AppCompatActivity {
         DbQuery.loadTests(new MyCompleteListener() {
             @Override
             public void onSuccess() {
-                adapter =new TestAdapter(DbQuery.g_testList);
-                recyclerView.setAdapter(adapter);
+                DbQuery.loadMyScores(new MyCompleteListener() {
+                    @Override
+                    public void onSuccess() {
+                        adapter =new TestAdapter(DbQuery.g_testList);
+                        recyclerView.setAdapter(adapter);
 
-                loading.dismiss();
+                        loading.dismiss();
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        Toast.makeText(Tests.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                        loading.dismiss();
+                    }
+                });
+
+
             }
 
             @Override
