@@ -1,9 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@color/colorWhite"
     tools:context=".activities.EditProfile">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorWhite"
+        android:elevation="@dimen/toolbar_elevation"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/_10sdp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Edit Profile"
+            android:textSize="@dimen/text_size_heading"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/colorSecondary"
+            android:fontFamily="@font/semibolditalic"
+            android:layout_marginTop="@dimen/_14sdp"/>
+
+        <EditText
+            android:id="@+id/editFullName"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_edit"
+            android:hint="Enter Full Name"
+            android:textSize="@dimen/text_size"
+            android:singleLine="true"
+            android:inputType="textEmailAddress"
+            android:paddingHorizontal="@dimen/_16sdp"
+            android:background="@drawable/custom_edit_text"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:fontFamily="@font/regular"
+            android:imeOptions="actionNext"/>
+
+        <EditText
+            android:id="@+id/editEmail"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_edit"
+            android:hint="Enter Email"
+            android:textSize="@dimen/text_size"
+            android:singleLine="true"
+            android:inputType="textEmailAddress"
+            android:capitalize="words"
+            android:paddingHorizontal="@dimen/_16sdp"
+            android:background="@drawable/custom_edit_text"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:fontFamily="@font/regular"
+            android:imeOptions="actionDone"/>
+
+        <Button
+            android:id="@+id/btnUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_btn"
+            android:text="Update"
+            android:textSize="@dimen/text_size_btn"
+            android:background="@drawable/custom_button"
+            android:textColor="@color/colorWhite"
+            android:layout_marginTop="@dimen/_14sdp"
+            android:fontFamily="@font/regular"/>
+
+    </LinearLayout>
+
+</LinearLayout>

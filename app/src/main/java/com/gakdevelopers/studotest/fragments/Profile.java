@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.gakdevelopers.studotest.R;
+import com.gakdevelopers.studotest.activities.EditProfile;
 import com.gakdevelopers.studotest.activities.Main;
 import com.gakdevelopers.studotest.activities.SignIn;
 import com.gakdevelopers.studotest.activities.SignUp;
@@ -66,7 +67,8 @@ public class Profile extends Fragment {
         cardEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(getContext(), EditProfile.class);
+                startActivity(intent);
             }
         });
 

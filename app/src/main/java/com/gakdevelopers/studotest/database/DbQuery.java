@@ -95,6 +95,31 @@ public class DbQuery {
                 });
     }
 
+    public static void updateProfile(String email, String name, final MyCompleteListener completeListener) {
+        Map<String, Object> updatedData = new ArrayMap<>();
+
+        updatedData.put("EMAIL_ID", email);
+        updatedData.put("NAME", name);
+
+        g_fireStore.collection("USERS").document(FirebaseAuth.getInstance().getUid())
+                .update(updatedData)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        myProfile.setName(name);
+                        myProfile.setEmail(email);
+
+                        completeListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        completeListener.onFailure();
+                    }
+                });
+    }
+
     public static void loadCategories(String testType, final MyCompleteListener completeListener) {
         g_catList.clear();
 
