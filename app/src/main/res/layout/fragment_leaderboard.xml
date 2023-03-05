@@ -12,7 +12,7 @@
         android:id="@+id/txtTotalUsers"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Total Users: 77"
+        android:text="Total Users:"
         android:textSize="@dimen/text_size"
         android:textColor="@color/colorGreyDark"
         android:fontFamily="@font/regular"
@@ -61,7 +61,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/imgLeaderboard"
-                    android:text="Your Score: 550"
+                    android:text="Your Score: 0"
                     android:textSize="@dimen/text_size"
                     android:textColor="@color/colorWhite"
                     android:fontFamily="@font/regular"/>
@@ -71,7 +71,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/imgLeaderboard"
-                    android:text="Your Rank: 7"
+                    android:text="Your Rank: -"
                     android:textSize="@dimen/text_size"
                     android:textColor="@color/colorWhite"
                     android:fontFamily="@font/bold"/>

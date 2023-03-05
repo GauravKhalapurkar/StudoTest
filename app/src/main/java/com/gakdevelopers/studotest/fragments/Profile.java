@@ -79,7 +79,7 @@ public class Profile extends Fragment {
                 @Override
                 public void onSuccess() {
 
-                    if (myPerformance.getScore() == 0) {
+                    if (myPerformance.getScore() != 0) {
                         if (!DbQuery.iAmInTopList) {
                             calculateRank();
                         }
@@ -98,11 +98,9 @@ public class Profile extends Fragment {
                 }
             });
         } else {
-            txtScore.setText("Score: " + myPerformance.getScore());
-            if (myPerformance.getScore() != 0) {
-
-            }
-            txtRank.setText("Rank: " + myPerformance.getRank());
+            txtScore.setText("" + myPerformance.getScore());
+            if (myPerformance.getScore() != 0)
+                txtRank.setText("" + myPerformance.getRank());
         }
 
         cardEditProfile.setOnClickListener(new View.OnClickListener() {

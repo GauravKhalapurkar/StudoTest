@@ -72,7 +72,7 @@ public class Leaderboard extends Fragment {
             public void onSuccess() {
                 adapter.notifyDataSetChanged();
 
-                if (myPerformance.getScore() == 0) {
+                if (myPerformance.getScore() != 0) {
                     if (!DbQuery.iAmInTopList) {
                         calculateRank();
                     }
