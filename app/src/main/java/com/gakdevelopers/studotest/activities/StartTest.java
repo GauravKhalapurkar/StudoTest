@@ -20,7 +20,7 @@ import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
 
 public class StartTest extends AppCompatActivity {
 
-    private TextView txtCategoryName, txtTestTitle, txtQuestions, txtBestScore, txtTime;
+    private TextView txtCategoryName, txtTestTitle, txtQuestions, txtBestScore, txtTime, txtPositiveMarks, txtNegativeMarks;
 
     private Button btnStartTest;
 
@@ -38,6 +38,8 @@ public class StartTest extends AppCompatActivity {
         txtQuestions = (TextView) findViewById(R.id.txtQuestions);
         txtBestScore = (TextView) findViewById(R.id.txtBestScore);
         txtTime = (TextView) findViewById(R.id.txtTime);
+        txtPositiveMarks = (TextView) findViewById(R.id.txtPositiveMarks);
+        txtNegativeMarks = (TextView) findViewById(R.id.txtNegativeMarks);
 
         btnStartTest = (Button) findViewById(R.id.btnStartTest);
 
@@ -60,6 +62,11 @@ public class StartTest extends AppCompatActivity {
         });
 
         loading =  ProgressDialog.show(StartTest.this,"Loading","Please Wait",false,false);
+
+        //Toast.makeText(this, "" + DbQuery.g_positive_marks + " - " + DbQuery.g_negative_marks, Toast.LENGTH_SHORT).show();
+
+        txtPositiveMarks.setText("" + DbQuery.g_positive_marks);
+        txtNegativeMarks.setText("-" + DbQuery.g_negative_marks);
 
         loadQuestions(new MyCompleteListener() {
             @Override

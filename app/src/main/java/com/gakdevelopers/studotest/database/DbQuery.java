@@ -3,6 +3,7 @@ package com.gakdevelopers.studotest.database;
 import android.util.ArrayMap;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
 import com.gakdevelopers.studotest.models.CategoryModel;
@@ -15,8 +16,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -47,6 +50,8 @@ public class DbQuery {
     public static List<Rank> g_users_list = new ArrayList<>();
 
     public static int getG_selected_cat_index = 0;
+    public static int g_positive_marks = 0;
+    public static int g_negative_marks = 0;
 
     public static int g_users_count = 0;
 
@@ -233,6 +238,16 @@ public class DbQuery {
 
     public static void loadTests(String testType, final MyCompleteListener completeListener) {
         g_testList.clear();
+
+        DocumentReference ref = g_fireStore.collection(testType).document(g_catList.get(g_selected_cat_index).getDocId());
+
+        ref.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                g_positive_marks = value.getLong("POSITIVE").intValue();
+                g_negative_marks = value.getLong("NEGATIVE").intValue();
+            }
+        });
 
         g_fireStore.collection(testType).document(g_catList.get(g_selected_cat_index).getDocId())
                 .collection("TESTS_LIST").document("TEST_INFO")

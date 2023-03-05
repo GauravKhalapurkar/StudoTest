@@ -31,7 +31,7 @@ public class Score extends AppCompatActivity {
 
     private Toolbar toolbar;
 
-    private int finalScore;
+    private int finalScore, marksObtained;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +96,13 @@ public class Score extends AppCompatActivity {
             }
         }
 
+        //Toast.makeText(this, "" + DbQuery.g_positive_marks + " - " + DbQuery.g_negative_marks, Toast.LENGTH_SHORT).show();
+
+        marksObtained = (correct * DbQuery.g_positive_marks) - (wrong * DbQuery.g_negative_marks);
+
         finalScore = correct * 100 / DbQuery.g_question_list.size();
-        txtScore.setText(String.valueOf(correct) + "/" + String.valueOf(DbQuery.g_question_list.size()));
+
+        txtScore.setText(String.valueOf(marksObtained) + "/" + String.valueOf(DbQuery.g_question_list.size() * DbQuery.g_positive_marks));
 
         timeTaken = getIntent().getLongExtra("timeTaken", 0);
         String time = String.format("%02d:%02d mins",
