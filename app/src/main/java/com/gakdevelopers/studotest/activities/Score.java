@@ -85,7 +85,6 @@ public class Score extends AppCompatActivity {
             }
         }
 
-
         finalScore = correct * 100 / DbQuery.g_question_list.size();
         txtScore.setText(String.valueOf(correct) + "/" + String.valueOf(DbQuery.g_question_list.size()));
 
@@ -95,7 +94,6 @@ public class Score extends AppCompatActivity {
                 TimeUnit.MILLISECONDS.toSeconds(timeTaken) -
                         TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeTaken)));
         txtTimeTaken.setText(time);
-
 
         txtTotalQuestions.setText(String.valueOf(DbQuery.g_question_list.size()));
 

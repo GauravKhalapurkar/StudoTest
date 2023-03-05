@@ -1,10 +1,12 @@
 package com.gakdevelopers.studotest.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -42,18 +44,19 @@ public class Categories extends AppCompatActivity {
         getSupportActionBar().setTitle("" + categoryName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //loadCategories();
-
         CategoryAdapter adapter = new CategoryAdapter(DbQuery.g_catList);
         gridView.setAdapter(adapter);
 
     }
 
-    public void moveToPrevious(View view) {
-        Intent intent = new Intent(Categories.this, Main.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-//        startActivity(new Intent(Categories.this, Main.class));
-//        Categories.this.finish();
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        if (item.getItemId() == android.R.id.home) {
+            Categories.this.finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
+
 }

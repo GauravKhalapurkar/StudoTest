@@ -17,6 +17,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
@@ -41,7 +42,75 @@ public class DbQuery {
 
     public static Profile myProfile = new Profile("NA", null);
 
-    public static Rank myPerformance = new Rank(0, -1);
+    public static Rank myPerformance = new Rank("NULL", 0, -1);
+
+    public static List<Rank> g_users_list = new ArrayList<>();
+
+    public static int getG_selected_cat_index = 0;
+
+    public static int g_users_count = 0;
+
+    public static boolean iAmInTopList = false;
+
+    public static void getTopUsers(MyCompleteListener completeListener) {
+        g_users_list.clear();
+
+        String myUId = FirebaseAuth.getInstance().getUid();
+
+        g_fireStore.collection("USERS")
+                .whereGreaterThan("TOTAL_SCORE", 0)
+                .orderBy("TOTAL_SCORE", Query.Direction.DESCENDING)
+                .limit(50)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        int rank = 1;
+                        for (QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                            g_users_list.add(new Rank(
+                                    doc.getString("NAME"),
+                                    doc.getLong("TOTAL_SCORE").intValue(),
+                                    rank
+                            ));
+
+                            if (myUId.compareTo(doc.getId()) == 0) {
+                                iAmInTopList = true;
+                                myPerformance.setRank(rank);
+                            }
+
+                            rank++;
+                        }
+
+                        completeListener.onSuccess();
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        completeListener.onFailure();
+                    }
+                });
+    }
+
+    public static void getUsersCount(MyCompleteListener completeListener) {
+        g_fireStore.collection("USERS").document("TOTAL_USERS")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        g_users_count = documentSnapshot.getLong("COUNT").intValue();
+
+                        completeListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        completeListener.onFailure();
+                    }
+                });
+    }
 
     public static void getUserData(final MyCompleteListener completeListener) {
         g_fireStore.collection("USERS").document(FirebaseAuth.getInstance().getUid())
@@ -53,6 +122,7 @@ public class DbQuery {
                         myProfile.setEmail(documentSnapshot.getString("EMAIL_ID"));
 
                         myPerformance.setScore(documentSnapshot.getLong("TOTAL_SCORE").intValue());
+                        myPerformance.setName(documentSnapshot.getString("NAME"));
 
                         completeListener.onSuccess();
                     }
@@ -195,7 +265,17 @@ public class DbQuery {
         loadCategories(testType, new MyCompleteListener() {
             @Override
             public void onSuccess() {
-                getUserData(completeListener);
+                getUserData(new MyCompleteListener() {
+                    @Override
+                    public void onSuccess() {
+                        getUsersCount(completeListener);
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        completeListener.onFailure();
+                    }
+                });
             }
 
             @Override
