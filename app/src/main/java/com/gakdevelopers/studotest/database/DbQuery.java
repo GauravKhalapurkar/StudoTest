@@ -371,6 +371,8 @@ public class DbQuery {
                             myPerformance.setScore(score);
 
                             completeListener.onSuccess();
+                        } else {
+                            completeListener.onSuccess();
                         }
                     }
                 })

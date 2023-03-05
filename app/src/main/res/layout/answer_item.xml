@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    android:id="@+id/cardRankItem"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/colorBackground"
+    android:layout_marginVertical="@dimen/_5sdp"
+    android:layout_marginHorizontal="@dimen/_10sdp"
+    app:cardCornerRadius="@dimen/card_corner_radius"
+    app:cardElevation="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtQuestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Question"
+            android:textSize="@dimen/text_size"
+            android:textColor="@color/colorBlack"
+            android:fontFamily="@font/bold"/>
+
+        <TextView
+            android:id="@+id/txtOptionA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Option A"
+            android:textSize="@dimen/text_size_small"
+            android:textColor="@color/colorGreyDark"
+            android:fontFamily="@font/regular"/>
+
+        <TextView
+            android:id="@+id/txtOptionB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Option B"
+            android:textSize="@dimen/text_size_small"
+            android:textColor="@color/colorGreyDark"
+            android:fontFamily="@font/regular"/>
+
+        <TextView
+            android:id="@+id/txtOptionC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Option C"
+            android:textSize="@dimen/text_size_small"
+            android:textColor="@color/colorGreyDark"
+            android:fontFamily="@font/regular"/>
+
+        <TextView
+            android:id="@+id/txtOptionD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Option D"
+            android:textSize="@dimen/text_size_small"
+            android:textColor="@color/colorGreyDark"
+            android:fontFamily="@font/regular"/>
+
+        <TextView
+            android:id="@+id/txtCorrectness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Correct"
+            android:textSize="@dimen/text_size"
+            android:textColor="@color/colorGreen"
+            android:fontFamily="@font/semibolditalic"
+            android:layout_marginVertical="@dimen/_4sdp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Explanation"
+            android:textSize="@dimen/text_size_small"
+            android:textColor="@color/colorBlack"
+            android:fontFamily="@font/bold"/>
+
+        <TextView
+            android:id="@+id/txtExplanation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="This is the reason why this is correct."
+            android:textSize="@dimen/text_size_small"
+            android:textColor="@color/colorGreyDark"
+            android:fontFamily="@font/regular"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Score extends AppCompatActivity {
 
-    private TextView txtScore, txtTimeTaken, txtTotalQuestions, txtCorrect, txtWrong, txtUnattempted, txtViewAnswers;
+    private TextView txtScore, txtTimeTaken, txtTotalQuestions, txtCorrect, txtWrong, txtUnattempted, txtViewAnswers, txtHome;
 
     private CardView cardShowRank, cardShareScore;
 
@@ -44,6 +45,7 @@ public class Score extends AppCompatActivity {
         txtWrong = (TextView) findViewById(R.id.txtWrong);
         txtUnattempted = (TextView) findViewById(R.id.txtUnattempted);
         txtViewAnswers = (TextView) findViewById(R.id.txtViewAnswers);
+        txtHome = (TextView) findViewById(R.id.txtHome);
 
         cardShowRank = (CardView) findViewById(R.id.cardShowRank);
         cardShareScore = (CardView) findViewById(R.id.cardShareScore);
@@ -62,11 +64,20 @@ public class Score extends AppCompatActivity {
         txtViewAnswers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(Score.this, Answers.class);
+                startActivity(intent);
             }
         });
 
-        saveResult();
+        txtHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Score.this, Main.class));
+                Score.this.finish();
+            }
+        });
+
+        // here was saveResult();
 
     }
 
@@ -100,6 +111,8 @@ public class Score extends AppCompatActivity {
         txtCorrect.setText(String.valueOf(correct));
         txtWrong.setText(String.valueOf(wrong));
         txtUnattempted.setText(String.valueOf(unAttempted));
+
+        saveResult();
     }
 
     private void saveResult() {

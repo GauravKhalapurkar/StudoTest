@@ -1,9 +1,43 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.Answers">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorWhite"
+        android:elevation="@dimen/toolbar_elevation"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_above="@+id/viewBottom"/>
+
+    <View
+        android:id="@+id/viewBottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:background="@color/colorSecondary"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_above="@+id/txtHome"/>
+
+    <TextView
+        android:id="@+id/txtHome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="HOME"
+        android:textSize="@dimen/text_size"
+        android:textColor="@color/colorSecondary"
+        android:gravity="center"
+        android:fontFamily="@font/regular"
+        android:paddingVertical="@dimen/_10sdp"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>
