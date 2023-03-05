@@ -66,7 +66,7 @@ public class Home extends Fragment {
                     @Override
                     public void onSuccess() {
                         Intent intent = new Intent(getActivity(), Categories.class);
-                        intent.putExtra("categoryName", "Free Tests");
+                        intent.putExtra("categoryName", "FREE_TESTS");
                         startActivity(intent);
                     }
 
@@ -83,10 +83,19 @@ public class Home extends Fragment {
         cardTestSeries.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "Coming soon...", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(getActivity(), Categories.class);
-//                intent.putExtra("categoryName", "Test Series");
-//                startActivity(intent);
+                DbQuery.loadData("PAID_TESTS", new MyCompleteListener() {
+                    @Override
+                    public void onSuccess() {
+                        Intent intent = new Intent(getActivity(), Categories.class);
+                        intent.putExtra("categoryName", "PAID_TESTS");
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        Toast.makeText(getActivity(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 

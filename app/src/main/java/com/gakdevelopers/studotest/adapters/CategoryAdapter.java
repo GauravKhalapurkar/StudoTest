@@ -18,7 +18,10 @@ public class CategoryAdapter extends BaseAdapter {
 
     private List<CategoryModel> categoryList;
 
-    public CategoryAdapter(List<CategoryModel> categoryList) {
+    private String testType;
+
+    public CategoryAdapter(String testType, List<CategoryModel> categoryList) {
+        this.testType = testType;
         this.categoryList = categoryList;
     }
 
@@ -52,6 +55,7 @@ public class CategoryAdapter extends BaseAdapter {
             public void onClick(View view) {
                 DbQuery.g_selected_cat_index = i;
                 Intent intent = new Intent(view.getContext(), Tests.class);
+                intent.putExtra("testType", testType);
                 view.getContext().startActivity(intent);
             }
         });

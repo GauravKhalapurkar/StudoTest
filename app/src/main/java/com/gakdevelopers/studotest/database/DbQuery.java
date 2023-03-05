@@ -231,10 +231,10 @@ public class DbQuery {
 
     }
 
-    public static void loadTests(final MyCompleteListener completeListener) {
+    public static void loadTests(String testType, final MyCompleteListener completeListener) {
         g_testList.clear();
 
-        g_fireStore.collection("FREE_TESTS").document(g_catList.get(g_selected_cat_index).getDocId())
+        g_fireStore.collection(testType).document(g_catList.get(g_selected_cat_index).getDocId())
                 .collection("TESTS_LIST").document("TEST_INFO")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {

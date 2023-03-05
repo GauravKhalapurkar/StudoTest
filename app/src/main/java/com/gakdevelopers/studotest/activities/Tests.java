@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -44,9 +45,12 @@ public class Tests extends AppCompatActivity {
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
+        Intent intent = getIntent();
+        String testType = intent.getStringExtra("testType");
+
         loading =  ProgressDialog.show(Tests.this,"Loading","Please Wait",false,false);
 
-        DbQuery.loadTests(new MyCompleteListener() {
+        DbQuery.loadTests(testType, new MyCompleteListener() {
             @Override
             public void onSuccess() {
                 DbQuery.loadMyScores(new MyCompleteListener() {

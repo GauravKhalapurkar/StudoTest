@@ -44,7 +44,7 @@ public class Categories extends AppCompatActivity {
         getSupportActionBar().setTitle("" + categoryName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        CategoryAdapter adapter = new CategoryAdapter(DbQuery.g_catList);
+        CategoryAdapter adapter = new CategoryAdapter(categoryName, DbQuery.g_catList);
         gridView.setAdapter(adapter);
 
     }
