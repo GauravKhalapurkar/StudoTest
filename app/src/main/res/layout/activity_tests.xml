@@ -19,5 +19,13 @@
         android:layout_height="match_parent"
         android:layout_below="@id/toolbar"
         android:layout_marginTop="@dimen/_5sdp"/>
+
+<!--    <Button-->
+<!--        android:id="@+id/btnBuyNow"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:background="@drawable/custom_button"-->
+<!--        android:text="Buy Now" />-->
     
 </RelativeLayout>

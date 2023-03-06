@@ -1,11 +1,11 @@
 package com.gakdevelopers.studotest.models;
 
-public class FreeTestsModel {
+public class TestsModel {
     private String testId;
     private int topScore;
     private int time;
 
-    public FreeTestsModel(String testId, int topScore, int time) {
+    public TestsModel(String testId, int topScore, int time) {
         this.testId = testId;
         this.topScore = topScore;
         this.time = time;

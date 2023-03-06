@@ -46,6 +46,11 @@
                 android:icon="@drawable/ic_privacy"
                 android:title="Privacy Policy" />
 
+            <item
+                android:id="@+id/item_share"
+                android:icon="@drawable/ic_share"
+                android:title="Share StudoTest" />
+
         </menu>
 
     </item>

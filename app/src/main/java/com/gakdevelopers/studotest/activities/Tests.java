@@ -9,7 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.gakdevelopers.studotest.R;
@@ -27,6 +29,8 @@ public class Tests extends AppCompatActivity {
 
     ProgressDialog loading;
 
+    //private Button btnBuyNow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +39,8 @@ public class Tests extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+
+        //btnBuyNow = (Button) findViewById(R.id.btnBuyNow);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -49,6 +55,18 @@ public class Tests extends AppCompatActivity {
         String testType = intent.getStringExtra("testType");
 
         loading =  ProgressDialog.show(Tests.this,"Loading","Please Wait",false,false);
+
+        DbQuery.checkUsersCourses(new MyCompleteListener() {
+            @Override
+            public void onSuccess() {
+                Log.d("DOC_EXIST", "yes");
+            }
+
+            @Override
+            public void onFailure() {
+                Log.d("DOC_EXIST", "no");
+            }
+        });
 
         DbQuery.loadTests(testType, new MyCompleteListener() {
             @Override

@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Score extends AppCompatActivity {
 
-    private TextView txtScore, txtTimeTaken, txtTotalQuestions, txtCorrect, txtWrong, txtUnattempted, txtViewAnswers, txtHome;
+    private TextView txtScore, txtTimeTaken, txtTotalQuestions, txtCorrect, txtWrong, txtUnattempted, txtViewAnswers, txtHome, txtPositiveMarks, txtNegativeMarks;
 
     private CardView cardShowRank, cardShareScore;
 
@@ -46,6 +46,8 @@ public class Score extends AppCompatActivity {
         txtUnattempted = (TextView) findViewById(R.id.txtUnattempted);
         txtViewAnswers = (TextView) findViewById(R.id.txtViewAnswers);
         txtHome = (TextView) findViewById(R.id.txtHome);
+        txtPositiveMarks = (TextView) findViewById(R.id.txtPositiveMarks);
+        txtNegativeMarks = (TextView) findViewById(R.id.txtNegativeMarks);
 
         cardShowRank = (CardView) findViewById(R.id.cardShowRank);
         cardShareScore = (CardView) findViewById(R.id.cardShareScore);
@@ -97,6 +99,9 @@ public class Score extends AppCompatActivity {
         }
 
         //Toast.makeText(this, "" + DbQuery.g_positive_marks + " - " + DbQuery.g_negative_marks, Toast.LENGTH_SHORT).show();
+
+        txtPositiveMarks.setText(String.valueOf(DbQuery.g_positive_marks));
+        txtNegativeMarks.setText("-" + DbQuery.g_negative_marks);
 
         marksObtained = (correct * DbQuery.g_positive_marks) - (wrong * DbQuery.g_negative_marks);
 

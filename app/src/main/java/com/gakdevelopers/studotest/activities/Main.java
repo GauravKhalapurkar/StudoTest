@@ -106,9 +106,21 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
             case R.id.item_profile: getSupportFragmentManager().beginTransaction().replace(R.id.container, profile).commit();
                 break;
+            case R.id.item_share: shareApp();
+                break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void shareApp() {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = "Please tell me what to write here. " + "\n\n" +
+                "Download Now from Google Play Store: https://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName();
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Share App");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Share via"));
     }
 
     @Override

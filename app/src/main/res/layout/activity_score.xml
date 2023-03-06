@@ -107,7 +107,7 @@
                             android:id="@+id/txtTimeTaken"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="7 mins"
+                            android:text="-"
                             android:gravity="end"
                             android:textSize="@dimen/text_size"
                             android:textColor="@color/colorBlack"
@@ -138,10 +138,72 @@
                             android:id="@+id/txtTotalQuestions"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="2"
+                            android:text="-"
                             android:gravity="end"
                             android:textSize="@dimen/text_size"
                             android:textColor="@color/colorBlack"
+                            android:fontFamily="@font/bold"
+                            android:layout_gravity="end"
+                            android:layout_weight="1"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_10sdp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Positive Marking"
+                            android:gravity="start"
+                            android:textSize="@dimen/text_size"
+                            android:textColor="@color/colorGreen"
+                            android:fontFamily="@font/regular"
+                            android:layout_gravity="start"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:id="@+id/txtPositiveMarks"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="-"
+                            android:gravity="end"
+                            android:textSize="@dimen/text_size"
+                            android:textColor="@color/colorGreen"
+                            android:fontFamily="@font/bold"
+                            android:layout_gravity="end"
+                            android:layout_weight="1"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/_10sdp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Negative Marking"
+                            android:gravity="start"
+                            android:textSize="@dimen/text_size"
+                            android:textColor="@color/colorRed"
+                            android:fontFamily="@font/regular"
+                            android:layout_gravity="start"
+                            android:layout_weight="1"/>
+
+                        <TextView
+                            android:id="@+id/txtNegativeMarks"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="-"
+                            android:gravity="end"
+                            android:textSize="@dimen/text_size"
+                            android:textColor="@color/colorRed"
                             android:fontFamily="@font/bold"
                             android:layout_gravity="end"
                             android:layout_weight="1"/>

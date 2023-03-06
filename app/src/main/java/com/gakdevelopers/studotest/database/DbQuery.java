@@ -1,6 +1,8 @@
 package com.gakdevelopers.studotest.database;
 
 import android.util.ArrayMap;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,7 +11,7 @@ import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
 import com.gakdevelopers.studotest.models.CategoryModel;
 import com.gakdevelopers.studotest.models.Profile;
 import com.gakdevelopers.studotest.models.Question;
-import com.gakdevelopers.studotest.models.FreeTestsModel;
+import com.gakdevelopers.studotest.models.TestsModel;
 import com.gakdevelopers.studotest.models.Rank;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -37,7 +39,7 @@ public class DbQuery {
 
     public static int g_selected_cat_index = 0;
 
-    public static List<FreeTestsModel> g_testList = new ArrayList<>();
+    public static List<TestsModel> g_testList = new ArrayList<>();
 
     public static int g_selected_test_index = 0;
 
@@ -52,6 +54,8 @@ public class DbQuery {
     public static int getG_selected_cat_index = 0;
     public static int g_positive_marks = 0;
     public static int g_negative_marks = 0;
+
+    public static int g_attempt = 1;
 
     public static int g_users_count = 0;
 
@@ -258,7 +262,7 @@ public class DbQuery {
                         int noOfTests = g_catList.get(g_selected_cat_index).getNoOfTest();
 
                         for (int i = 1; i <= noOfTests; i++) {
-                            g_testList.add(new FreeTestsModel(
+                            g_testList.add(new TestsModel(
                                     documentSnapshot.getString("TEST" + String.valueOf(i) + "_ID"),
                                     0,
                                     documentSnapshot.getLong("TEST" + String.valueOf(i) + "_TIME").intValue()
@@ -360,8 +364,31 @@ public class DbQuery {
                 });
     }
 
+    public static void checkUsersCourses(MyCompleteListener completeListener) {
+        DocumentReference userDoc = g_fireStore.collection("USERS").document(FirebaseAuth.getInstance().getUid());
+        DocumentReference coursesDoc = userDoc.collection("USER_DATA").document("MY_COURSES");
+
+        coursesDoc
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Log.d("DOC_EXIST", "yes");
+                        completeListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("DOC_EXIST", "no");
+                        completeListener.onFailure();
+                    }
+                });
+    }
+
     public static void saveResult(int score, MyCompleteListener completeListener) {
         WriteBatch batch = g_fireStore.batch();
+        WriteBatch batch1 = g_fireStore.batch();
 
         DocumentReference userDoc = g_fireStore.collection("USERS").document(FirebaseAuth.getInstance().getUid());
 
@@ -376,6 +403,24 @@ public class DbQuery {
             batch.set(scoreDoc, testData, SetOptions.merge());
         }
 
+        DocumentReference attemptDoc = userDoc.collection("USER_DATA").document("MY_ATTEMPTS");
+
+//        attemptDoc.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+//            @Override
+//            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+//                g_attempt = value.getLong(g_testList.get(g_selected_test_index).getTestId()).intValue();
+//
+//                Log.d("g_attempt", String.valueOf(g_attempt));
+//            }
+//        });
+
+        //attemptDoc.update(g_testList.get(g_selected_test_index).getTestId(), FieldValue.increment(1));
+
+        Map<String, Object> attemptData = new ArrayMap<>();
+        attemptData.put(g_testList.get(g_selected_test_index).getTestId(), g_attempt);
+
+        batch1.set(attemptDoc, attemptData, SetOptions.merge());
+
         batch.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -389,6 +434,20 @@ public class DbQuery {
                         } else {
                             completeListener.onSuccess();
                         }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        completeListener.onFailure();
+                    }
+                });
+
+        batch1.commit()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        completeListener.onSuccess();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
