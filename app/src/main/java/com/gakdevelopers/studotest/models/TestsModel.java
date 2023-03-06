@@ -4,11 +4,13 @@ public class TestsModel {
     private String testId;
     private int topScore;
     private int time;
+    private int attempt;
 
-    public TestsModel(String testId, int topScore, int time) {
+    public TestsModel(String testId, int topScore, int time, int attempt) {
         this.testId = testId;
         this.topScore = topScore;
         this.time = time;
+        this.attempt = attempt;
     }
 
     public String getTestId() {
@@ -33,5 +35,13 @@ public class TestsModel {
 
     public void setTime(int time) {
         this.time = time;
+    }
+
+    public int getAttempt() {
+        return attempt;
+    }
+
+    public void setAttempt(int attempt) {
+        this.attempt = attempt;
     }
 }

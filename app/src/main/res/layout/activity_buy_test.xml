@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    tools:context=".activities.BuyTest">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:gravity="center_horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/_180sdp"
+                android:layout_height="@dimen/_180sdp"
+                android:src="@drawable/logo" />
+
+            <TextView
+                android:id="@+id/txtTestPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Test @ "
+                android:textSize="@dimen/text_size_heading"
+                android:textColor="@color/colorSecondary"
+                android:fontFamily="@font/semibolditalic"
+                android:layout_marginTop="@dimen/_14sdp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/_10sdp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Have a Coupon Code? "
+                    android:textSize="@dimen/text_size_small"
+                    android:textColor="@color/colorGreyDark"
+                    android:fontFamily="@font/regular"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="GET 95% OFF!"
+                    android:textSize="@dimen/text_size_small"
+                    android:textColor="@color/colorSecondary"
+                    android:fontFamily="@font/regular"/>
+
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/editCouponCode"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_edit"
+                android:hint="Enter Coupon Code"
+                android:textSize="@dimen/text_size"
+                android:singleLine="true"
+                android:inputType="textEmailAddress"
+                android:paddingHorizontal="@dimen/_16sdp"
+                android:background="@drawable/custom_edit_text"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:fontFamily="@font/regular"
+                android:imeOptions="actionNext"/>
+
+            <Button
+                android:id="@+id/btnSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_btn"
+                android:text="Submit"
+                android:textSize="@dimen/text_size_btn"
+                android:background="@drawable/custom_button"
+                android:textColor="@color/colorWhite"
+                android:layout_marginTop="@dimen/_14sdp"
+                android:fontFamily="@font/regular"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="- - - OR - - -"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/colorGreyDark"
+                android:fontFamily="@font/bold"
+                android:layout_marginTop="@dimen/_14sdp"/>
+
+            <TextView
+                android:id="@+id/txtNoCoupon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I don't have a Coupon Code"
+                android:textSize="@dimen/text_size"
+                android:textColor="@color/colorSecondary"
+                android:fontFamily="@font/regular"
+                android:layout_marginTop="@dimen/_14sdp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

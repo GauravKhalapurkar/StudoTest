@@ -11,7 +11,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gakdevelopers.studotest.R;
@@ -29,6 +31,10 @@ public class Tests extends AppCompatActivity {
 
     ProgressDialog loading;
 
+    private TextView txtFreeTrial;
+
+    private Button btnBuyNow;
+
     //private Button btnBuyNow;
 
     @Override
@@ -40,7 +46,9 @@ public class Tests extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-        //btnBuyNow = (Button) findViewById(R.id.btnBuyNow);
+        txtFreeTrial = (TextView) findViewById(R.id.txtFreeTrial);
+
+        btnBuyNow = (Button) findViewById(R.id.btnBuyNow);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -53,6 +61,11 @@ public class Tests extends AppCompatActivity {
 
         Intent intent = getIntent();
         String testType = intent.getStringExtra("testType");
+
+        if (testType.equals("PAID_TESTS")) {
+            txtFreeTrial.setVisibility(View.VISIBLE);
+            btnBuyNow.setVisibility(View.VISIBLE);
+        }
 
         loading =  ProgressDialog.show(Tests.this,"Loading","Please Wait",false,false);
 
@@ -94,6 +107,13 @@ public class Tests extends AppCompatActivity {
             public void onFailure() {
                 Toast.makeText(Tests.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
                 loading.dismiss();
+            }
+        });
+
+        btnBuyNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Tests.this, BuyTest.class));
             }
         });
 

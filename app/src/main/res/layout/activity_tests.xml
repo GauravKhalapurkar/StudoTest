@@ -13,19 +13,38 @@
         android:background="@color/colorWhite"
         android:elevation="@dimen/toolbar_elevation"/>
 
+    <TextView
+        android:id="@+id/txtFreeTrial"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Free Trial Test Space"
+        android:textSize="@dimen/text_size_small"
+        android:textColor="@color/colorSecondary"
+        android:fontFamily="@font/regular"
+        android:layout_below="@+id/toolbar"
+        android:visibility="gone"/>
+
+    <Button
+        android:id="@+id/btnBuyNow"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_btn"
+        android:text="Buy Now"
+        android:textSize="@dimen/text_size_btn"
+        android:background="@drawable/custom_button"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="@dimen/_14sdp"
+        android:fontFamily="@font/regular"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_below="@+id/txtFreeTrial"
+        android:visibility="gone"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/btnBuyNow"
         android:layout_marginTop="@dimen/_5sdp"/>
 
-<!--    <Button-->
-<!--        android:id="@+id/btnBuyNow"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_centerInParent="true"-->
-<!--        android:background="@drawable/custom_button"-->
-<!--        android:text="Buy Now" />-->
+
     
 </RelativeLayout>
