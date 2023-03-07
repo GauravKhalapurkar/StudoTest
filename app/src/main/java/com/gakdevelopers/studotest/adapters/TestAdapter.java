@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -72,13 +73,24 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
             } else {
                 txtViewAnswers.setVisibility(View.GONE);
             }
+            
+            txtViewAnswers.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(itemView.getContext(), "View answers clicked", Toast.LENGTH_SHORT).show();
+                }
+            });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    DbQuery.g_selected_test_index = position;
-                    Intent intent = new Intent(itemView.getContext(), StartTest.class);
-                    itemView.getContext().startActivity(intent);
+                    if (attempt < 3) {
+                        DbQuery.g_selected_test_index = position;
+                        Intent intent = new Intent(itemView.getContext(), StartTest.class);
+                        itemView.getContext().startActivity(intent);
+                    } else {
+                        Toast.makeText(itemView.getContext(), "Maximum attempts reached.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
