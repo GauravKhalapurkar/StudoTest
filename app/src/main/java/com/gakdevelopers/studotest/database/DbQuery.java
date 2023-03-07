@@ -13,6 +13,7 @@ import com.gakdevelopers.studotest.models.Profile;
 import com.gakdevelopers.studotest.models.Question;
 import com.gakdevelopers.studotest.models.TestsModel;
 import com.gakdevelopers.studotest.models.Rank;
+import com.gakdevelopers.studotest.models.ViewAnswer;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,6 +32,7 @@ import com.google.firebase.firestore.WriteBatch;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class DbQuery {
     public static FirebaseFirestore g_fireStore;
@@ -45,7 +47,7 @@ public class DbQuery {
 
     public static List<Question> g_question_list = new ArrayList<>();
 
-    public static List<Question> g_view_answers_list = new ArrayList<>();
+    public static List<ViewAnswer> g_view_answers_list = new ArrayList<>();
 
     public static Profile myProfile = new Profile("NA", null);
 
@@ -240,7 +242,6 @@ public class DbQuery {
                     }
                 });
 
-
     }
 
     public static void loadTests(String testType, final MyCompleteListener completeListener) {
@@ -274,7 +275,9 @@ public class DbQuery {
                                     documentSnapshot.getString("TEST" + String.valueOf(i) + "_ID"),
                                     0,
                                     documentSnapshot.getLong("TEST" + String.valueOf(i) + "_TIME").intValue(),
-                                    0
+                                    0,
+                                    Boolean.TRUE.equals(documentSnapshot.getBoolean("TEST" + String.valueOf(i) + "_LIVE"))
+                                    //documentSnapshot.getBoolean("TEST" + String.valueOf(i) + "_LIVE")
                             ));
                         }
 
@@ -382,7 +385,7 @@ public class DbQuery {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         for (DocumentSnapshot doc : queryDocumentSnapshots) {
-                            g_view_answers_list.add(new Question(
+                            g_view_answers_list.add(new ViewAnswer(
                                     doc.getString("QUESTION"),
                                     doc.getString("A"),
                                     doc.getString("B"),

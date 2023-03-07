@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gakdevelopers.studotest.R;
@@ -32,6 +33,8 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
         this.testList = testList;
     }
 
+    //private boolean live;
+
     @NonNull
     @Override
     public TestAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -44,7 +47,8 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
         String testTitle = testList.get(position).getTestId();
         int progress = testList.get(position).getTopScore();
         int attempt = testList.get(position).getAttempt();
-        holder.setData(position, testTitle, progress, attempt);
+        boolean live = testList.get(position).isLive();
+        holder.setData(position, testTitle, progress, attempt, live);
     }
 
     @Override
@@ -54,18 +58,21 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView txtTestTitle, txtAttempt, txtViewAnswers;
+        private TextView txtComingSoon, txtTestTitle, txtAttempt, txtViewAnswers;
         private TextView txtProgressPercent;
         private ProgressBar progressBar;
+        private CardView cardTest;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
+            txtComingSoon = (TextView) itemView.findViewById(R.id.txtComingSoon);
             txtTestTitle = (TextView) itemView.findViewById(R.id.txtTestTitle);
             txtAttempt = (TextView) itemView.findViewById(R.id.txtAttempt);
             txtViewAnswers = (TextView) itemView.findViewById(R.id.txtViewAnswers);
             txtProgressPercent = (TextView) itemView.findViewById(R.id.txtProgressPercent);
             progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
+            cardTest = (CardView) itemView.findViewById(R.id.cardTest);
 
             txtViewAnswers.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -78,7 +85,43 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
             });
         }
 
-        private void setData(final int position, String testTitle, int progress, int attempt) {
+        private void setData(final int position, String testTitle, int progress, int attempt, boolean live) {
+
+            if (!live) {
+                //cardTest.setVisibility(View.GONE);
+                cardTest.setAlpha(0.1F);
+                txtComingSoon.setVisibility(View.VISIBLE);
+            } else {
+                //cardTest.setVisibility(View.VISIBLE);
+                cardTest.setAlpha(1);
+                txtComingSoon.setVisibility(View.GONE);
+
+                itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        if (attempt < 3) {
+                            DbQuery.g_selected_test_index = position;
+
+                            loadQuestions(new MyCompleteListener() {
+                                @Override
+                                public void onSuccess() {
+                                    Intent intent = new Intent(itemView.getContext(), StartTest.class);
+                                    itemView.getContext().startActivity(intent);
+                                }
+
+                                @Override
+                                public void onFailure() {
+
+                                }
+                            });
+                        } else {
+                            Toast.makeText(itemView.getContext(), "Maximum attempts reached.", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            }
+
             txtTestTitle.setText("" + testTitle);
             txtProgressPercent.setText(String.valueOf(progress) + "% Marks Obtained");
             txtAttempt.setText("ATTEMPT " + String.valueOf(attempt) + " OF 3");
@@ -90,30 +133,6 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
                 txtViewAnswers.setVisibility(View.GONE);
             }
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    if (attempt < 3) {
-                        DbQuery.g_selected_test_index = position;
-
-                        loadQuestions(new MyCompleteListener() {
-                            @Override
-                            public void onSuccess() {
-                                Intent intent = new Intent(itemView.getContext(), StartTest.class);
-                                itemView.getContext().startActivity(intent);
-                            }
-
-                            @Override
-                            public void onFailure() {
-
-                            }
-                        });
-                    } else {
-                        Toast.makeText(itemView.getContext(), "Maximum attempts reached.", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
         }
     }
 }

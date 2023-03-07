@@ -10,14 +10,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.models.Question;
+import com.gakdevelopers.studotest.models.ViewAnswer;
 
 import java.util.List;
 
 public class ViewAnswersAdapter extends RecyclerView.Adapter<ViewAnswersAdapter.ViewHolder> {
 
-    private List<Question> quesList;
+    private List<ViewAnswer> quesList;
 
-    public ViewAnswersAdapter(List<Question> quesList) {
+    public ViewAnswersAdapter(List<ViewAnswer> quesList) {
         this.quesList = quesList;
     }
 
@@ -71,20 +72,40 @@ public class ViewAnswersAdapter extends RecyclerView.Adapter<ViewAnswersAdapter.
             txtOptionC.setText("C. " + c);
             txtOptionD.setText("D. " + d);
 
-            setOptionColor(answer, R.color.colorGreen);
+            setOptionColor(answer, R.color.colorGreen, R.color.colorPrimaryDark);
 
             txtExplanation.setText("" + explanation);
         }
 
-        private void setOptionColor(int selected, int color) {
+        private void setOptionColor(int selected, int color, int colorSecondary) {
             switch (selected) {
-                case 1: txtOptionA.setTextColor(itemView.getContext().getResources().getColor(color));
+                case 1: {
+                    txtOptionA.setTextColor(itemView.getContext().getResources().getColor(color));
+                    txtOptionB.setTextColor(itemView.getContext().getResources().getColor(colorSecondary));
+                    txtOptionC.setTextColor(itemView.getContext().getResources().getColor(colorSecondary));
+                    txtOptionD.setTextColor(itemView.getContext().getResources().getColor(colorSecondary));
+                }
                         break;
-                case 2: txtOptionB.setTextColor(itemView.getContext().getResources().getColor(color));
+                case 2: {
+                    txtOptionA.setTextColor(itemView.getContext().getResources().getColor(colorSecondary));
+                    txtOptionB.setTextColor(itemView.getContext().getResources().getColor(color));
+                    txtOptionC.setTextColor(itemView.getContext().getResources().getColor(colorSecondary));
+                    txtOptionD.setTextColor(itemView.getContext().getResources().getColor(colorSecondary));
+                }
                     break;
-                case 3: txtOptionC.setTextColor(itemView.getContext().getResources().getColor(color));
+                case 3: {
+                    txtOptionA.setTextColor(itemView.getContext().getResources().getColor(colorSecondary));
+                    txtOptionB.setTextColor(itemView.getContext().getResources().getColor(colorSecondary));
+                    txtOptionC.setTextColor(itemView.getContext().getResources().getColor(color));
+                    txtOptionD.setTextColor(itemView.getContext().getResources().getColor(colorSecondary));
+                }
                     break;
-                case 4: txtOptionD.setTextColor(itemView.getContext().getResources().getColor(color));
+                case 4: {
+                    txtOptionA.setTextColor(itemView.getContext().getResources().getColor(colorSecondary));
+                    txtOptionB.setTextColor(itemView.getContext().getResources().getColor(colorSecondary));
+                    txtOptionC.setTextColor(itemView.getContext().getResources().getColor(colorSecondary));
+                    txtOptionD.setTextColor(itemView.getContext().getResources().getColor(color));
+                }
                     break;
                 default:
             }

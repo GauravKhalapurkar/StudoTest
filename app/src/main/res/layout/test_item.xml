@@ -1,103 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    android:id="@+id/cardCategory"
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:backgroundTint="@color/colorBackground"
-    android:layout_marginHorizontal="@dimen/_10sdp"
-    android:layout_marginVertical="@dimen/_5sdp"
-    app:cardCornerRadius="@dimen/card_corner_radius"
-    app:cardElevation="0dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardTest"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_10sdp">
-
-        <TextView
-            android:id="@+id/txtTestTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Test Title"
-            android:textSize="@dimen/text_size"
-            android:textColor="@color/colorBlack"
-            android:fontFamily="@font/bold"/>
-
-        <LinearLayout
-            android:id="@+id/linearProgress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_below="@+id/txtTestTitle"
-            android:gravity="center_vertical"
-            android:layout_marginVertical="@dimen/_4sdp"
-            android:layout_toLeftOf="@+id/imgRight">
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Category Name"
-                android:textSize="@dimen/text_size_small"
-                android:textColor="@color/colorGreyDark"
-                android:fontFamily="@font/regular"
-                android:layout_weight="1"
-                android:progressTint="@color/colorSecondary"
-                style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
-
-            <TextView
-                android:id="@+id/txtProgressPercent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="77%"
-                android:textSize="@dimen/text_size_small"
-                android:paddingHorizontal="@dimen/_20sdp"
-                android:textColor="@color/colorGreyDark"
-                android:fontFamily="@font/regular"/>
-
-        </LinearLayout>
+        android:backgroundTint="@color/colorBackground"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginVertical="@dimen/_5sdp"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="0dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/linearProgress"
-            android:layout_toLeftOf="@+id/imgRight">
+            android:padding="@dimen/_10sdp">
 
             <TextView
-                android:id="@+id/txtAttempt"
+                android:id="@+id/txtTestTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="-"
-                android:textSize="@dimen/text_size_small"
-                android:textColor="@color/colorSecondary"
-                android:fontFamily="@font/regular"
-                android:layout_alignParentStart="true"/>
+                android:text="Test Title"
+                android:textSize="@dimen/text_size"
+                android:textColor="@color/colorBlack"
+                android:fontFamily="@font/bold"/>
 
-            <TextView
-                android:id="@+id/txtViewAnswers"
+            <LinearLayout
+                android:id="@+id/linearProgress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/txtTestTitle"
+                android:gravity="center_vertical"
+                android:layout_marginVertical="@dimen/_4sdp"
+                android:layout_toLeftOf="@+id/imgRight">
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Category Name"
+                    android:textSize="@dimen/text_size_small"
+                    android:textColor="@color/colorGreyDark"
+                    android:fontFamily="@font/regular"
+                    android:layout_weight="1"
+                    android:progressTint="@color/colorSecondary"
+                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+
+                <TextView
+                    android:id="@+id/txtProgressPercent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="77%"
+                    android:textSize="@dimen/text_size_small"
+                    android:paddingHorizontal="@dimen/_20sdp"
+                    android:textColor="@color/colorGreyDark"
+                    android:fontFamily="@font/regular"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/linearProgress"
+                android:layout_toLeftOf="@+id/imgRight">
+
+                <TextView
+                    android:id="@+id/txtAttempt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textSize="@dimen/text_size_small"
+                    android:textColor="@color/colorSecondary"
+                    android:fontFamily="@font/regular"
+                    android:layout_alignParentStart="true"/>
+
+                <TextView
+                    android:id="@+id/txtViewAnswers"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="VIEW ANSWERS"
+                    android:textSize="@dimen/text_size_small"
+                    android:textColor="@color/colorGreyDark"
+                    android:fontFamily="@font/semibolditalic"
+                    android:layout_alignParentEnd="true"
+                    android:visibility="gone"/>
+
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/imgRight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="VIEW ANSWERS"
-                android:textSize="@dimen/text_size_small"
-                android:textColor="@color/colorGreyDark"
-                android:fontFamily="@font/semibolditalic"
+                android:src="@drawable/ic_right"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:onClick="moveToPrevious"
                 android:layout_alignParentEnd="true"
-                android:visibility="gone"/>
+                android:layout_centerVertical="true"/>
 
         </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/imgRight"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_right"
-            android:paddingHorizontal="@dimen/_10sdp"
-            android:onClick="moveToPrevious"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"/>
+    </androidx.cardview.widget.CardView>
 
-    </RelativeLayout>
+    <TextView
+        android:id="@+id/txtComingSoon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="C O M I N G   S O O N"
+        android:textSize="@dimen/text_size"
+        android:textColor="@color/colorBlack"
+        android:fontFamily="@font/bold"
+        android:layout_centerInParent="true"
+        android:visibility="gone"/>
 
-</androidx.cardview.widget.CardView>
+</RelativeLayout>
