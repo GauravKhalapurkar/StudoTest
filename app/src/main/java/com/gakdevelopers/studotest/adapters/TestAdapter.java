@@ -36,7 +36,8 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull TestAdapter.ViewHolder holder, int position) {
         String testTitle = testList.get(position).getTestId();
         int progress = testList.get(position).getTopScore();
-        holder.setData(position, testTitle, progress);
+        int attempt = testList.get(position).getAttempt();
+        holder.setData(position, testTitle, progress, attempt);
     }
 
     @Override
@@ -46,7 +47,7 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView txtTestTitle;
+        private TextView txtTestTitle, txtAttempt, txtViewAnswers;
         private TextView txtProgressPercent;
         private ProgressBar progressBar;
 
@@ -54,14 +55,23 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
             super(itemView);
 
             txtTestTitle = (TextView) itemView.findViewById(R.id.txtTestTitle);
+            txtAttempt = (TextView) itemView.findViewById(R.id.txtAttempt);
+            txtViewAnswers = (TextView) itemView.findViewById(R.id.txtViewAnswers);
             txtProgressPercent = (TextView) itemView.findViewById(R.id.txtProgressPercent);
             progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
         }
 
-        private void setData(final int position, String testTitle, int progress) {
+        private void setData(final int position, String testTitle, int progress, int attempt) {
             txtTestTitle.setText("" + testTitle);
             txtProgressPercent.setText(String.valueOf(progress) + "% Marks Obtained");
+            txtAttempt.setText("ATTEMPT " + String.valueOf(attempt) + " OF 3");
             progressBar.setProgress(progress);
+
+            if (attempt > 0) {
+                txtViewAnswers.setVisibility(View.VISIBLE);
+            } else {
+                txtViewAnswers.setVisibility(View.GONE);
+            }
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

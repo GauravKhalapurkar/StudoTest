@@ -26,11 +26,13 @@
             android:fontFamily="@font/bold"/>
 
         <LinearLayout
+            android:id="@+id/linearProgress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_below="@+id/txtTestTitle"
             android:gravity="center_vertical"
+            android:layout_marginVertical="@dimen/_4sdp"
             android:layout_toLeftOf="@+id/imgRight">
 
             <ProgressBar
@@ -56,6 +58,35 @@
                 android:fontFamily="@font/regular"/>
 
         </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linearProgress"
+            android:layout_toLeftOf="@+id/imgRight">
+
+            <TextView
+                android:id="@+id/txtAttempt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="-"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/colorSecondary"
+                android:fontFamily="@font/regular"
+                android:layout_alignParentStart="true"/>
+
+            <TextView
+                android:id="@+id/txtViewAnswers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VIEW ANSWERS"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/colorGreyDark"
+                android:fontFamily="@font/semibolditalic"
+                android:layout_alignParentEnd="true"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/imgRight"

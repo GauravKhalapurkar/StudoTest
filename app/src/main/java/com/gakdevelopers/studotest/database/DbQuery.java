@@ -285,6 +285,31 @@ public class DbQuery {
                         completeListener.onFailure();
                     }
                 });
+
+        /*g_fireStore.collection("USERS").document(FirebaseAuth.getInstance().getUid())
+                .collection("USER_DATA").document("MY_ATTEMPTS")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        for (int i = 0; i < g_testList.size(); i++) {
+                            //int attempt = 0;
+                            if (documentSnapshot.get(g_testList.get(i).getTestId()) != null) {
+                                g_attempt = documentSnapshot.getLong(g_testList.get(i).getTestId()).intValue();
+                            }
+
+                            //g_testList.get(i).setAttempt(g_attempt);
+                        }
+
+                        completeListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        completeListener.onFailure();
+                    }
+                });*/
     }
 
     public static void loadData(String testType, final MyCompleteListener completeListener) {
@@ -377,7 +402,6 @@ public class DbQuery {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         for (int i = 0; i < g_testList.size(); i++) {
-                            //int attempt = 0;
                             if (documentSnapshot.get(g_testList.get(i).getTestId()) != null) {
                                 g_attempt = documentSnapshot.getLong(g_testList.get(i).getTestId()).intValue();
                             }
