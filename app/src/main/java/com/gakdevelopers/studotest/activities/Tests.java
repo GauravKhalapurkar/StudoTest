@@ -35,8 +35,6 @@ public class Tests extends AppCompatActivity {
 
     private Button btnBuyNow;
 
-    //private Button btnBuyNow;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

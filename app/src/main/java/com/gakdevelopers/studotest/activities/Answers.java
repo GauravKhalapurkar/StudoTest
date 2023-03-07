@@ -6,15 +6,19 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.adapters.AnswersAdapter;
+import com.gakdevelopers.studotest.adapters.ViewAnswersAdapter;
 import com.gakdevelopers.studotest.database.DbQuery;
+import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
 
 public class Answers extends AppCompatActivity {
 
@@ -24,6 +28,14 @@ public class Answers extends AppCompatActivity {
 
     private TextView txtHome;
 
+    boolean fromTestAdapter = false;
+
+    int position = 0;
+
+    Intent intent;
+
+    ProgressDialog loading;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +44,14 @@ public class Answers extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         txtHome = (TextView) findViewById(R.id.txtHome);
+
+
+        intent = getIntent();
+
+        if (intent != null) {
+            fromTestAdapter = intent.getBooleanExtra("fromTestAdapter", false);
+            position = intent.getIntExtra("position", 0);
+        }
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -44,8 +64,31 @@ public class Answers extends AppCompatActivity {
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
-        AnswersAdapter adapter = new AnswersAdapter(DbQuery.g_question_list);
-        recyclerView.setAdapter(adapter);
+        if (fromTestAdapter) {
+            loading =  ProgressDialog.show(Answers.this,"Loading","Please Wait",false,false);
+
+            DbQuery.g_selected_test_index = position;
+
+            DbQuery.loadViewAnswers(new MyCompleteListener() {
+                @Override
+                public void onSuccess() {
+                    ViewAnswersAdapter adapter = new ViewAnswersAdapter(DbQuery.g_view_answers_list);
+                    recyclerView.setAdapter(adapter);
+
+                    loading.dismiss();
+                }
+
+                @Override
+                public void onFailure() {
+                    Toast.makeText(Answers.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                    loading.dismiss();
+                }
+            });
+
+        } else {
+            AnswersAdapter adapter = new AnswersAdapter(DbQuery.g_question_list);
+            recyclerView.setAdapter(adapter);
+        }
 
         txtHome.setOnClickListener(new View.OnClickListener() {
             @Override

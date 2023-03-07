@@ -45,6 +45,8 @@ public class DbQuery {
 
     public static List<Question> g_question_list = new ArrayList<>();
 
+    public static List<Question> g_view_answers_list = new ArrayList<>();
+
     public static Profile myProfile = new Profile("NA", null);
 
     public static Rank myPerformance = new Rank("NULL", 0, -1);
@@ -369,6 +371,39 @@ public class DbQuery {
                 });
     }
 
+    public static void loadViewAnswers(MyCompleteListener completeListener) {
+        g_view_answers_list.clear();
+
+        g_fireStore.collection("QUESTIONS")
+                .whereEqualTo("CATEGORY", g_catList.get(g_selected_cat_index).getDocId())
+                .whereEqualTo("TEST", g_testList.get(g_selected_test_index).getTestId())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                            g_view_answers_list.add(new Question(
+                                    doc.getString("QUESTION"),
+                                    doc.getString("A"),
+                                    doc.getString("B"),
+                                    doc.getString("C"),
+                                    doc.getString("D"),
+                                    doc.getLong("ANSWER").intValue(),
+                                    -1,
+                                    doc.getString("EXPLANATION")
+                            ));
+                        }
+                        completeListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        completeListener.onFailure();
+                    }
+                });
+    }
+
     public static void loadMyScores(MyCompleteListener completeListener) {
         g_fireStore.collection("USERS").document(FirebaseAuth.getInstance().getUid())
                 .collection("USER_DATA").document("MY_SCORES")
@@ -402,6 +437,7 @@ public class DbQuery {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         for (int i = 0; i < g_testList.size(); i++) {
+                            g_attempt = 0;
                             if (documentSnapshot.get(g_testList.get(i).getTestId()) != null) {
                                 g_attempt = documentSnapshot.getLong(g_testList.get(i).getTestId()).intValue();
                             }
@@ -446,6 +482,8 @@ public class DbQuery {
         WriteBatch batch = g_fireStore.batch();
         WriteBatch batch1 = g_fireStore.batch();
 
+        g_attempt = 0;
+
         DocumentReference userDoc = g_fireStore.collection("USERS").document(FirebaseAuth.getInstance().getUid());
 
         batch.update(userDoc, "TOTAL_SCORE", score);
@@ -457,6 +495,18 @@ public class DbQuery {
             testData.put(g_testList.get(g_selected_test_index).getTestId(), score);
 
             batch.set(scoreDoc, testData, SetOptions.merge());
+        }
+
+        Log.d("MY_BUG", "" + g_testList.get(g_selected_test_index).getAttempt());
+        Log.d("MY_ATTEMPT_VALUE", "" + g_attempt);
+
+        if (g_testList.get(g_selected_test_index).getAttempt() <= 3) {
+            DocumentReference attemptDoc = userDoc.collection("USER_DATA").document("MY_ATTEMPTS");
+
+            Map<String, Object> attemptData = new ArrayMap<>();
+            attemptData.put(g_testList.get(g_selected_test_index).getTestId(), g_testList.get(g_selected_test_index).getAttempt() + 1);
+
+            batch1.set(attemptDoc, attemptData, SetOptions.merge());
         }
 
         batch.commit()
@@ -481,21 +531,11 @@ public class DbQuery {
                     }
                 });
 
-
-        if (g_attempt <= 3) {
-            DocumentReference attemptDoc = userDoc.collection("USER_DATA").document("MY_ATTEMPTS");
-
-            Map<String, Object> attemptData = new ArrayMap<>();
-            attemptData.put(g_testList.get(g_selected_test_index).getTestId(), g_attempt + 1);
-
-            batch1.set(attemptDoc, attemptData, SetOptions.merge());
-        }
-
         batch1.commit()
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        if (g_attempt <= 3) {
+                        if (g_testList.get(g_selected_test_index).getAttempt() <= 3) {
                             g_testList.get(g_selected_test_index).setAttempt(g_attempt);
 
                             completeListener.onSuccess();

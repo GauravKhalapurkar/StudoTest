@@ -1,5 +1,8 @@
 package com.gakdevelopers.studotest.adapters;
 
+import static com.gakdevelopers.studotest.database.DbQuery.loadQuestions;
+
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gakdevelopers.studotest.R;
+import com.gakdevelopers.studotest.activities.Answers;
+import com.gakdevelopers.studotest.activities.Score;
 import com.gakdevelopers.studotest.activities.StartTest;
 import com.gakdevelopers.studotest.database.DbQuery;
+import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
 import com.gakdevelopers.studotest.models.TestsModel;
 
 import java.util.List;
@@ -60,6 +66,16 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
             txtViewAnswers = (TextView) itemView.findViewById(R.id.txtViewAnswers);
             txtProgressPercent = (TextView) itemView.findViewById(R.id.txtProgressPercent);
             progressBar = (ProgressBar) itemView.findViewById(R.id.progressBar);
+
+            txtViewAnswers.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(itemView.getContext(), Answers.class);
+                    intent.putExtra("fromTestAdapter", true);
+                    intent.putExtra("position", getAdapterPosition());
+                    itemView.getContext().startActivity(intent);
+                }
+            });
         }
 
         private void setData(final int position, String testTitle, int progress, int attempt) {
@@ -73,21 +89,26 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
             } else {
                 txtViewAnswers.setVisibility(View.GONE);
             }
-            
-            txtViewAnswers.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(itemView.getContext(), "View answers clicked", Toast.LENGTH_SHORT).show();
-                }
-            });
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     if (attempt < 3) {
                         DbQuery.g_selected_test_index = position;
-                        Intent intent = new Intent(itemView.getContext(), StartTest.class);
-                        itemView.getContext().startActivity(intent);
+
+                        loadQuestions(new MyCompleteListener() {
+                            @Override
+                            public void onSuccess() {
+                                Intent intent = new Intent(itemView.getContext(), StartTest.class);
+                                itemView.getContext().startActivity(intent);
+                            }
+
+                            @Override
+                            public void onFailure() {
+
+                            }
+                        });
                     } else {
                         Toast.makeText(itemView.getContext(), "Maximum attempts reached.", Toast.LENGTH_SHORT).show();
                     }
