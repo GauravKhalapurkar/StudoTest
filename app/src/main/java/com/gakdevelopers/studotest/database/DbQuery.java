@@ -43,6 +43,8 @@ public class DbQuery {
 
     public static List<TestsModel> g_testList = new ArrayList<>();
 
+    public static List<TestsModel> g_couponList = new ArrayList<>();
+
     public static int g_selected_test_index = 0;
 
     public static List<Question> g_question_list = new ArrayList<>();
@@ -244,6 +246,25 @@ public class DbQuery {
 
     }
 
+    public static void loadCouponCodes(MyCompleteListener completeListener) {
+        g_couponList.clear();
+
+        g_fireStore.collection("COUPON_CODES").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                        completeListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        completeListener.onFailure();
+                    }
+                });
+    }
+
     public static void loadTests(String testType, final MyCompleteListener completeListener) {
         g_testList.clear();
 
@@ -419,10 +440,8 @@ public class DbQuery {
                             if (documentSnapshot.get(g_testList.get(i).getTestId()) != null) {
                                 top = documentSnapshot.getLong(g_testList.get(i).getTestId()).intValue();
                             }
-
                             g_testList.get(i).setTopScore(top);
                         }
-
                         completeListener.onSuccess();
                     }
                 })
@@ -481,6 +500,34 @@ public class DbQuery {
                 });
     }
 
+    public static void savePurchaseData(int price, MyCompleteListener completeListener) {
+        WriteBatch batch = g_fireStore.batch();
+
+        DocumentReference userDoc = g_fireStore.collection("USERS").document(FirebaseAuth.getInstance().getUid());
+
+        DocumentReference courseDoc = userDoc.collection("USER_DATA").document("MY_COURSES");
+
+        Map<String, Object> purchaseData = new ArrayMap<>();
+
+        purchaseData.put(g_catList.get(g_selected_cat_index).getName(), price);
+
+        batch.set(courseDoc, purchaseData, SetOptions.merge());
+
+        batch.commit()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        completeListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        completeListener.onFailure();
+                    }
+                });
+    }
+
     public static void saveResult(int score, MyCompleteListener completeListener) {
         WriteBatch batch = g_fireStore.batch();
         WriteBatch batch1 = g_fireStore.batch();
@@ -499,9 +546,6 @@ public class DbQuery {
 
             batch.set(scoreDoc, testData, SetOptions.merge());
         }
-
-        Log.d("MY_BUG", "" + g_testList.get(g_selected_test_index).getAttempt());
-        Log.d("MY_ATTEMPT_VALUE", "" + g_attempt);
 
         if (g_testList.get(g_selected_test_index).getAttempt() <= 3) {
             DocumentReference attemptDoc = userDoc.collection("USER_DATA").document("MY_ATTEMPTS");

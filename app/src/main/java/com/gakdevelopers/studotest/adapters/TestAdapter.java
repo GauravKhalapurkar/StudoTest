@@ -33,8 +33,6 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
         this.testList = testList;
     }
 
-    //private boolean live;
-
     @NonNull
     @Override
     public TestAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -88,11 +86,9 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
         private void setData(final int position, String testTitle, int progress, int attempt, boolean live) {
 
             if (!live) {
-                //cardTest.setVisibility(View.GONE);
                 cardTest.setAlpha(0.1F);
                 txtComingSoon.setVisibility(View.VISIBLE);
             } else {
-                //cardTest.setVisibility(View.VISIBLE);
                 cardTest.setAlpha(1);
                 txtComingSoon.setVisibility(View.GONE);
 

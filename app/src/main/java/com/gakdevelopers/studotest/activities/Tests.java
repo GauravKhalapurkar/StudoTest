@@ -35,6 +35,8 @@ public class Tests extends AppCompatActivity {
 
     private Button btnBuyNow;
 
+    private String categoryName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +61,7 @@ public class Tests extends AppCompatActivity {
 
         Intent intent = getIntent();
         String testType = intent.getStringExtra("testType");
+        categoryName = intent.getStringExtra("categoryName");
 
         if (testType.equals("PAID_TESTS")) {
             txtFreeTrial.setVisibility(View.VISIBLE);
@@ -85,7 +88,7 @@ public class Tests extends AppCompatActivity {
                 DbQuery.loadMyScores(new MyCompleteListener() {
                     @Override
                     public void onSuccess() {
-                        adapter =new TestAdapter(DbQuery.g_testList);
+                        adapter = new TestAdapter(DbQuery.g_testList);
                         recyclerView.setAdapter(adapter);
 
                         loading.dismiss();
@@ -97,8 +100,6 @@ public class Tests extends AppCompatActivity {
                         loading.dismiss();
                     }
                 });
-
-
             }
 
             @Override
@@ -111,7 +112,9 @@ public class Tests extends AppCompatActivity {
         btnBuyNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Tests.this, BuyTest.class));
+                Intent i = new Intent(Tests.this, BuyTest.class);
+                i.putExtra("categoryName", categoryName);
+                startActivity(i);
             }
         });
 
