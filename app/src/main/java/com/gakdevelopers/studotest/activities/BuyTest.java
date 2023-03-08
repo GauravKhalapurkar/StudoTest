@@ -34,6 +34,8 @@ public class BuyTest extends AppCompatActivity implements PaymentResultListener 
 
     private ProgressDialog loading;
 
+    private String couponCode = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +43,6 @@ public class BuyTest extends AppCompatActivity implements PaymentResultListener 
 
         Intent intent = getIntent();
         categoryName = intent.getStringExtra("categoryName");
-
-        //Toast.makeText(this, "" +DbQuery.myProfile.getEmail(), Toast.LENGTH_SHORT).show();
 
         editCouponCode = (EditText) findViewById(R.id.editCouponCode);
 
@@ -56,47 +56,46 @@ public class BuyTest extends AppCompatActivity implements PaymentResultListener 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String couponCode = editCouponCode.getText().toString();
+                couponCode = editCouponCode.getText().toString();
 
                 if (couponCode.equals("")) {
                     Toast.makeText(BuyTest.this, "Enter Coupon Code", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
+                loading =  ProgressDialog.show(BuyTest.this,"Loading 2","Please Wait",false,false);
+
+                DbQuery.loadCouponCodes(new MyCompleteListener() {
+                    @Override
+                    public void onSuccess() {
+
+                        if (DbQuery.g_couponList.contains(couponCode)) {
+                            payWithRazorpay((DbQuery.g_price * 5) / 100, "Discounted Payment for " + categoryName);
+                            editCouponCode.setText("");
+
+                        } else {
+                            Toast.makeText(BuyTest.this, "Your Coupon Code is invalid. Please try again!", Toast.LENGTH_SHORT).show();
+                        }
+
+                        loading.dismiss();
+
+                    }
+
+                    @Override
+                    public void onFailure() {
+                        Toast.makeText(BuyTest.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                        loading.dismiss();
+                    }
+                });
+
+                loading.dismiss();
             }
         });
 
         txtNoCoupon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                savePurchasedData(DbQuery.g_price);
-
-//                int amount = Math.round(Float.parseFloat(String.valueOf(DbQuery.g_price)) * 100);
-//
-//                Checkout checkout = new Checkout();
-//                checkout.setKeyID(getString(R.string.razorpay_api_key));
-//                checkout.setImage(R.drawable.app_icon);
-//
-//                JSONObject object = new JSONObject();
-//                try {
-//                    object.put("name", "Paying for " + categoryName);
-//
-//                    object.put("description", "Payment for " + categoryName);
-//
-//                    object.put("theme.color", "");
-//
-//                    object.put("currency", "INR");
-//
-//                    object.put("amount", amount);
-//
-//                    //object.put("prefill.contact", "9834176448");
-//
-//                    object.put("prefill.email", DbQuery.myProfile.getEmail());
-//
-//                    checkout.open(BuyTest.this, object);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
+                payWithRazorpay(DbQuery.g_price, "Payment for " + categoryName);
             }
         });
 
@@ -104,18 +103,69 @@ public class BuyTest extends AppCompatActivity implements PaymentResultListener 
 
     @Override
     public void onPaymentSuccess(String s) {
-        Toast.makeText(this, "Payment is successful : " + s, Toast.LENGTH_SHORT).show();
+        if (couponCode == null) {
+            savePurchasedData(DbQuery.g_price);
+        } else {
+            savePurchasedData((DbQuery.g_price * 5) / 100);
+            deleteAppliedCouponCode();
+        }
+
+        Toast.makeText(this, "Payment is successful: " + s, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onPaymentError(int i, String s) {
-        Toast.makeText(this, "Payment Failed due to error : " + s, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Payment Failed due to error: " + s, Toast.LENGTH_SHORT).show();
+    }
+
+    private void payWithRazorpay(double priceToPay, String description) {
+        int amount = Math.round(Float.parseFloat(String.valueOf(priceToPay)) * 100);
+
+        Checkout checkout = new Checkout();
+        checkout.setKeyID(getString(R.string.razorpay_api_key));
+        checkout.setImage(R.drawable.app_icon);
+
+        JSONObject object = new JSONObject();
+        try {
+            object.put("name", "Paying for " + categoryName);
+
+            object.put("description", "Payment for " + categoryName);
+
+            object.put("theme.color", "");
+
+            object.put("currency", "INR");
+
+            object.put("amount", amount);
+
+            object.put("prefill.email", DbQuery.myProfile.getEmail());
+
+            checkout.open(BuyTest.this, object);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void savePurchasedData(int amount) {
         loading =  ProgressDialog.show(BuyTest.this,"Loading","Please Wait",false,false);
 
         DbQuery.savePurchaseData(amount, new MyCompleteListener() {
+            @Override
+            public void onSuccess() {
+                loading.dismiss();
+            }
+
+            @Override
+            public void onFailure() {
+                Toast.makeText(BuyTest.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                loading.dismiss();
+            }
+        });
+    }
+
+    private void deleteAppliedCouponCode() {
+        loading =  ProgressDialog.show(BuyTest.this,"Loading","Please Wait",false,false);
+
+        DbQuery.deleteUsedCoupon(couponCode, new MyCompleteListener() {
             @Override
             public void onSuccess() {
                 loading.dismiss();

@@ -14,8 +14,10 @@ import com.gakdevelopers.studotest.models.Question;
 import com.gakdevelopers.studotest.models.TestsModel;
 import com.gakdevelopers.studotest.models.Rank;
 import com.gakdevelopers.studotest.models.ViewAnswer;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -43,7 +45,7 @@ public class DbQuery {
 
     public static List<TestsModel> g_testList = new ArrayList<>();
 
-    public static List<TestsModel> g_couponList = new ArrayList<>();
+    public static List<String> g_couponList = new ArrayList<>();
 
     public static int g_selected_test_index = 0;
 
@@ -249,11 +251,38 @@ public class DbQuery {
     public static void loadCouponCodes(MyCompleteListener completeListener) {
         g_couponList.clear();
 
-        g_fireStore.collection("COUPON_CODES").get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+        g_fireStore.collection("COUPON_CODES")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                g_couponList.add(document.getId());
+                            }
+                            //Log.d(TAG, list.toString());
+                        }
+
+                        completeListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        completeListener.onFailure();
+                    }
+                });
+
+    }
+
+    public static void deleteUsedCoupon(String couponCode, MyCompleteListener completeListener) {
+        g_fireStore.collection("COUPON_CODES")
+                .document(couponCode)
+                .delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
                         completeListener.onSuccess();
                     }
                 })
@@ -514,9 +543,9 @@ public class DbQuery {
         batch.set(courseDoc, purchaseData, SetOptions.merge());
 
         batch.commit()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onSuccess(Void unused) {
+                    public void onComplete(@NonNull Task<Void> task) {
                         completeListener.onSuccess();
                     }
                 })

@@ -67,11 +67,12 @@
                 android:textSize="@dimen/text_size"
                 android:singleLine="true"
                 android:inputType="textEmailAddress"
+                android:capitalize="characters"
                 android:paddingHorizontal="@dimen/_16sdp"
                 android:background="@drawable/custom_edit_text"
                 android:layout_marginTop="@dimen/_12sdp"
                 android:fontFamily="@font/regular"
-                android:imeOptions="actionNext"/>
+                android:imeOptions="actionDone"/>
 
             <Button
                 android:id="@+id/btnSubmit"
