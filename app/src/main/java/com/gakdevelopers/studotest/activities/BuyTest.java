@@ -63,7 +63,7 @@ public class BuyTest extends AppCompatActivity implements PaymentResultListener 
                     return;
                 }
 
-                loading =  ProgressDialog.show(BuyTest.this,"Loading 2","Please Wait",false,false);
+                loading =  ProgressDialog.show(BuyTest.this,"Loading","Please Wait",false,false);
 
                 DbQuery.loadCouponCodes(new MyCompleteListener() {
                     @Override

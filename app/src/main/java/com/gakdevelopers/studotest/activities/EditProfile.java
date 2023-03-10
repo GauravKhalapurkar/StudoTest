@@ -40,7 +40,7 @@ public class EditProfile extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
-        getSupportActionBar().setTitle(DbQuery.g_catList.get(DbQuery.g_selected_cat_index).getName());
+        getSupportActionBar().setTitle("Edit Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         editFullName.setText(DbQuery.myProfile.getName());

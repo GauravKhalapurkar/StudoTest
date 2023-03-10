@@ -3,6 +3,7 @@ package com.gakdevelopers.studotest.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -59,6 +60,11 @@ public class SignUp extends AppCompatActivity {
                     return;
                 }
 
+                if (password.length() < 7) {
+                    Toast.makeText(SignUp.this, "Password should be at least 7 characters long.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 loading =  ProgressDialog.show(SignUp.this,"Loading","Please Wait",false,false);
 
                 mAuth.createUserWithEmailAndPassword(email, password)
@@ -71,22 +77,27 @@ public class SignUp extends AppCompatActivity {
                                     DbQuery.createUser(email, fullName, new MyCompleteListener() {
                                         @Override
                                         public void onSuccess() {
-                                            DbQuery.loadData("FREE_TESTS", new MyCompleteListener() {
-                                                @Override
-                                                public void onSuccess() {
-                                                    //loading.dismiss();
-                                                    Intent intent = new Intent(SignUp.this, Main.class);
-                                                    intent.putExtra("fullName", fullName);
-                                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                    startActivity(intent);
-                                                }
+//                                            DbQuery.loadData("FREE_TESTS", new MyCompleteListener() {
+//                                                @Override
+//                                                public void onSuccess() {
+//                                                    //loading.dismiss();
+//                                                    Intent intent = new Intent(SignUp.this, Main.class);
+//                                                    intent.putExtra("fullName", fullName);
+//                                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                                    startActivity(intent);
+//                                                }
+//
+//                                                @Override
+//                                                public void onFailure() {
+//                                                    Toast.makeText(SignUp.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+//                                                    loading.dismiss();
+//                                                }
+//                                            });
 
-                                                @Override
-                                                public void onFailure() {
-                                                    Toast.makeText(SignUp.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
-                                                    loading.dismiss();
-                                                }
-                                            });
+                                            Intent intent = new Intent(SignUp.this, Main.class);
+                                            intent.putExtra("fullName", fullName);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(intent);
                                         }
 
                                         @Override
