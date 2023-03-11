@@ -51,9 +51,9 @@ public class SignUp extends AppCompatActivity {
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String fullName = editFullName.getText().toString();
-                String email = editEmail.getText().toString();
-                String password = editPassword.getText().toString();
+                String fullName = editFullName.getText().toString().trim();
+                String email = editEmail.getText().toString().trim();
+                String password = editPassword.getText().toString().trim();
 
                 if (fullName.equals("") || email.equals("") || password.equals("")) {
                     Toast.makeText(SignUp.this, "Please fill all the fields.", Toast.LENGTH_SHORT).show();

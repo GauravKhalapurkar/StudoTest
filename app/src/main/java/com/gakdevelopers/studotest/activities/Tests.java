@@ -88,7 +88,7 @@ public class Tests extends AppCompatActivity {
                 DbQuery.loadMyScores(new MyCompleteListener() {
                     @Override
                     public void onSuccess() {
-                        adapter = new TestAdapter(DbQuery.g_testList);
+                        adapter = new TestAdapter(testType, DbQuery.g_testList);
                         recyclerView.setAdapter(adapter);
 
                         loading.dismiss();

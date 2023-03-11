@@ -30,7 +30,6 @@ public class Splash extends AppCompatActivity {
                 @Override
                 public void onSuccess() {
                     Intent intent = new Intent(Splash.this, Main.class);
-
                     startTimer(intent);
                 }
                 @Override
@@ -42,10 +41,8 @@ public class Splash extends AppCompatActivity {
                 }
             });
 
-
         } else {
             Intent intent = new Intent(Splash.this, SignIn.class);
-
             startTimer(intent);
         }
     }

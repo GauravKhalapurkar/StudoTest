@@ -6,69 +6,96 @@
     android:orientation="vertical"
     android:padding="@dimen/_4sdp">
 
-    <androidx.cardview.widget.CardView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:layout_margin="@dimen/_4sdp"
-        app:cardCornerRadius="@dimen/card_corner_radius"
-        app:cardElevation="0dp">
+        android:scrollbars="vertical">
 
-        <TextView
-            android:id="@+id/txtQuestion"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Question is displayed here"
-            android:layout_gravity="center"
-            android:textSize="@dimen/text_size"
-            android:textColor="@color/colorBlack"
-            android:paddingVertical="@dimen/_5sdp"
-            android:fontFamily="@font/regular"/>
+            android:orientation="vertical">
 
-    </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/_4sdp"
+                app:cardCornerRadius="@dimen/card_corner_radius"
+                app:cardElevation="0dp">
 
-    <Button
-        android:id="@+id/btnOptionA"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_btn"
-        android:text="OPTION A"
-        android:textSize="@dimen/text_size_btn"
-        android:background="@drawable/custom_button_unselected"
-        android:textColor="@color/colorBlack"
-        android:layout_marginTop="@dimen/_6sdp"
-        android:fontFamily="@font/regular"/>
+                <TextView
+                    android:id="@+id/txtQuestion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Question is displayed here"
+                    android:gravity="center"
+                    android:textSize="@dimen/text_size"
+                    android:textColor="@color/colorBlack"
+                    android:paddingVertical="@dimen/_40sdp"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:fontFamily="@font/regular"/>
 
-    <Button
-        android:id="@+id/btnOptionB"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_btn"
-        android:text="OPTION B"
-        android:textSize="@dimen/text_size_btn"
-        android:background="@drawable/custom_button_unselected"
-        android:textColor="@color/colorBlack"
-        android:layout_marginTop="@dimen/_6sdp"
-        android:fontFamily="@font/regular"/>
+            </androidx.cardview.widget.CardView>
 
-    <Button
-        android:id="@+id/btnOptionC"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_btn"
-        android:text="OPTION C"
-        android:textSize="@dimen/text_size_btn"
-        android:background="@drawable/custom_button_unselected"
-        android:textColor="@color/colorBlack"
-        android:layout_marginTop="@dimen/_6sdp"
-        android:fontFamily="@font/regular"/>
+            <Button
+                android:id="@+id/btnOptionA"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/_14sdp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:text="OPTION A"
+                android:textAllCaps="false"
+                android:textSize="@dimen/text_size_btn"
+                android:background="@drawable/custom_button_unselected"
+                android:textColor="@color/colorBlack"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:fontFamily="@font/regular"/>
 
-    <Button
-        android:id="@+id/btnOptionD"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_btn"
-        android:text="OPTION D"
-        android:textSize="@dimen/text_size_btn"
-        android:background="@drawable/custom_button_unselected"
-        android:textColor="@color/colorBlack"
-        android:layout_marginTop="@dimen/_6sdp"
-        android:fontFamily="@font/regular"/>
+            <Button
+                android:id="@+id/btnOptionB"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/_14sdp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:text="OPTION B"
+                android:textAllCaps="false"
+                android:textSize="@dimen/text_size_btn"
+                android:background="@drawable/custom_button_unselected"
+                android:textColor="@color/colorBlack"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:fontFamily="@font/regular"/>
+
+            <Button
+                android:id="@+id/btnOptionC"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/_14sdp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:text="OPTION C"
+                android:textAllCaps="false"
+                android:textSize="@dimen/text_size_btn"
+                android:background="@drawable/custom_button_unselected"
+                android:textColor="@color/colorBlack"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:fontFamily="@font/regular"/>
+
+            <Button
+                android:id="@+id/btnOptionD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="@dimen/_14sdp"
+                android:paddingHorizontal="@dimen/_10sdp"
+                android:text="OPTION D"
+                android:textAllCaps="false"
+                android:textSize="@dimen/text_size_btn"
+                android:background="@drawable/custom_button_unselected"
+                android:textColor="@color/colorBlack"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:fontFamily="@font/regular"/>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

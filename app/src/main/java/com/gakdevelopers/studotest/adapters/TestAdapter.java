@@ -2,8 +2,8 @@ package com.gakdevelopers.studotest.adapters;
 
 import static com.gakdevelopers.studotest.database.DbQuery.loadQuestions;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,20 +17,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.activities.Answers;
-import com.gakdevelopers.studotest.activities.Score;
 import com.gakdevelopers.studotest.activities.StartTest;
 import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
 import com.gakdevelopers.studotest.models.TestsModel;
 
 import java.util.List;
+import java.util.Objects;
 
 public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
 
     private List<TestsModel> testList;
+    private String testType;
 
-    public TestAdapter(List<TestsModel> testList) {
+    public TestAdapter(String testType, List<TestsModel> testList) {
         this.testList = testList;
+        this.testType = testType;
     }
 
     @NonNull
@@ -46,6 +48,9 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
         int progress = testList.get(position).getTopScore();
         int attempt = testList.get(position).getAttempt();
         boolean live = testList.get(position).isLive();
+
+        Log.d("IS_LIVE", String.valueOf(live));
+
         holder.setData(position, testTitle, progress, attempt, live);
     }
 
@@ -85,7 +90,7 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
 
         private void setData(final int position, String testTitle, int progress, int attempt, boolean live) {
 
-            if (!live) {
+            if (!live && Objects.equals(testType, "PAID_TESTS")) {
                 cardTest.setAlpha(0.1F);
                 txtComingSoon.setVisibility(View.VISIBLE);
             } else {
