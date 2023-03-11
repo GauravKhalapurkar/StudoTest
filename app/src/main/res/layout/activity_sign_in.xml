@@ -48,19 +48,27 @@
                 android:fontFamily="@font/regular"
                 android:imeOptions="actionNext"/>
 
-            <EditText
-                android:id="@+id/editPassword"
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_edit"
-                android:hint="Enter Password"
-                android:textSize="@dimen/text_size"
-                android:singleLine="true"
-                android:inputType="textPassword"
-                android:paddingHorizontal="@dimen/_16sdp"
-                android:background="@drawable/custom_edit_text"
                 android:layout_marginTop="@dimen/_12sdp"
-                android:fontFamily="@font/regular"
-                android:imeOptions="actionDone"/>
+                app:passwordToggleEnabled="true"
+                app:hintEnabled="false">
+
+                <EditText
+                    android:id="@+id/editPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Enter Password"
+                    android:textSize="@dimen/text_size"
+                    android:singleLine="true"
+                    android:inputType="textPassword"
+                    android:background="@drawable/custom_edit_text"
+                    android:fontFamily="@font/regular"
+                    android:paddingHorizontal="@dimen/_16sdp"
+                    android:imeOptions="actionDone"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
                 android:id="@+id/txtForgotPassword"
