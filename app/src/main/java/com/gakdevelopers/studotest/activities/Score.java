@@ -1,5 +1,8 @@
 package com.gakdevelopers.studotest.activities;
 
+import static com.gakdevelopers.studotest.database.DbQuery.g_selected_test_index;
+import static com.gakdevelopers.studotest.database.DbQuery.g_testList;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -7,6 +10,9 @@ import androidx.cardview.widget.CardView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +39,8 @@ public class Score extends AppCompatActivity {
     private Toolbar toolbar;
 
     private int finalScore, marksObtained;
+
+    private String displayScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +91,23 @@ public class Score extends AppCompatActivity {
 
         // here was saveResult();
 
+        cardShareScore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                String shareBody = "Hi, " +
+                        "\n\n" +
+                        "I scored " + displayScore + " in " + g_testList.get(g_selected_test_index).getTestId() + " test in the StudoTest App." +
+                        "\n\n" +
+                        "Let's come together to compete. Download StudoTest now from Google Play Store: \n\n" +
+                        "https://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName();
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Share App");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(sharingIntent, "Share via"));
+            }
+        });
+
     }
 
     private void loadData() {
@@ -100,8 +125,6 @@ public class Score extends AppCompatActivity {
             }
         }
 
-        //Toast.makeText(this, "" + DbQuery.g_positive_marks + " - " + DbQuery.g_negative_marks, Toast.LENGTH_SHORT).show();
-
         txtPositiveMarks.setText(String.valueOf(DbQuery.g_positive_marks));
         txtNegativeMarks.setText("-" + DbQuery.g_negative_marks);
 
@@ -109,7 +132,11 @@ public class Score extends AppCompatActivity {
 
         finalScore = correct * 100 / DbQuery.g_question_list.size();
 
-        txtScore.setText(String.valueOf(marksObtained) + "/" + String.valueOf(DbQuery.g_question_list.size() * DbQuery.g_positive_marks));
+        displayScore = String.valueOf(marksObtained) + "/" + String.valueOf(DbQuery.g_question_list.size() * DbQuery.g_positive_marks);
+
+        txtScore.setText("" + displayScore);
+
+        //txtScore.setText(String.valueOf(marksObtained) + "/" + String.valueOf(DbQuery.g_question_list.size() * DbQuery.g_positive_marks));
 
         timeTaken = getIntent().getLongExtra("timeTaken", 0);
         String time = String.format("%02d:%02d mins",
