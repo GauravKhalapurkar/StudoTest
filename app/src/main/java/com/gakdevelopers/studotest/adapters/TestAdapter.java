@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.activities.Answers;
 import com.gakdevelopers.studotest.activities.StartTest;
+import com.gakdevelopers.studotest.activities.Tests;
 import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
 import com.gakdevelopers.studotest.models.TestsModel;
@@ -101,24 +102,30 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
                     @Override
                     public void onClick(View view) {
 
-                        if (attempt < 3) {
-                            DbQuery.g_selected_test_index = position;
+                        if (Tests.isCourseBought) {
+                            if (attempt < 3) {
+                                DbQuery.g_selected_test_index = position;
 
-                            loadQuestions(new MyCompleteListener() {
-                                @Override
-                                public void onSuccess() {
-                                    Intent intent = new Intent(itemView.getContext(), StartTest.class);
-                                    itemView.getContext().startActivity(intent);
-                                }
+                                loadQuestions(new MyCompleteListener() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Intent intent = new Intent(itemView.getContext(), StartTest.class);
+                                        itemView.getContext().startActivity(intent);
+                                    }
 
-                                @Override
-                                public void onFailure() {
+                                    @Override
+                                    public void onFailure() {
 
-                                }
-                            });
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(itemView.getContext(), "Maximum attempts reached.", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
-                            Toast.makeText(itemView.getContext(), "Maximum attempts reached.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(itemView.getContext(), "BUY NOW to access!", Toast.LENGTH_SHORT).show();
                         }
+
+
                     }
                 });
             }

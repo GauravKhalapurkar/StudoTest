@@ -36,6 +36,8 @@ public class Tests extends AppCompatActivity {
 
     private String categoryName;
 
+    public static boolean isCourseBought = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,10 +68,13 @@ public class Tests extends AppCompatActivity {
         DbQuery.checkUsersCourses(new MyCompleteListener() {
             @Override
             public void onSuccess() {
-                if (!DbQuery.g_my_courses_list.contains(categoryName)) {
-                    btnBuyNow.setVisibility(View.VISIBLE);
-                } else {
+
+                isCourseBought = DbQuery.g_my_courses_list.contains(categoryName);
+
+                if (isCourseBought) {
                     btnBuyNow.setVisibility(View.GONE);
+                } else {
+                    btnBuyNow.setVisibility(View.VISIBLE);
                 }
             }
 
