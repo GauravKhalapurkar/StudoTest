@@ -32,8 +32,6 @@ public class Tests extends AppCompatActivity {
 
     ProgressDialog loading;
 
-    private TextView txtFreeTrial;
-
     private Button btnBuyNow;
 
     private String categoryName;
@@ -47,8 +45,6 @@ public class Tests extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-
-        txtFreeTrial = (TextView) findViewById(R.id.txtFreeTrial);
 
         btnBuyNow = (Button) findViewById(R.id.btnBuyNow);
 
@@ -65,17 +61,16 @@ public class Tests extends AppCompatActivity {
         String testType = intent.getStringExtra("testType");
         categoryName = intent.getStringExtra("categoryName");
 
-        if (testType.equals("PAID_TESTS")) {
-            txtFreeTrial.setVisibility(View.VISIBLE);
-            btnBuyNow.setVisibility(View.VISIBLE);
-        }
-
         loading =  ProgressDialog.show(Tests.this,"Loading","Please Wait",false,false);
 
         DbQuery.checkUsersCourses(new MyCompleteListener() {
             @Override
             public void onSuccess() {
-                Log.d("DOC_EXIST", "yes");
+                if (!DbQuery.g_my_courses_list.contains(categoryName)) {
+                    btnBuyNow.setVisibility(View.VISIBLE);
+                } else {
+                    btnBuyNow.setVisibility(View.GONE);
+                }
             }
 
             @Override

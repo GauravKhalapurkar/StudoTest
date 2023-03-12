@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -46,6 +47,10 @@ public class DbQuery {
     public static List<TestsModel> g_testList = new ArrayList<>();
 
     public static List<String> g_couponList = new ArrayList<>();
+
+    public static List<Integer> g_my_courses_list_indexes = new ArrayList<>();
+
+    public static List<String> g_my_courses_list = new ArrayList<>();
 
     public static int g_selected_test_index = 0;
 
@@ -122,6 +127,41 @@ public class DbQuery {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         g_users_count = documentSnapshot.getLong("COUNT").intValue();
+
+                        completeListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        completeListener.onFailure();
+                    }
+                });
+    }
+
+    public static void checkUsersCourses(MyCompleteListener completeListener) {
+        g_my_courses_list_indexes.clear();
+        g_my_courses_list.clear();
+
+        g_fireStore.collection("USERS").document(FirebaseAuth.getInstance().getUid())
+                .collection("USER_DATA").document("MY_COURSES")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        for (int i = 0; i < g_catList.size(); i++) {
+                            if (documentSnapshot.get(String.valueOf(g_catList.get(i).getName())) != null) {
+                                g_my_courses_list_indexes.add(i);
+                            }
+                        }
+
+                        for (int a : g_my_courses_list_indexes) {
+                            Log.d("LOOP", String.valueOf(a));
+                            g_my_courses_list.add(String.valueOf(g_catList.get(a).getName()));
+                        }
+
+                        Log.d("MY_COURSES_INDEX", "" + g_my_courses_list_indexes);
+                        Log.d("MY_COURSES_LIST", "" + g_my_courses_list);
 
                         completeListener.onSuccess();
                     }
@@ -507,28 +547,6 @@ public class DbQuery {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        completeListener.onFailure();
-                    }
-                });
-    }
-
-    public static void checkUsersCourses(MyCompleteListener completeListener) {
-        DocumentReference userDoc = g_fireStore.collection("USERS").document(FirebaseAuth.getInstance().getUid());
-        DocumentReference coursesDoc = userDoc.collection("USER_DATA").document("MY_COURSES");
-
-        coursesDoc
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        Log.d("DOC_EXIST", "yes");
-                        completeListener.onSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("DOC_EXIST", "no");
                         completeListener.onFailure();
                     }
                 });
