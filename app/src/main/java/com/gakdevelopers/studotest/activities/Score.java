@@ -146,6 +146,7 @@ public class Score extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         if (item.getItemId() == android.R.id.home) {
+            startActivity(new Intent(Score.this, Main.class));
             Score.this.finish();
         }
 
