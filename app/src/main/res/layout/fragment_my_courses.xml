@@ -6,12 +6,13 @@
     android:orientation="vertical"
     tools:context=".fragments.MyCourses">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <GridView
+        android:id="@+id/gridView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="my courses"
-        android:textSize="@dimen/text_size"
-        android:textColor="@color/colorSecondary"
-        android:fontFamily="@font/regular"/>
+        android:layout_margin="@dimen/_10sdp"
+        android:numColumns="1"
+        android:scrollbars="none"
+        android:verticalSpacing="@dimen/_10sdp"/>
 
 </LinearLayout>

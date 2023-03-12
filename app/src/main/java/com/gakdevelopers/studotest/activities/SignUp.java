@@ -77,7 +77,7 @@ public class SignUp extends AppCompatActivity {
                                     DbQuery.createUser(email, fullName, new MyCompleteListener() {
                                         @Override
                                         public void onSuccess() {
-                                            DbQuery.loadData("FREE_TESTS", new MyCompleteListener() {
+                                            DbQuery.loadData("PAID_TESTS", new MyCompleteListener() {
                                                 @Override
                                                 public void onSuccess() {
                                                     Intent intent = new Intent(SignUp.this, Main.class);

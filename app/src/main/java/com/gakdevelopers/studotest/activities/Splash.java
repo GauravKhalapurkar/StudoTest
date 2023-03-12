@@ -26,7 +26,7 @@ public class Splash extends AppCompatActivity {
         DbQuery.g_fireStore = FirebaseFirestore.getInstance();
 
         if (mAuth.getCurrentUser() != null) {
-            DbQuery.loadData("FREE_TESTS", new MyCompleteListener() {
+            DbQuery.loadData("PAID_TESTS", new MyCompleteListener() {
                 @Override
                 public void onSuccess() {
                     Intent intent = new Intent(Splash.this, Main.class);

@@ -139,9 +139,11 @@ public class DbQuery {
                 });
     }
 
-    public static void checkUsersCourses(MyCompleteListener completeListener) {
+    public static void checkMyCourses(MyCompleteListener completeListener) {
         g_my_courses_list_indexes.clear();
         g_my_courses_list.clear();
+
+        Log.d("ONEONE", "0");
 
         g_fireStore.collection("USERS").document(FirebaseAuth.getInstance().getUid())
                 .collection("USER_DATA").document("MY_COURSES")
@@ -149,6 +151,11 @@ public class DbQuery {
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
+
+                        Log.d("ONEONE", "1");
+
+                        Log.d("LOG_HEAD", String.valueOf(g_catList.size()));
+
                         for (int i = 0; i < g_catList.size(); i++) {
                             if (documentSnapshot.get(String.valueOf(g_catList.get(i).getName())) != null) {
                                 g_my_courses_list_indexes.add(i);
@@ -156,12 +163,60 @@ public class DbQuery {
                         }
 
                         for (int a : g_my_courses_list_indexes) {
-                            Log.d("LOOP", String.valueOf(a));
+                            Log.d("MY_LOOP", String.valueOf(a));
                             g_my_courses_list.add(String.valueOf(g_catList.get(a).getName()));
                         }
 
                         Log.d("MY_COURSES_INDEX", "" + g_my_courses_list_indexes);
                         Log.d("MY_COURSES_LIST", "" + g_my_courses_list);
+
+                        Log.d("ONEONE", "2");
+
+                        completeListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        completeListener.onFailure();
+                    }
+                });
+    }
+
+    public static void loadMyCourses(MyCompleteListener completeListener) {
+        g_catList.clear();
+
+        Log.d("ONEONE", "3");
+
+        Log.d("CHECK_COMING_COURSES_I", String.valueOf(g_my_courses_list_indexes));
+
+        g_fireStore.collection("PAID_TESTS").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        Map<String, QueryDocumentSnapshot> docList = new ArrayMap<>();
+
+                        for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                            docList.put(doc.getId(), doc);
+                        }
+
+                        QueryDocumentSnapshot catListDoc = docList.get("Categories");
+
+                        long catCount = catListDoc.getLong("COUNT");
+
+                        for (int i  = 1; i <= catCount; i++) {
+                            String catId = catListDoc.getString("CAT" + String.valueOf(i) + "_ID");
+
+                            QueryDocumentSnapshot catDoc = docList.get(catId);
+
+                            int noOfTests = catDoc.getLong("NO_OF_TESTS").intValue();
+                            String catName = catDoc.getString("NAME");
+
+                            if (g_my_courses_list_indexes.contains(i-1))
+                                g_catList.add(new CategoryModel(catId, catName, noOfTests));
+                        }
+
+                        Log.d("ONEONE", "4");
 
                         completeListener.onSuccess();
                     }

@@ -65,7 +65,7 @@ public class Tests extends AppCompatActivity {
 
         loading =  ProgressDialog.show(Tests.this,"Loading","Please Wait",false,false);
 
-        DbQuery.checkUsersCourses(new MyCompleteListener() {
+        DbQuery.checkMyCourses(new MyCompleteListener() {
             @Override
             public void onSuccess() {
 

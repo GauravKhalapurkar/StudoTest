@@ -81,10 +81,14 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
             txtViewAnswers.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(itemView.getContext(), Answers.class);
-                    intent.putExtra("fromTestAdapter", true);
-                    intent.putExtra("position", getAdapterPosition());
-                    itemView.getContext().startActivity(intent);
+                    if (Tests.isCourseBought) {
+                        Intent intent = new Intent(itemView.getContext(), Answers.class);
+                        intent.putExtra("fromTestAdapter", true);
+                        intent.putExtra("position", getAdapterPosition());
+                        itemView.getContext().startActivity(intent);
+                    } else {
+                        Toast.makeText(itemView.getContext(), "BUY NOW to access!", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
@@ -115,7 +119,7 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
 
                                     @Override
                                     public void onFailure() {
-
+                                        Toast.makeText(itemView.getContext(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             } else {

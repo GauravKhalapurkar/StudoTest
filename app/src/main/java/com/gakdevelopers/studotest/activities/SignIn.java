@@ -77,7 +77,7 @@ public class SignIn extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    DbQuery.loadData("FREE_TESTS", new MyCompleteListener() {
+                                    DbQuery.loadData("PAID_TESTS", new MyCompleteListener() {
                                         @Override
                                         public void onSuccess() {
                                             Intent intent = new Intent(SignIn.this, Main.class);
