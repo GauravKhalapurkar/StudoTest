@@ -9,8 +9,9 @@ public class Question {
     private int answer;
     private int selectedAnswer;
     private String explanation;
+    private int status;
 
-    public Question(String question, String optionA, String optionB, String optionC, String optionD, int answer, int selectedAnswer, String explanation) {
+    public Question(String question, String optionA, String optionB, String optionC, String optionD, int answer, int selectedAnswer, String explanation, int status) {
         this.question = question;
         this.optionA = optionA;
         this.optionB = optionB;
@@ -19,6 +20,7 @@ public class Question {
         this.answer = answer;
         this.selectedAnswer = selectedAnswer;
         this.explanation = explanation;
+        this.status = status;
     }
 
     public String getQuestion() {
@@ -83,5 +85,13 @@ public class Question {
 
     public void setExplanation(String explanation) {
         this.explanation = explanation;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 }

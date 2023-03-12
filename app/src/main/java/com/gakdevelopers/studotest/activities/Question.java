@@ -1,5 +1,7 @@
 package com.gakdevelopers.studotest.activities;
 
+import static com.gakdevelopers.studotest.database.DbQuery.NOT_VISITED;
+import static com.gakdevelopers.studotest.database.DbQuery.UNANSWERED;
 import static com.gakdevelopers.studotest.database.DbQuery.g_catList;
 import static com.gakdevelopers.studotest.database.DbQuery.g_question_list;
 import static com.gakdevelopers.studotest.database.DbQuery.g_selected_cat_index;
@@ -21,12 +23,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.adapters.QuestionsAdapter;
+import com.gakdevelopers.studotest.adapters.QuestionsGridAdapter;
 import com.gakdevelopers.studotest.database.DbQuery;
 
 import java.util.concurrent.TimeUnit;
@@ -45,13 +50,18 @@ public class Question extends AppCompatActivity {
 
     QuestionsAdapter questionsAdapter;
 
+    private QuestionsGridAdapter questionsGridAdapter;
+
     private CountDownTimer timer;
 
     private long timeLeft;
 
+    private GridView gridView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         setContentView(R.layout.questions_list);
 
         txtQuestionId = (TextView) findViewById(R.id.txtQuestionId);
@@ -69,6 +79,8 @@ public class Question extends AppCompatActivity {
 
         recyclerQuestion = (RecyclerView) findViewById(R.id.recyclerQuestion);
 
+        gridView = (GridView) findViewById(R.id.gridView);
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 
         questionId = 0;
@@ -79,6 +91,9 @@ public class Question extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         recyclerQuestion.setLayoutManager(layoutManager);
+
+        questionsGridAdapter = new QuestionsGridAdapter(this, g_question_list.size());
+        gridView.setAdapter(questionsGridAdapter);
 
         txtQuestionId.setText("1/" + String.valueOf(g_question_list.size()));
         txtCategoryName.setText(g_catList.get(g_selected_cat_index).getName());
@@ -102,6 +117,10 @@ public class Question extends AppCompatActivity {
 
                 View view = snapHelper.findSnapView(recyclerView.getLayoutManager());
                 questionId = recyclerView.getLayoutManager().getPosition(view);
+
+                if (g_question_list.get(questionId).getStatus() == NOT_VISITED) {
+                    g_question_list.get(questionId).setStatus(UNANSWERED);
+                }
 
                 txtQuestionId.setText(String.valueOf(questionId+1) + "/" + String.valueOf(g_question_list.size()));
             }
@@ -144,6 +163,7 @@ public class Question extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!drawerLayout.isDrawerOpen(GravityCompat.END)) {
+                    questionsGridAdapter.notifyDataSetChanged();
                     drawerLayout.openDrawer(GravityCompat.END);
                 }
             }
@@ -186,6 +206,14 @@ public class Question extends AppCompatActivity {
                 })
                 .setNegativeButton("No", null)
                 .show();
+    }
+
+    public void goToQuestion(int position) {
+        recyclerQuestion.smoothScrollToPosition(position);
+
+        if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
+            drawerLayout.closeDrawer(GravityCompat.END);
+        }
     }
 
     private void startTimer() {

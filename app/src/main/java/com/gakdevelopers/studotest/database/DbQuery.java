@@ -70,6 +70,10 @@ public class DbQuery {
 
     public static boolean iAmInTopList = false;
 
+    public static final int NOT_VISITED = 0;
+    public static final int UNANSWERED = 1;
+    public static final int ANSWERED = 2;
+
     public static void getTopUsers(MyCompleteListener completeListener) {
         g_users_list.clear();
 
@@ -410,7 +414,8 @@ public class DbQuery {
                                     doc.getString("D"),
                                     doc.getLong("ANSWER").intValue(),
                                     -1,
-                                    doc.getString("EXPLANATION")
+                                    doc.getString("EXPLANATION"),
+                                    NOT_VISITED
                             ));
                         }
                         completeListener.onSuccess();

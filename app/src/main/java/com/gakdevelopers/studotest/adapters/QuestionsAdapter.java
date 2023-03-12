@@ -1,5 +1,9 @@
 package com.gakdevelopers.studotest.adapters;
 
+import static com.gakdevelopers.studotest.database.DbQuery.ANSWERED;
+import static com.gakdevelopers.studotest.database.DbQuery.UNANSWERED;
+import static com.gakdevelopers.studotest.database.DbQuery.g_question_list;
+
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -108,15 +112,18 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
             if (btnPrevSelected == null) {
                 button.setBackgroundResource(R.drawable.custom_button);
                 button.setTextColor(Color.parseColor("#ffffff"));
-                //btnPrevSelected.setTextColor(Color.parseColor("#000000"));
-                DbQuery.g_question_list.get(questionId).setSelectedAnswer(option);
+
+                g_question_list.get(questionId).setSelectedAnswer(option);
+                g_question_list.get(questionId).setStatus(ANSWERED);
 
                 btnPrevSelected = button;
             } else {
                 if (btnPrevSelected.getId() == button.getId()) {
                     button.setBackgroundResource(R.drawable.custom_button_unselected);
                     btnPrevSelected.setTextColor(Color.parseColor("#000000"));
-                    DbQuery.g_question_list.get(questionId).setSelectedAnswer(-1);
+                    g_question_list.get(questionId).setSelectedAnswer(-1);
+
+                    g_question_list.get(questionId).setStatus(UNANSWERED);
 
                     btnPrevSelected = null;
                 } else {
@@ -125,7 +132,9 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
                     button.setTextColor(Color.parseColor("#ffffff"));
                     btnPrevSelected.setTextColor(Color.parseColor("#000000"));
 
-                    DbQuery.g_question_list.get(questionId).setSelectedAnswer(option);
+                    g_question_list.get(questionId).setSelectedAnswer(option);
+
+                    g_question_list.get(questionId).setStatus((ANSWERED));
 
                     btnPrevSelected = button;
                 }
@@ -133,7 +142,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
         }
 
         private void setOptions(Button button, int option, int questionId) {
-            if (DbQuery.g_question_list.get(questionId).getSelectedAnswer() == option) {
+            if (g_question_list.get(questionId).getSelectedAnswer() == option) {
                 button.setBackgroundResource(R.drawable.custom_button);
             } else {
                 button.setBackgroundResource(R.drawable.custom_button_unselected);

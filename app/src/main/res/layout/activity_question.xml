@@ -68,6 +68,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="CAT NAME"
+            android:ellipsize="marquee"
+            android:singleLine="true"
             android:gravity="center_horizontal"
             android:textSize="@dimen/text_size"
             android:textColor="@color/colorBlack"
@@ -90,9 +92,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/ic_apps"
-            android:layout_weight="1"
+            android:layout_weight="4"
             android:padding="@dimen/_4sdp"
-            android:visibility="gone"/>
+            android:visibility="visible"/>
 
     </LinearLayout>
 

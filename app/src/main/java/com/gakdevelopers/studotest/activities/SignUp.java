@@ -77,27 +77,22 @@ public class SignUp extends AppCompatActivity {
                                     DbQuery.createUser(email, fullName, new MyCompleteListener() {
                                         @Override
                                         public void onSuccess() {
-//                                            DbQuery.loadData("FREE_TESTS", new MyCompleteListener() {
-//                                                @Override
-//                                                public void onSuccess() {
-//                                                    //loading.dismiss();
-//                                                    Intent intent = new Intent(SignUp.this, Main.class);
-//                                                    intent.putExtra("fullName", fullName);
-//                                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                                                    startActivity(intent);
-//                                                }
-//
-//                                                @Override
-//                                                public void onFailure() {
-//                                                    Toast.makeText(SignUp.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
-//                                                    loading.dismiss();
-//                                                }
-//                                            });
+                                            DbQuery.loadData("FREE_TESTS", new MyCompleteListener() {
+                                                @Override
+                                                public void onSuccess() {
+                                                    Intent intent = new Intent(SignUp.this, Main.class);
+                                                    intent.putExtra("fullName", fullName);
+                                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                    startActivity(intent);
+                                                    loading.dismiss();
+                                                }
 
-                                            Intent intent = new Intent(SignUp.this, Main.class);
-                                            intent.putExtra("fullName", fullName);
-                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                            startActivity(intent);
+                                                @Override
+                                                public void onFailure() {
+                                                    Toast.makeText(SignUp.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                                                    loading.dismiss();
+                                                }
+                                            });
                                         }
 
                                         @Override

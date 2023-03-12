@@ -59,8 +59,6 @@ public class SignIn extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        //editPassword.setdrawable
-
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,24 +77,21 @@ public class SignIn extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-//                                    DbQuery.loadData("FREE_TESTS", new MyCompleteListener() {
-//                                        @Override
-//                                        public void onSuccess() {
-//                                            //loading.dismiss();
-//
-//                                        }
-//
-//                                        @Override
-//                                        public void onFailure() {
-//                                            Toast.makeText(SignIn.this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-//                                            loading.dismiss();
-//                                        }
-//                                    });
+                                    DbQuery.loadData("FREE_TESTS", new MyCompleteListener() {
+                                        @Override
+                                        public void onSuccess() {
+                                            Intent intent = new Intent(SignIn.this, Main.class);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                            startActivity(intent);
+                                            loading.dismiss();
+                                        }
 
-                                    Intent intent = new Intent(SignIn.this, Main.class);
-                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    startActivity(intent);
-
+                                        @Override
+                                        public void onFailure() {
+                                            Toast.makeText(SignIn.this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                            loading.dismiss();
+                                        }
+                                    });
                                 } else {
                                     Toast.makeText(SignIn.this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                     loading.dismiss();
