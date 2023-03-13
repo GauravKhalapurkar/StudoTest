@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardTest"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorWhite"
+        app:cardCornerRadius="@dimen/card_corner_radius"
+        app:cardElevation="0dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/_10sdp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtNotificationTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notification Title"
+                android:textSize="@dimen/text_size"
+                android:textColor="@color/colorBlack"
+                android:fontFamily="@font/bold"/>
+
+            <TextView
+                android:id="@+id/txtNotificationDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Notification Description this is."
+                android:textSize="@dimen/text_size"
+                android:textColor="@color/colorGreyDark"
+                android:fontFamily="@font/regular"
+                android:layout_marginVertical="@dimen/_4sdp"/>
+
+            <TextView
+                android:id="@+id/txtNotificationTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="13-03-2023 09:07 PM"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/colorSecondary"
+                android:fontFamily="@font/regular"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

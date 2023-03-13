@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 
 import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
 import com.gakdevelopers.studotest.models.CategoryModel;
+import com.gakdevelopers.studotest.models.NotificationsModel;
 import com.gakdevelopers.studotest.models.Profile;
 import com.gakdevelopers.studotest.models.Question;
 import com.gakdevelopers.studotest.models.TestsModel;
@@ -35,6 +36,8 @@ import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -55,6 +58,8 @@ public class DbQuery {
     public static List<Integer> g_my_courses_list_indexes = new ArrayList<>();
 
     public static List<String> g_my_courses_list = new ArrayList<>();
+
+    public static List<NotificationsModel> g_notifications = new ArrayList<>();
 
     public static int g_selected_test_index = 0;
 
@@ -177,10 +182,6 @@ public class DbQuery {
     public static void loadMyCourses(MyCompleteListener completeListener) {
         g_catList.clear();
 
-        Log.d("ONEONE", "3");
-
-        Log.d("CHECK_COMING_COURSES_I", String.valueOf(g_my_courses_list_indexes));
-
         g_fireStore.collection("PAID_TESTS").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -207,7 +208,33 @@ public class DbQuery {
                                 g_catList.add(new CategoryModel(catId, catName, noOfTests));
                         }
 
-                        Log.d("ONEONE", "4");
+                        completeListener.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        completeListener.onFailure();
+                    }
+                });
+    }
+
+    public static void loadNotifications(MyCompleteListener completeListener) {
+        g_notifications.clear();
+
+        g_fireStore.collection("NOTIFICATIONS")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                            for (DocumentSnapshot d : list) {
+                                g_notifications.add(new NotificationsModel(d.getString("TITLE"), d.getString("DESCRIPTION"), d.getString("TIME")));
+                            }
+                        } else {
+                            completeListener.onFailure();
+                        }
 
                         completeListener.onSuccess();
                     }
