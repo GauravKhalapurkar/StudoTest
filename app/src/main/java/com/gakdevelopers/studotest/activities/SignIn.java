@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,12 +18,10 @@ import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class SignIn extends AppCompatActivity {
 
@@ -37,6 +36,8 @@ public class SignIn extends AppCompatActivity {
     ProgressDialog loading;
 
     EditText editForgotEmail;
+
+    ImageView imgClose;
 
     BottomSheetDialog dialogForgotPassword;
 
@@ -120,11 +121,20 @@ public class SignIn extends AppCompatActivity {
     }
 
     private void createForgotEmailDialog() {
-        View view = getLayoutInflater().inflate(R.layout.forgot_password_dialog, null, false);
+        View view = getLayoutInflater().inflate(R.layout.dialog_forgot_password, null, false);
 
         editForgotEmail = view.findViewById(R.id.editForgotEmail);
 
+        imgClose = view.findViewById(R.id.imgClose);
+
         btnSubmit = view.findViewById(R.id.btnSubmit);
+
+        imgClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogForgotPassword.dismiss();
+            }
+        });
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override

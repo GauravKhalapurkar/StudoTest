@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/_10sdp"
+    android:paddingVertical="@dimen/_20sdp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imgClose"
+        android:layout_width="@dimen/_24sdp"
+        android:layout_height="@dimen/_24sdp"
+        android:src="@drawable/ic_close"
+        android:layout_gravity="end" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Privacy Policy"
+        android:layout_gravity="start"
+        android:textSize="@dimen/text_size_heading"
+        android:textColor="@color/colorSecondary"
+        android:fontFamily="@font/semibolditalic"
+        android:layout_marginTop="@dimen/_14sdp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Any personal information that you transmit to StudoTest, via this App, will be used only for purposes of processing your application, the assessment and processing of any other administration relevant to StudoTest. Statistical information derived from any personal information transmitted to StudoTest via this App may be shared with third parties but will not include any personally identifiable data."
+                android:layout_gravity="start"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/colorBlack"
+                android:justificationMode="inter_word"
+                android:fontFamily="@font/regular"
+                android:layout_marginTop="@dimen/_10sdp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

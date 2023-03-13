@@ -72,36 +72,36 @@ public class Profile extends Fragment {
 
         txtScore.setText(String.valueOf(DbQuery.myPerformance.getScore()));
 
-        if (DbQuery.g_users_list.size() == 0) {
-            loading =  ProgressDialog.show(getContext(),"Loading","Please Wait",false,false);
-
-            DbQuery.getTopUsers(new MyCompleteListener() {
-                @Override
-                public void onSuccess() {
-
-                    if (myPerformance.getScore() != 0) {
-                        if (!DbQuery.iAmInTopList) {
-                            calculateRank();
-                        }
-
-                        txtScore.setText("" + myPerformance.getScore());
-                        txtRank.setText("" + myPerformance.getRank());
-                    }
-
-                    loading.dismiss();
-                }
-
-                @Override
-                public void onFailure() {
-                    Toast.makeText(getContext(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
-                    loading.dismiss();
-                }
-            });
-        } else {
-            txtScore.setText("" + myPerformance.getScore());
-            if (myPerformance.getScore() != 0)
-                txtRank.setText("" + myPerformance.getRank());
-        }
+//        if (DbQuery.g_users_list.size() == 0) {
+//            loading =  ProgressDialog.show(getContext(),"Loading","Please Wait",false,false);
+//
+//            DbQuery.getTopUsers(new MyCompleteListener() {
+//                @Override
+//                public void onSuccess() {
+//
+//                    if (myPerformance.getScore() != 0) {
+//                        if (!DbQuery.iAmInTopList) {
+//                            calculateRank();
+//                        }
+//
+//                        txtScore.setText("" + myPerformance.getScore());
+//                        txtRank.setText("" + myPerformance.getRank());
+//                    }
+//
+//                    loading.dismiss();
+//                }
+//
+//                @Override
+//                public void onFailure() {
+//                    Toast.makeText(getContext(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+//                    loading.dismiss();
+//                }
+//            });
+//        } else {
+//            txtScore.setText("" + myPerformance.getScore());
+//            if (myPerformance.getScore() != 0)
+//                txtRank.setText("" + myPerformance.getRank());
+//        }
 
         cardEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,12 +111,12 @@ public class Profile extends Fragment {
             }
         });
 
-        cardLeaderboard.setOnClickListener(new View.OnClickListener() {
+        /*cardLeaderboard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 bottomNavigationView.setSelectedItemId(R.id.item_leaderboard);
             }
-        });
+        });*/
 
         cardLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,7 +132,7 @@ public class Profile extends Fragment {
         return view;
     }
 
-    private void calculateRank() {
+    /*private void calculateRank() {
         int lowTopScore = g_users_list.get(g_users_list.size() - 1).getScore();
 
         int remainingSlots = g_users_count - 25;
@@ -148,5 +148,5 @@ public class Profile extends Fragment {
         }
 
         myPerformance.setRank(rank);
-    }
+    }*/
 }

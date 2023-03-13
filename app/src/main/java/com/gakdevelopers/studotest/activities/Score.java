@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Score extends AppCompatActivity {
 
-    private TextView txtScore, txtTimeTaken, txtTotalQuestions, txtCorrect, txtWrong, txtUnattempted, txtViewAnswers, txtHome, txtPositiveMarks, txtNegativeMarks;
+    private TextView txtScore, txtTimeTaken, txtTotalQuestions, txtCorrect, txtWrong, txtUnattempted, txtViewAnswers, txtHome, txtPositiveMarks, txtNegativeMarks, txtYourRank;
 
     private CardView cardShowRank, cardShareScore;
 
@@ -58,6 +58,7 @@ public class Score extends AppCompatActivity {
         txtHome = (TextView) findViewById(R.id.txtHome);
         txtPositiveMarks = (TextView) findViewById(R.id.txtPositiveMarks);
         txtNegativeMarks = (TextView) findViewById(R.id.txtNegativeMarks);
+        txtYourRank = (TextView) findViewById(R.id.txtYourRank);
 
         cardShowRank = (CardView) findViewById(R.id.cardShowRank);
         cardShareScore = (CardView) findViewById(R.id.cardShareScore);
@@ -130,7 +131,9 @@ public class Score extends AppCompatActivity {
 
         marksObtained = (correct * DbQuery.g_positive_marks) - (wrong * DbQuery.g_negative_marks);
 
-        finalScore = correct * 100 / DbQuery.g_question_list.size();
+        //finalScore = correct * 100 / DbQuery.g_question_list.size();
+
+        finalScore = marksObtained;
 
         displayScore = String.valueOf(marksObtained) + "/" + String.valueOf(DbQuery.g_question_list.size() * DbQuery.g_positive_marks);
 
@@ -150,6 +153,18 @@ public class Score extends AppCompatActivity {
         txtCorrect.setText(String.valueOf(correct));
         txtWrong.setText(String.valueOf(wrong));
         txtUnattempted.setText(String.valueOf(unAttempted));
+
+        DbQuery.getTopUsers(new MyCompleteListener() {
+            @Override
+            public void onSuccess() {
+                txtYourRank.setText("Your Rank: Calculating...");
+            }
+
+            @Override
+            public void onFailure() {
+                txtYourRank.setText("Your Rank: ERROR");
+            }
+        });
 
         saveResult();
     }

@@ -377,23 +377,16 @@
                     android:padding="@dimen/_10sdp">
 
                     <TextView
+                        android:id="@+id/txtYourRank"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Your Rank on Leaderboard"
+                        android:text="Your Rank: Calculating..."
                         android:gravity="start"
                         android:textSize="@dimen/text_size"
                         android:textColor="@color/colorGreyDark"
-                        android:fontFamily="@font/regular"
+                        android:fontFamily="@font/bold"
                         android:layout_gravity="start"
                         android:layout_weight="1"/>
-
-                    <ImageView
-                        android:layout_width="@dimen/_25sdp"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_leaderboard"
-                        android:padding="@dimen/_4sdp"
-                        android:layout_gravity="center"
-                        app:tint="@color/colorSecondary"/>
 
                 </LinearLayout>
 

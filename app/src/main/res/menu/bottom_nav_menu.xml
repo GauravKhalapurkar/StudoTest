@@ -10,9 +10,9 @@
         android:icon="@drawable/ic_book"
         android:title="My Courses"  />
 
-    <item android:id="@+id/item_leaderboard"
-        android:icon="@drawable/ic_leaderboard"
-        android:title="Leaderboard"  />
+    <item android:id="@+id/item_notifications"
+        android:icon="@drawable/ic_notifications"
+        android:title="Notifications"  />
 
     <item android:id="@+id/item_profile"
         android:icon="@drawable/ic_person"

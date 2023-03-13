@@ -81,14 +81,22 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
             txtViewAnswers.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (Tests.isCourseBought) {
+                    if (!testType.equals("FREE_TESTS")) {
+                        if (Tests.isCourseBought) {
+                            Intent intent = new Intent(itemView.getContext(), Answers.class);
+                            intent.putExtra("fromTestAdapter", true);
+                            intent.putExtra("position", getAdapterPosition());
+                            itemView.getContext().startActivity(intent);
+                        } else {
+                            Toast.makeText(itemView.getContext(), "BUY NOW to access!", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
                         Intent intent = new Intent(itemView.getContext(), Answers.class);
                         intent.putExtra("fromTestAdapter", true);
                         intent.putExtra("position", getAdapterPosition());
                         itemView.getContext().startActivity(intent);
-                    } else {
-                        Toast.makeText(itemView.getContext(), "BUY NOW to access!", Toast.LENGTH_SHORT).show();
                     }
+
                 }
             });
         }
@@ -106,7 +114,30 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
                     @Override
                     public void onClick(View view) {
 
-                        if (Tests.isCourseBought) {
+                        if (!testType.equals("FREE_TESTS")) {
+                            if (Tests.isCourseBought) {
+                                if (attempt < 3) {
+                                    DbQuery.g_selected_test_index = position;
+
+                                    loadQuestions(new MyCompleteListener() {
+                                        @Override
+                                        public void onSuccess() {
+                                            Intent intent = new Intent(itemView.getContext(), StartTest.class);
+                                            itemView.getContext().startActivity(intent);
+                                        }
+
+                                        @Override
+                                        public void onFailure() {
+                                            Toast.makeText(itemView.getContext(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                } else {
+                                    Toast.makeText(itemView.getContext(), "Maximum attempts reached.", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+                                Toast.makeText(itemView.getContext(), "BUY NOW to access!", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
                             if (attempt < 3) {
                                 DbQuery.g_selected_test_index = position;
 
@@ -125,8 +156,6 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
                             } else {
                                 Toast.makeText(itemView.getContext(), "Maximum attempts reached.", Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-                            Toast.makeText(itemView.getContext(), "BUY NOW to access!", Toast.LENGTH_SHORT).show();
                         }
 
 

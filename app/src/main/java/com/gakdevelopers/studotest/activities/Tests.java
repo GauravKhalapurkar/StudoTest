@@ -65,24 +65,26 @@ public class Tests extends AppCompatActivity {
 
         loading =  ProgressDialog.show(Tests.this,"Loading","Please Wait",false,false);
 
-        DbQuery.checkMyCourses(new MyCompleteListener() {
-            @Override
-            public void onSuccess() {
+        if (!testType.equals("FREE_TESTS")) {
+            DbQuery.checkMyCourses(new MyCompleteListener() {
+                @Override
+                public void onSuccess() {
 
-                isCourseBought = DbQuery.g_my_courses_list.contains(categoryName);
+                    isCourseBought = DbQuery.g_my_courses_list.contains(categoryName);
 
-                if (isCourseBought) {
-                    btnBuyNow.setVisibility(View.GONE);
-                } else {
-                    btnBuyNow.setVisibility(View.VISIBLE);
+                    if (isCourseBought) {
+                        btnBuyNow.setVisibility(View.GONE);
+                    } else {
+                        btnBuyNow.setVisibility(View.VISIBLE);
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure() {
-                Log.d("DOC_EXIST", "no");
-            }
-        });
+                @Override
+                public void onFailure() {
+                    Log.d("DOC_EXIST", "no");
+                }
+            });
+        }
 
         DbQuery.loadTests(testType, new MyCompleteListener() {
             @Override

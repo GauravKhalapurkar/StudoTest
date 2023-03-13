@@ -2,16 +2,18 @@ package com.gakdevelopers.studotest.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,10 +23,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.fragments.Home;
-import com.gakdevelopers.studotest.fragments.Leaderboard;
+import com.gakdevelopers.studotest.fragments.Notifications;
 import com.gakdevelopers.studotest.fragments.MyCourses;
 import com.gakdevelopers.studotest.fragments.Profile;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
@@ -38,10 +43,14 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
 
     Home home = new Home();
     MyCourses myCourses  = new MyCourses();
-    Leaderboard leaderboard = new Leaderboard();
+    Notifications notifications = new Notifications();
     Profile profile = new Profile();
 
-    TextView txtFirstLetter, txtEmail;
+    TextView txtFirstLetter, txtEmail, txtTelegramGroup;
+
+    BottomSheetDialog dialogTerms, dialogRefund, dialogPrivacy, dialogContact, dialogAbout;
+
+    ImageView imgClose;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +91,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                     case R.id.item_my_courses:
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, myCourses).commit();
                         return true;
-                    case R.id.item_leaderboard:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, leaderboard).commit();
+                    case R.id.item_notifications:
+                        getSupportFragmentManager().beginTransaction().replace(R.id.container, notifications).commit();
                         return true;
                     case R.id.item_profile:
                         getSupportFragmentManager().beginTransaction().replace(R.id.container, profile).commit();
@@ -93,6 +102,19 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 return false;
             }
         });
+
+        dialogTerms = new BottomSheetDialog(this);
+        dialogRefund = new BottomSheetDialog(this);
+        dialogPrivacy = new BottomSheetDialog(this);
+        dialogContact = new BottomSheetDialog(this);
+        dialogAbout = new BottomSheetDialog(this);
+
+        dialogTerms.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+        dialogRefund.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+        dialogPrivacy.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+        dialogContact.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+        dialogAbout.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+
     }
 
     @Override
@@ -102,15 +124,107 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 break;
             case R.id.item_my_courses: getSupportFragmentManager().beginTransaction().replace(R.id.container, myCourses).commit();
                 break;
-            case R.id.item_leaderboard: getSupportFragmentManager().beginTransaction().replace(R.id.container, leaderboard).commit();
+            case R.id.item_notifications: getSupportFragmentManager().beginTransaction().replace(R.id.container, notifications).commit();
                 break;
             case R.id.item_profile: getSupportFragmentManager().beginTransaction().replace(R.id.container, profile).commit();
+                break;
+            case R.id.item_about: {
+                createAboutDialog();
+                dialogAbout.show();
+            }
+            break;
+            case R.id.item_contact: {
+                createContactDialog();
+                dialogContact.show();
+            }
+            break;
+            case R.id.item_privacy_policy: {
+                createPrivacyDialog();
+                dialogPrivacy.show();
+            }
+            break;
+            case R.id.item_terms_and_conditions: {
+                createTermsDialog();
+                dialogTerms.show();
+            }
+                break;
+            case R.id.item_refund_policy: {
+                createRefundDialog();
+                dialogRefund.show();
+            }
                 break;
             case R.id.item_share: shareApp();
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void createAboutDialog() {
+        View view = getLayoutInflater().inflate(R.layout.dialog_about_us, null, false);
+        imgClose = view.findViewById(R.id.imgClose);
+        imgClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogAbout.dismiss();
+            }
+        });
+        dialogAbout.setContentView(view);
+    }
+
+    private void createContactDialog() {
+        View view = getLayoutInflater().inflate(R.layout.dialog_contact, null, false);
+        txtTelegramGroup = view.findViewById(R.id.txtTelegramGroup);
+        txtTelegramGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://t.me/mppscmcqgroup")));
+            }
+        });
+        imgClose = view.findViewById(R.id.imgClose);
+        imgClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogContact.dismiss();
+            }
+        });
+        dialogContact.setContentView(view);
+    }
+
+    private void createPrivacyDialog() {
+        View view = getLayoutInflater().inflate(R.layout.dialog_privacy_policy, null, false);
+        imgClose = view.findViewById(R.id.imgClose);
+        imgClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogPrivacy.dismiss();
+            }
+        });
+        dialogPrivacy.setContentView(view);
+    }
+
+    private void createTermsDialog() {
+        View view = getLayoutInflater().inflate(R.layout.dialog_terms_and_conditions, null, false);
+        imgClose = view.findViewById(R.id.imgClose);
+        imgClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogTerms.dismiss();
+            }
+        });
+        dialogTerms.setContentView(view);
+    }
+
+    private void createRefundDialog() {
+        View view = getLayoutInflater().inflate(R.layout.dialog_refund_policy, null, false);
+        imgClose = view.findViewById(R.id.imgClose);
+        imgClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogRefund.dismiss();
+            }
+        });
+        dialogRefund.setContentView(view);
     }
 
     private void shareApp() {

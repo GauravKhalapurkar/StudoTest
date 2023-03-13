@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingHorizontal="@dimen/_10sdp"
+    android:paddingVertical="@dimen/_20sdp"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/imgClose"
+        android:layout_width="@dimen/_24sdp"
+        android:layout_height="@dimen/_24sdp"
+        android:src="@drawable/ic_close"
+        android:layout_gravity="end" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Terms and Conditions"
+        android:layout_gravity="start"
+        android:textSize="@dimen/text_size_heading"
+        android:textColor="@color/colorSecondary"
+        android:fontFamily="@font/semibolditalic"
+        android:layout_marginTop="@dimen/_14sdp"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="By using this App, you acknowledge your assent to the following conditions of use without limitation or qualification. Please read these conditions carefully before using this App. These terms and conditions may be revised at any time by updating this post. You are bound by any such revisions and should therefore periodically visit this page to review the then current terms and conditions to which you are bound."
+                android:layout_gravity="start"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/colorBlack"
+                android:justificationMode="inter_word"
+                android:fontFamily="@font/regular"
+                android:layout_marginTop="@dimen/_10sdp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="● Limitation of Liability- While StudoTest uses reasonable efforts to include accurate and up to date information on this website, errors or omissions sometimes occur. StudoTest makes no warranties or representations as to the accuracy of the content on this App."
+                android:layout_gravity="start"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/colorBlack"
+                android:justificationMode="inter_word"
+                android:fontFamily="@font/regular"
+                android:layout_marginTop="@dimen/_10sdp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="● Restrictions on Use of Materials- This App is owned and operated by StudoTest. Except as otherwise expressly permitted by StudoTest, no material from this App may be copied, reproduced, republished, uploaded, posted, transmitted, or distributed in any way."
+                android:layout_gravity="start"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/colorBlack"
+                android:justificationMode="inter_word"
+                android:fontFamily="@font/regular"
+                android:layout_marginTop="@dimen/_10sdp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="● Trademarks and copyrights- All trademarks, service marks, trade names, logos, and icons are proprietary to StudoTest. Nothing contained on the app should be construed as granting, by implication, estoppels, or otherwise, any license or right to use any trademark displayed on this App"
+                android:layout_gravity="start"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/colorBlack"
+                android:justificationMode="inter_word"
+                android:fontFamily="@font/regular"
+                android:layout_marginTop="@dimen/_10sdp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

@@ -15,10 +15,9 @@
             android:icon="@drawable/ic_book"
             android:title="My Courses" />
 
-        <item
-            android:id="@+id/item_leaderboard"
-            android:icon="@drawable/ic_leaderboard"
-            android:title="Leaderboard" />
+        <item android:id="@+id/item_notifications"
+            android:icon="@drawable/ic_notifications"
+            android:title="Notifications"  />
 
         <item
             android:id="@+id/item_profile"
@@ -45,6 +44,16 @@
                 android:id="@+id/item_privacy_policy"
                 android:icon="@drawable/ic_privacy"
                 android:title="Privacy Policy" />
+
+            <item
+                android:id="@+id/item_terms_and_conditions"
+                android:icon="@drawable/ic_terms"
+                android:title="Terms and Conditions" />
+
+            <item
+                android:id="@+id/item_refund_policy"
+                android:icon="@drawable/ic_refund"
+                android:title="Refund Policy" />
 
             <item
                 android:id="@+id/item_share"
