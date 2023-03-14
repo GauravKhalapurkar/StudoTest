@@ -228,8 +228,15 @@ public class DbQuery {
                         if (!queryDocumentSnapshots.isEmpty()) {
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                             for (DocumentSnapshot d : list) {
-                                g_notifications.add(new NotificationsModel(d.getString("TITLE"), d.getString("DESCRIPTION"), d.getString("TIME")));
+                                g_notifications.add(new NotificationsModel(d.getString("TITLE"), d.getString("DESC"), d.getString("TIME")));
                             }
+
+                            Collections.sort(g_notifications, new Comparator<NotificationsModel>() {
+                                @Override
+                                public int compare(NotificationsModel o1, NotificationsModel o2) {
+                                    return o2.getTime().compareTo(o1.getTime());
+                                }
+                            });
                         } else {
                             completeListener.onFailure();
                         }

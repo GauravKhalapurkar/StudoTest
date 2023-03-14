@@ -1,7 +1,10 @@
 package com.gakdevelopers.studotest.fragments;
 
+import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
+
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,10 @@ import com.gakdevelopers.studotest.adapters.CategoryAdapter;
 import com.gakdevelopers.studotest.adapters.NotificationsAdapter;
 import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class Notifications extends Fragment {
 
@@ -44,22 +51,37 @@ public class Notifications extends Fragment {
 
         loading =  ProgressDialog.show(getActivity(),"Loading","Please Wait",false,false);
 
-        DbQuery.loadNotifications(new MyCompleteListener() {
-            @Override
-            public void onSuccess() {
-                NotificationsAdapter adapter = new NotificationsAdapter(DbQuery.g_notifications);
-                gridView.setAdapter(adapter);
+        DbQuery.g_fireStore.collection("NOTIFICATIONS")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(QuerySnapshot snapshots, FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "listen:error", e);
+                            return;
+                        }
+                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                            if (dc.getType() == DocumentChange.Type.ADDED) {
+                                DbQuery.loadNotifications(new MyCompleteListener() {
+                                    @Override
+                                    public void onSuccess() {
+                                        NotificationsAdapter adapter = new NotificationsAdapter(DbQuery.g_notifications);
+                                        gridView.setAdapter(adapter);
 
-                loading.dismiss();
-            }
+                                        loading.dismiss();
+                                    }
 
-            @Override
-            public void onFailure() {
-                Toast.makeText(getActivity(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                                    @Override
+                                    public void onFailure() {
+                                        Toast.makeText(getActivity(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
 
-                loading.dismiss();
-            }
-        });
+                                        loading.dismiss();
+                                    }
+                                });
+                                break;
+                            }
+                        }
+                    }
+                });
 
         return view;
     }

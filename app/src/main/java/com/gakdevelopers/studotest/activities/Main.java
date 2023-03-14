@@ -1,33 +1,25 @@
 package com.gakdevelopers.studotest.activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.fragments.Home;
 import com.gakdevelopers.studotest.fragments.Notifications;
 import com.gakdevelopers.studotest.fragments.MyCourses;
 import com.gakdevelopers.studotest.fragments.Profile;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationBarView;
@@ -114,6 +106,29 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         dialogPrivacy.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
         dialogContact.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
         dialogAbout.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+
+        /*DbQuery.g_fireStore.collection("NOTIFICATIONS")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(QuerySnapshot snapshots, FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "listen:error", e);
+                            return;
+                        }
+                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
+                            if (dc.getType() == DocumentChange.Type.ADDED) {
+                                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                                Intent intent = new Intent(Main.this, NotificationReceiver.class);
+                                PendingIntent pendingIntent = PendingIntent.getBroadcast(Main.this, 1, intent, 0);
+
+                                alarmManager.setExact(AlarmManager.RTC_WAKEUP, 0, pendingIntent);
+
+
+                                break;
+                            }
+                        }
+                    }
+                });*/
 
     }
 

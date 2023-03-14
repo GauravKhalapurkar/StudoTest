@@ -4,5 +4,8 @@
     <string name="nav_open">Open</string>
     <string name="nav_close">Close</string>
 
+    <string name="notify1_title">Reminder!</string>
+    <string name="notification1_msg">It\'s time to take your medicine: </string>
+
     <string name="razorpay_api_key">rzp_live_KtW79QcDcC5Oov</string>
 </resources>
