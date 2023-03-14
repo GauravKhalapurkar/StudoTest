@@ -154,19 +154,21 @@ public class Score extends AppCompatActivity {
         txtWrong.setText(String.valueOf(wrong));
         txtUnattempted.setText(String.valueOf(unAttempted));
 
-        DbQuery.getTopUsers(new MyCompleteListener() {
+        saveResult();
+
+        DbQuery.loadLeaderboard(finalScore, new MyCompleteListener() {
             @Override
             public void onSuccess() {
-                txtYourRank.setText("Your Rank: Calculating...");
+                txtYourRank.setText("Your Rank: " + DbQuery.g_rank + " / " + DbQuery.g_all_leader_scores.size());
+                loading.dismiss();
             }
 
             @Override
             public void onFailure() {
-                txtYourRank.setText("Your Rank: ERROR");
+                Toast.makeText(Score.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                loading.dismiss();
             }
         });
-
-        saveResult();
     }
 
     private void saveResult() {
@@ -195,4 +197,11 @@ public class Score extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        startActivity(new Intent(Score.this, Main.class));
+        Score.this.finish();
+    }
 }

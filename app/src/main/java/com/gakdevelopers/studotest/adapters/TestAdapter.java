@@ -138,6 +138,9 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
                                 Toast.makeText(itemView.getContext(), "BUY NOW to access!", Toast.LENGTH_SHORT).show();
                             }
                         } else {
+
+
+
                             if (attempt < 3) {
                                 DbQuery.g_selected_test_index = position;
 

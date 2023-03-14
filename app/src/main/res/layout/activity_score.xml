@@ -383,7 +383,7 @@
                         android:text="Your Rank: Calculating..."
                         android:gravity="start"
                         android:textSize="@dimen/text_size"
-                        android:textColor="@color/colorGreyDark"
+                        android:textColor="@color/colorSecondary"
                         android:fontFamily="@font/bold"
                         android:layout_gravity="start"
                         android:layout_weight="1"/>

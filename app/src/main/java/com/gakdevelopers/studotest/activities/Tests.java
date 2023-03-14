@@ -36,6 +36,8 @@ public class Tests extends AppCompatActivity {
 
     private String categoryName;
 
+    private TextView txtFreeTrial;
+
     public static boolean isCourseBought = false;
 
     @Override
@@ -49,6 +51,9 @@ public class Tests extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         btnBuyNow = (Button) findViewById(R.id.btnBuyNow);
+
+        txtFreeTrial = (TextView) findViewById(R.id.txtFreeTrial);
+        txtFreeTrial.setVisibility(View.GONE);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -66,6 +71,8 @@ public class Tests extends AppCompatActivity {
         loading =  ProgressDialog.show(Tests.this,"Loading","Please Wait",false,false);
 
         if (!testType.equals("FREE_TESTS")) {
+            txtFreeTrial.setVisibility(View.VISIBLE);
+
             DbQuery.checkMyCourses(new MyCompleteListener() {
                 @Override
                 public void onSuccess() {

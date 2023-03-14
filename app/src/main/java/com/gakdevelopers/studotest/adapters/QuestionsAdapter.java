@@ -80,7 +80,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
             setOptions(btnOptionC, 3, position);
             setOptions(btnOptionD, 4, position);
 
-            g_question_list.get(0).setStatus(UNANSWERED);
+            //g_question_list.get(0).setStatus(UNANSWERED);
 
             btnOptionA.setOnClickListener(new View.OnClickListener() {
                 @Override
