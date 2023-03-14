@@ -22,6 +22,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.GridView;
@@ -38,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Question extends AppCompatActivity {
 
-    private TextView txtQuestionId, txtTimer, txtSubmit, txtCategoryName, txtClearSelection, txtMarkForReview, txtClose;
+    private TextView txtQuestionId, txtTimer, txtSubmit, txtCategoryName, txtClearSelection, txtClose;
 
     private ImageView imgBookmark, imgQuestionsListGrid, imgPrevQuestion, imgNextQuestion;
 
@@ -48,7 +49,7 @@ public class Question extends AppCompatActivity {
 
     private int questionId;
 
-    QuestionsAdapter questionsAdapter;
+    private QuestionsAdapter questionsAdapter;
 
     private QuestionsGridAdapter questionsGridAdapter;
 
@@ -69,7 +70,6 @@ public class Question extends AppCompatActivity {
         txtSubmit = (TextView) findViewById(R.id.txtSubmit);
         txtCategoryName = (TextView) findViewById(R.id.txtCategoryName);
         txtClearSelection = (TextView) findViewById(R.id.txtClearSelection);
-        txtMarkForReview = (TextView) findViewById(R.id.txtMarkForReview);
         txtClose = (TextView) findViewById(R.id.txtClose);
 
         imgBookmark = (ImageView) findViewById(R.id.imgBookmark);
@@ -133,6 +133,19 @@ public class Question extends AppCompatActivity {
     }
 
     private void setOnClickListeners() {
+        imgBookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                /*if (imgBookmark.getDrawable().equals(getDrawable(R.drawable.ic_bookmark))) {
+                    Toast.makeText(Question.this, "Yes", Toast.LENGTH_SHORT).show();
+                    imgBookmark.setImageDrawable(getDrawable(R.drawable.ic_bookmark_filled));
+                } else {
+                    Toast.makeText(Question.this, "No", Toast.LENGTH_SHORT).show();
+                    imgBookmark.setImageDrawable(getDrawable(R.drawable.ic_bookmark));
+                }*/
+            }
+        });
+
         imgPrevQuestion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,6 +161,13 @@ public class Question extends AppCompatActivity {
                 if (questionId < g_question_list.size() - 1) {
                     recyclerQuestion.smoothScrollToPosition(questionId + 1);
                 }
+            }
+        });
+
+        imgBookmark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 

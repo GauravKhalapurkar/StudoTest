@@ -1,10 +1,12 @@
 package com.gakdevelopers.studotest.adapters;
 
 import static com.gakdevelopers.studotest.database.DbQuery.ANSWERED;
+import static com.gakdevelopers.studotest.database.DbQuery.REVIEW;
 import static com.gakdevelopers.studotest.database.DbQuery.UNANSWERED;
 import static com.gakdevelopers.studotest.database.DbQuery.g_question_list;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,6 +80,8 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
             setOptions(btnOptionC, 3, position);
             setOptions(btnOptionD, 4, position);
 
+            g_question_list.get(0).setStatus(UNANSWERED);
+
             btnOptionA.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -113,8 +117,9 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
                 button.setBackgroundResource(R.drawable.custom_button);
                 button.setTextColor(Color.parseColor("#ffffff"));
 
+                changeStatus(questionId, ANSWERED);
+
                 g_question_list.get(questionId).setSelectedAnswer(option);
-                g_question_list.get(questionId).setStatus(ANSWERED);
 
                 btnPrevSelected = button;
             } else {
@@ -123,7 +128,7 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
                     btnPrevSelected.setTextColor(Color.parseColor("#000000"));
                     g_question_list.get(questionId).setSelectedAnswer(-1);
 
-                    g_question_list.get(questionId).setStatus(UNANSWERED);
+                    changeStatus(questionId, UNANSWERED);
 
                     btnPrevSelected = null;
                 } else {
@@ -134,16 +139,21 @@ public class QuestionsAdapter extends RecyclerView.Adapter<QuestionsAdapter.View
 
                     g_question_list.get(questionId).setSelectedAnswer(option);
 
-                    g_question_list.get(questionId).setStatus((ANSWERED));
+                    changeStatus(questionId, ANSWERED);
 
                     btnPrevSelected = button;
                 }
             }
         }
 
+        private void changeStatus(int id, int status) {
+            g_question_list.get(id).setStatus(status);
+        }
+
         private void setOptions(Button button, int option, int questionId) {
             if (g_question_list.get(questionId).getSelectedAnswer() == option) {
                 button.setBackgroundResource(R.drawable.custom_button);
+                button.setTextColor(Color.parseColor("#FFFFFF"));
             } else {
                 button.setBackgroundResource(R.drawable.custom_button_unselected);
                 button.setTextColor(Color.parseColor("#000000"));

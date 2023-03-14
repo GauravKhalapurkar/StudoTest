@@ -6,6 +6,7 @@ import static com.gakdevelopers.studotest.database.DbQuery.UNANSWERED;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,7 @@ public class QuestionsGridAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int i, View view, ViewGroup viewGroup) {
+    public View getView(int i, View view, ViewGroup viewGroup) {
         View v;
 
         if (view == null) {
@@ -70,16 +71,12 @@ public class QuestionsGridAdapter extends BaseAdapter {
 
         txtQuestionNo.setText(String.valueOf(i + 1));
 
-        switch (DbQuery.g_question_list.get(i).getStatus()) {
-            case NOT_VISITED:
-                cardBg.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(v.getContext(), R.color.colorGreyLight)));
-            case UNANSWERED:
-                cardBg.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(v.getContext(), R.color.colorRed)));
-            case ANSWERED:
-                cardBg.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(v.getContext(), R.color.colorGreen)));
-            default:
-                break;
-
+        if (DbQuery.g_question_list.get(i).getStatus() == NOT_VISITED) {
+            cardBg.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(v.getContext(), R.color.colorGreyLight)));
+        } else if (DbQuery.g_question_list.get(i).getStatus() == UNANSWERED) {
+            cardBg.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(v.getContext(), R.color.colorRed)));
+        } else if (DbQuery.g_question_list.get(i).getStatus() == ANSWERED) {
+            cardBg.setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(v.getContext(), R.color.colorGreen)));
         }
 
         return v;

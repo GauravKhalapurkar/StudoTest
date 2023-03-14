@@ -53,8 +53,6 @@ public class DbQuery {
 
     public static List<String> g_couponList = new ArrayList<>();
 
-    public static List<String> g_rank_list = new ArrayList<>();
-
     public static List<Integer> g_my_courses_list_indexes = new ArrayList<>();
 
     public static List<String> g_my_courses_list = new ArrayList<>();
@@ -73,7 +71,6 @@ public class DbQuery {
 
     public static List<Rank> g_users_list = new ArrayList<>();
 
-    public static int getG_selected_cat_index = 0;
     public static int g_positive_marks = 0;
     public static int g_negative_marks = 0;
     public static int g_price = 0;
@@ -87,6 +84,7 @@ public class DbQuery {
     public static final int NOT_VISITED = 0;
     public static final int UNANSWERED = 1;
     public static final int ANSWERED = 2;
+    public static final int REVIEW = 3;
 
     public static void getTopUsers(MyCompleteListener completeListener) {
         g_users_list.clear();

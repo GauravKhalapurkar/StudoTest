@@ -83,9 +83,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/ic_bookmark"
-            android:layout_weight="1"
+            android:layout_weight="4"
             android:padding="@dimen/_4sdp"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            app:tint="@color/colorSecondary" />
 
         <ImageView
             android:id="@+id/imgQuestionsListGrid"
@@ -134,31 +135,16 @@
 
         <TextView
             android:id="@+id/txtClearSelection"
-            android:layout_width="@dimen/_120sdp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Clear Selection"
-            android:background="@drawable/custom_edit_text"
             android:gravity="center_horizontal"
             android:paddingVertical="@dimen/_5sdp"
             android:textSize="@dimen/text_size"
-            android:textColor="@color/colorBlack"
+            android:textColor="@color/colorRed"
             android:layout_gravity="center_horizontal"
             android:fontFamily="@font/regular"
-            android:layout_marginHorizontal="@dimen/_2sdp"
-            android:visibility="gone"/>
-
-        <TextView
-            android:id="@+id/txtMarkForReview"
-            android:layout_width="@dimen/_120sdp"
-            android:layout_height="wrap_content"
-            android:text="Mark for Review"
-            android:background="@drawable/custom_edit_text"
-            android:gravity="center_horizontal"
-            android:paddingVertical="@dimen/_5sdp"
-            android:textSize="@dimen/text_size"
-            android:textColor="@color/colorBlack"
-            android:layout_gravity="center_horizontal"
-            android:fontFamily="@font/regular"
+            android:layout_centerHorizontal="true"
             android:layout_marginHorizontal="@dimen/_2sdp"
             android:visibility="gone"/>
 
