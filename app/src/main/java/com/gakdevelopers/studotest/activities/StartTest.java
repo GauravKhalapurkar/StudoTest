@@ -63,14 +63,21 @@ public class StartTest extends AppCompatActivity {
             }
         });
 
-        loading =  ProgressDialog.show(StartTest.this,"Loading","Please Wait",false,false);
+        //loading =  ProgressDialog.show(StartTest.this,"Loading","Please Wait",false,false);
 
         //Toast.makeText(this, "" + DbQuery.g_positive_marks + " - " + DbQuery.g_negative_marks, Toast.LENGTH_SHORT).show();
 
         txtPositiveMarks.setText("" + DbQuery.g_positive_marks);
-        txtNegativeMarks.setText("-" + DbQuery.g_negative_marks);
 
-        loadQuestions(new MyCompleteListener() {
+        if (DbQuery.g_negative_marks == 0) {
+            txtNegativeMarks.setText("" + DbQuery.g_negative_marks);
+        } else {
+            txtNegativeMarks.setText("-" + DbQuery.g_negative_marks);
+        }
+
+        setData();
+
+        /*loadQuestions(new MyCompleteListener() {
             @Override
             public void onSuccess() {
                 setData();
@@ -82,7 +89,7 @@ public class StartTest extends AppCompatActivity {
                 Toast.makeText(StartTest.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
                 loading.dismiss();
             }
-        });
+        });*/
 
     }
 
@@ -91,7 +98,7 @@ public class StartTest extends AppCompatActivity {
         txtTestTitle.setText(String.valueOf(DbQuery.g_testList.get(DbQuery.g_selected_test_index).getTestId()));
         txtQuestions.setText(String.valueOf(DbQuery.g_question_list.size()));
 
-        txtBestScore.setText(String.valueOf(DbQuery.g_testList.get(DbQuery.g_selected_test_index).getTopScore()) + "%");
+        txtBestScore.setText(String.valueOf(DbQuery.g_testList.get(DbQuery.g_selected_test_index).getTopScore()));
 
         txtTime.setText(String.valueOf(DbQuery.g_testList.get(DbQuery.g_selected_test_index).getTime()) + " m");
     }

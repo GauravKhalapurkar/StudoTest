@@ -49,15 +49,15 @@
                     android:fontFamily="@font/regular"
                     android:layout_weight="1"
                     android:progressTint="@color/colorSecondary"
+                    android:visibility="gone"
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
 
                 <TextView
                     android:id="@+id/txtProgressPercent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="77%"
+                    android:text="77"
                     android:textSize="@dimen/text_size_small"
-                    android:paddingHorizontal="@dimen/_20sdp"
                     android:textColor="@color/colorGreyDark"
                     android:fontFamily="@font/regular"/>
 

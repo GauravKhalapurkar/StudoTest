@@ -127,7 +127,11 @@ public class Score extends AppCompatActivity {
         }
 
         txtPositiveMarks.setText(String.valueOf(DbQuery.g_positive_marks));
-        txtNegativeMarks.setText("-" + DbQuery.g_negative_marks);
+        if (DbQuery.g_negative_marks == 0) {
+            txtNegativeMarks.setText("" + DbQuery.g_negative_marks);
+        } else {
+            txtNegativeMarks.setText("-" + DbQuery.g_negative_marks);
+        }
 
         marksObtained = (correct * DbQuery.g_positive_marks) - (wrong * DbQuery.g_negative_marks);
 

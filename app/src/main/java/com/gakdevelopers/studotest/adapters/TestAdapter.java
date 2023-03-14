@@ -139,8 +139,6 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
                             }
                         } else {
 
-
-
                             if (attempt < 3) {
                                 DbQuery.g_selected_test_index = position;
 
@@ -166,9 +164,13 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
                 });
             }
 
+            Log.d("DbQuery_pos", "" + DbQuery.g_positive_marks);
+            Log.d("DbQuery_size", "" + DbQuery.g_question_list.size());
+
             txtTestTitle.setText("" + testTitle);
-            txtProgressPercent.setText(String.valueOf(progress) + "% Marks Obtained");
+            txtProgressPercent.setText(String.valueOf(progress)  + " Marks Obtained");
             txtAttempt.setText("ATTEMPT " + String.valueOf(attempt) + " OF 3");
+
             progressBar.setProgress(progress);
 
             if (attempt > 0) {

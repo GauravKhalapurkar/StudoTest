@@ -695,6 +695,7 @@ public class DbQuery {
 
     public static void saveResult(int scoreFromResult, MyCompleteListener completeListener) {
         WriteBatch batchAttempt = g_fireStore.batch();
+        WriteBatch batchScore = g_fireStore.batch();
         WriteBatch batchLeaderboard = g_fireStore.batch();
 
         g_attempt = 0;
@@ -730,15 +731,42 @@ public class DbQuery {
                     }
                 });
 
+        DocumentReference scoreSoc = userDoc.collection("USER_DATA").document("MY_SCORES");
+
+        Map<String, Object> scoreDataProfile = new ArrayMap<>();
+        scoreDataProfile.put(g_testList.get(g_selected_test_index).getTestId(), scoreFromResult);
+
+        batchScore.set(scoreSoc, scoreDataProfile, SetOptions.merge());
+
+        batchScore.commit()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        //if (g_testList.get(g_selected_test_index).getAttempt() <= 3) {
+                        //g_testList.get(g_selected_test_index).setAttempt(g_attempt);
+
+                        completeListener.onSuccess();
+                        //} else {
+                        //    completeListener.onSuccess();
+                        //}
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        completeListener.onFailure();
+                    }
+                });
+
         DocumentReference leaderboardDoc = g_fireStore.collection("LEADERBOARD").document("TESTS_LIST");
 
         if (scoreFromResult > 0) {
             DocumentReference scoreDoc = leaderboardDoc.collection(g_testList.get(g_selected_test_index).getTestId()).document(FirebaseAuth.getInstance().getUid());
 
-            Map<String, Object> scoreData = new ArrayMap<>();
-            scoreData.put("SCORE", scoreFromResult);
+            Map<String, Object> scoreDataRank = new ArrayMap<>();
+            scoreDataRank.put("SCORE", scoreFromResult);
 
-            batchLeaderboard.set(scoreDoc, scoreData, SetOptions.merge());
+            batchLeaderboard.set(scoreDoc, scoreDataRank, SetOptions.merge());
         }
 
         batchLeaderboard.commit()
