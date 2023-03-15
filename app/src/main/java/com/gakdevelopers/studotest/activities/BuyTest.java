@@ -111,6 +111,13 @@ public class BuyTest extends AppCompatActivity implements PaymentResultListener 
         }
 
         Toast.makeText(this, "Payment is successful: " + s, Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(BuyTest.this, Tests.class);
+        intent.putExtra("testType", "PAID_TESTS");
+        intent.putExtra("categoryName", categoryName);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        //BuyTest.this.finish();
     }
 
     @Override
