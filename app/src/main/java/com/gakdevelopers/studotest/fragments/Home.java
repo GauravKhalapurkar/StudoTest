@@ -139,7 +139,7 @@ public class Home extends Fragment {
             public void run() {
                 handler.post(Update);
             }
-        }, 2500, 2500);
+        }, 5000, 5000);
 
         dot1.setViewPager(mViewPager);
     }

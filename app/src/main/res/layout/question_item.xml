@@ -33,8 +33,7 @@
                     android:textSize="@dimen/text_size"
                     android:textColor="@color/colorBlack"
                     android:paddingVertical="@dimen/_40sdp"
-                    android:paddingHorizontal="@dimen/_10sdp"
-                    android:fontFamily="@font/regular"/>
+                    android:paddingHorizontal="@dimen/_10sdp"/>
 
             </androidx.cardview.widget.CardView>
 
@@ -50,8 +49,7 @@
                 android:textSize="@dimen/text_size_btn"
                 android:background="@drawable/custom_button_unselected"
                 android:textColor="@color/colorBlack"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:fontFamily="@font/regular"/>
+                android:layout_marginTop="@dimen/_6sdp"/>
 
             <Button
                 android:id="@+id/btnOptionB"
@@ -65,8 +63,7 @@
                 android:textSize="@dimen/text_size_btn"
                 android:background="@drawable/custom_button_unselected"
                 android:textColor="@color/colorBlack"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:fontFamily="@font/regular"/>
+                android:layout_marginTop="@dimen/_6sdp"/>
 
             <Button
                 android:id="@+id/btnOptionC"
@@ -80,8 +77,7 @@
                 android:textSize="@dimen/text_size_btn"
                 android:background="@drawable/custom_button_unselected"
                 android:textColor="@color/colorBlack"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:fontFamily="@font/regular"/>
+                android:layout_marginTop="@dimen/_6sdp"/>
 
             <Button
                 android:id="@+id/btnOptionD"

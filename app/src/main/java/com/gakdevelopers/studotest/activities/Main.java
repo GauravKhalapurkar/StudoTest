@@ -221,7 +221,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     private void shareApp() {
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        String shareBody = "Please tell me what to write here. " + "\n\n" +
+        String shareBody = "Hey! Install this Awesome App for Practicing Exam oriented MCQ's. " + "\n\n" +
                 "Download Now from Google Play Store: https://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName();
         sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Share App");
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);

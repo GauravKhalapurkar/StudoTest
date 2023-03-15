@@ -54,6 +54,10 @@ public class DbQuery {
 
     public static List<TestsModel> g_testList = new ArrayList<>();
 
+    //public static List<TestsModel> myList = new ArrayList<>();
+
+    public static List<TestsModel> g_freeTrialTestList = new ArrayList<>();
+
     public static List<String> g_couponList = new ArrayList<>();
 
     public static List<Integer> g_my_courses_list_indexes = new ArrayList<>();
@@ -189,59 +193,111 @@ public class DbQuery {
                 });
     }
 
-    public static void loadLeaderboard(int myScore, MyCompleteListener completeListener) {
+    public static void loadLeaderboard(boolean isFree, int myScore, MyCompleteListener completeListener) {
 
         g_all_leader_scores.clear();
 
-        g_fireStore.collection("LEADERBOARD").document("TESTS_LIST").collection(g_testList.get(g_selected_test_index).getTestId())
-                .whereGreaterThan("SCORE", 0)
-                .orderBy("SCORE", Query.Direction.DESCENDING)
-                .limit(50)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for (QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+        if (isFree) {
+            g_fireStore.collection("LEADERBOARD").document("TESTS_LIST").collection(g_freeTrialTestList.get(g_selected_test_index).getTestId())
+                    .whereGreaterThan("SCORE", 0)
+                    .orderBy("SCORE", Query.Direction.DESCENDING)
+                    .limit(50)
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for (QueryDocumentSnapshot doc: queryDocumentSnapshots) {
 
-                            g_all_leader_scores.add(Integer.valueOf(doc.get("SCORE").toString()));
+                                g_all_leader_scores.add(Integer.valueOf(doc.get("SCORE").toString()));
 
-                            Log.d("ALL_SCORES", String.valueOf(doc.get("SCORE")));
-                        }
-
-                        Collections.sort(g_all_leader_scores, new Comparator<Integer>() {
-                            @Override
-                            public int compare(Integer o1, Integer o2) {
-                                return o2.compareTo(o1);
+                                Log.d("ALL_SCORES", String.valueOf(doc.get("SCORE")));
                             }
-                        });
 
-                        Log.d("ALL_SCORES_SORTED", String.valueOf(g_all_leader_scores));
+                            Collections.sort(g_all_leader_scores, new Comparator<Integer>() {
+                                @Override
+                                public int compare(Integer o1, Integer o2) {
+                                    return o2.compareTo(o1);
+                                }
+                            });
 
-                        g_rank = 1;
+                            Log.d("ALL_SCORES_SORTED", String.valueOf(g_all_leader_scores));
 
-                        if (myScore == 0) {
-                            g_rank = g_all_leader_scores.size();
-                        } else {
-                            for (int s = 0; s < g_all_leader_scores.size(); s++) {
-                                if (g_all_leader_scores.get(s) > myScore)
-                                    g_rank++;
-                                else
-                                    break;
+                            g_rank = 1;
+
+                            if (myScore < 1) {
+                                g_rank = g_all_leader_scores.size();
+                            } else {
+                                for (int s = 0; s < g_all_leader_scores.size(); s++) {
+                                    if (g_all_leader_scores.get(s) > myScore)
+                                        g_rank++;
+                                    else
+                                        break;
+                                }
                             }
+
+                            Log.d("ALL_SCORES_MY_RANK", String.valueOf(g_rank));
+
+                            completeListener.onSuccess();
+
                         }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            completeListener.onFailure();
+                        }
+                    });
+        } else {
+            g_fireStore.collection("LEADERBOARD").document("TESTS_LIST").collection(g_testList.get(g_selected_test_index).getTestId())
+                    .whereGreaterThan("SCORE", 0)
+                    .orderBy("SCORE", Query.Direction.DESCENDING)
+                    .limit(50)
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for (QueryDocumentSnapshot doc: queryDocumentSnapshots) {
 
-                        Log.d("ALL_SCORES_MY_RANK", String.valueOf(g_rank));
+                                g_all_leader_scores.add(Integer.valueOf(doc.get("SCORE").toString()));
 
-                        completeListener.onSuccess();
+                                Log.d("ALL_SCORES", String.valueOf(doc.get("SCORE")));
+                            }
 
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        completeListener.onFailure();
-                    }
-                });
+                            Collections.sort(g_all_leader_scores, new Comparator<Integer>() {
+                                @Override
+                                public int compare(Integer o1, Integer o2) {
+                                    return o2.compareTo(o1);
+                                }
+                            });
+
+                            Log.d("ALL_SCORES_SORTED", String.valueOf(g_all_leader_scores));
+
+                            g_rank = 1;
+
+                            if (myScore < 1) {
+                                g_rank = g_all_leader_scores.size();
+                            } else {
+                                for (int s = 0; s < g_all_leader_scores.size(); s++) {
+                                    if (g_all_leader_scores.get(s) > myScore)
+                                        g_rank++;
+                                    else
+                                        break;
+                                }
+                            }
+
+                            Log.d("ALL_SCORES_MY_RANK", String.valueOf(g_rank));
+
+                            completeListener.onSuccess();
+
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            completeListener.onFailure();
+                        }
+                    });
+        }
 
 
     }
@@ -538,6 +594,7 @@ public class DbQuery {
     }
 
     public static void loadTests(String testType, final MyCompleteListener completeListener) {
+        g_freeTrialTestList.clear();
         g_testList.clear();
 
         DocumentReference ref = g_fireStore.collection(testType).document(g_catList.get(g_selected_cat_index).getDocId());
@@ -563,7 +620,45 @@ public class DbQuery {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         int noOfTests = g_catList.get(g_selected_cat_index).getNoOfTest();
 
-                        for (int i = 1; i <= noOfTests; i++) {
+                        if (testType.equals("PAID_TESTS")) {
+
+                            g_freeTrialTestList.add(new TestsModel(
+                                    documentSnapshot.getString("TEST" + String.valueOf(1) + "_ID"),
+                                    0,
+                                    documentSnapshot.getLong("TEST" + String.valueOf(1) + "_TIME").intValue(),
+                                    0,
+                                    Boolean.TRUE.equals(documentSnapshot.getBoolean("TEST" + String.valueOf(1) + "_LIVE"))
+                                    //documentSnapshot.getBoolean("TEST" + String.valueOf(i) + "_LIVE")
+                            ));
+
+                            Log.d("g_freeTrialTestList", String.valueOf(g_freeTrialTestList));
+
+                            for (int i = 2; i <= noOfTests; i++) {
+                                g_testList.add(new TestsModel(
+                                        documentSnapshot.getString("TEST" + String.valueOf(i) + "_ID"),
+                                        0,
+                                        documentSnapshot.getLong("TEST" + String.valueOf(i) + "_TIME").intValue(),
+                                        0,
+                                        Boolean.TRUE.equals(documentSnapshot.getBoolean("TEST" + String.valueOf(i) + "_LIVE"))
+                                        //documentSnapshot.getBoolean("TEST" + String.valueOf(i) + "_LIVE")
+                                ));
+                            }
+
+                            Log.d("g_freeTrialTestList_ye", String.valueOf(g_testList));
+                        } else {
+                            for (int i = 1; i <= noOfTests; i++) {
+                                g_testList.add(new TestsModel(
+                                        documentSnapshot.getString("TEST" + String.valueOf(i) + "_ID"),
+                                        0,
+                                        documentSnapshot.getLong("TEST" + String.valueOf(i) + "_TIME").intValue(),
+                                        0,
+                                        Boolean.TRUE.equals(documentSnapshot.getBoolean("TEST" + String.valueOf(i) + "_LIVE"))
+                                        //documentSnapshot.getBoolean("TEST" + String.valueOf(i) + "_LIVE")
+                                ));
+                            }
+                        }
+
+                        /*for (int i = 1; i <= noOfTests; i++) {
                             g_testList.add(new TestsModel(
                                     documentSnapshot.getString("TEST" + String.valueOf(i) + "_ID"),
                                     0,
@@ -572,7 +667,7 @@ public class DbQuery {
                                     Boolean.TRUE.equals(documentSnapshot.getBoolean("TEST" + String.valueOf(i) + "_LIVE"))
                                     //documentSnapshot.getBoolean("TEST" + String.valueOf(i) + "_LIVE")
                             ));
-                        }
+                        }*/
 
                         completeListener.onSuccess();
                     }
@@ -583,6 +678,10 @@ public class DbQuery {
                         completeListener.onFailure();
                     }
                 });
+    }
+
+    public static void loadFreeTrialTest(MyCompleteListener completeListener) {
+
     }
 
     public static void loadData(String testType, final MyCompleteListener completeListener) {
@@ -609,7 +708,73 @@ public class DbQuery {
         });
     }
 
-    public static void loadQuestions(MyCompleteListener completeListener) {
+    public static void loadQuestions(boolean isFree, MyCompleteListener completeListener) {
+        g_question_list.clear();
+
+        if (isFree) {
+            g_fireStore.collection("QUESTIONS")
+                    .whereEqualTo("CATEGORY", g_catList.get(g_selected_cat_index).getDocId())
+                    .whereEqualTo("TEST", g_freeTrialTestList.get(g_selected_test_index).getTestId())
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                                g_question_list.add(new Question(
+                                        doc.getString("QUESTION"),
+                                        doc.getString("A"),
+                                        doc.getString("B"),
+                                        doc.getString("C"),
+                                        doc.getString("D"),
+                                        doc.getLong("ANSWER").intValue(),
+                                        -1,
+                                        doc.getString("EXPLANATION"),
+                                        NOT_VISITED
+                                ));
+                            }
+                            completeListener.onSuccess();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            completeListener.onFailure();
+                        }
+                    });
+        } else {
+            g_fireStore.collection("QUESTIONS")
+                    .whereEqualTo("CATEGORY", g_catList.get(g_selected_cat_index).getDocId())
+                    .whereEqualTo("TEST", g_testList.get(g_selected_test_index).getTestId())
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                                g_question_list.add(new Question(
+                                        doc.getString("QUESTION"),
+                                        doc.getString("A"),
+                                        doc.getString("B"),
+                                        doc.getString("C"),
+                                        doc.getString("D"),
+                                        doc.getLong("ANSWER").intValue(),
+                                        -1,
+                                        doc.getString("EXPLANATION"),
+                                        NOT_VISITED
+                                ));
+                            }
+                            completeListener.onSuccess();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            completeListener.onFailure();
+                        }
+                    });
+        }
+    }
+
+    public static void loadFreeTrialQuestions(MyCompleteListener completeListener) {
         g_question_list.clear();
 
         g_fireStore.collection("QUESTIONS")
@@ -643,37 +808,68 @@ public class DbQuery {
                 });
     }
 
-    public static void loadViewAnswers(MyCompleteListener completeListener) {
+    public static void loadViewAnswers(boolean isFree, MyCompleteListener completeListener) {
         g_view_answers_list.clear();
 
-        g_fireStore.collection("QUESTIONS")
-                .whereEqualTo("CATEGORY", g_catList.get(g_selected_cat_index).getDocId())
-                .whereEqualTo("TEST", g_testList.get(g_selected_test_index).getTestId())
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        for (DocumentSnapshot doc : queryDocumentSnapshots) {
-                            g_view_answers_list.add(new ViewAnswer(
-                                    doc.getString("QUESTION"),
-                                    doc.getString("A"),
-                                    doc.getString("B"),
-                                    doc.getString("C"),
-                                    doc.getString("D"),
-                                    doc.getLong("ANSWER").intValue(),
-                                    -1,
-                                    doc.getString("EXPLANATION")
-                            ));
+        if (isFree) {
+            g_fireStore.collection("QUESTIONS")
+                    .whereEqualTo("CATEGORY", g_catList.get(g_selected_cat_index).getDocId())
+                    .whereEqualTo("TEST", g_freeTrialTestList.get(g_selected_test_index).getTestId())
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                                g_view_answers_list.add(new ViewAnswer(
+                                        doc.getString("QUESTION"),
+                                        doc.getString("A"),
+                                        doc.getString("B"),
+                                        doc.getString("C"),
+                                        doc.getString("D"),
+                                        doc.getLong("ANSWER").intValue(),
+                                        -1,
+                                        doc.getString("EXPLANATION")
+                                ));
+                            }
+                            completeListener.onSuccess();
                         }
-                        completeListener.onSuccess();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        completeListener.onFailure();
-                    }
-                });
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            completeListener.onFailure();
+                        }
+                    });
+        } else {
+            g_fireStore.collection("QUESTIONS")
+                    .whereEqualTo("CATEGORY", g_catList.get(g_selected_cat_index).getDocId())
+                    .whereEqualTo("TEST", g_testList.get(g_selected_test_index).getTestId())
+                    .get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                                g_view_answers_list.add(new ViewAnswer(
+                                        doc.getString("QUESTION"),
+                                        doc.getString("A"),
+                                        doc.getString("B"),
+                                        doc.getString("C"),
+                                        doc.getString("D"),
+                                        doc.getLong("ANSWER").intValue(),
+                                        -1,
+                                        doc.getString("EXPLANATION")
+                                ));
+                            }
+                            completeListener.onSuccess();
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            completeListener.onFailure();
+                        }
+                    });
+        }
     }
 
     public static void loadMyScores(MyCompleteListener completeListener) {
@@ -683,6 +879,14 @@ public class DbQuery {
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        for (int i = 0; i < g_freeTrialTestList.size(); i++) {
+                            int top = 0;
+                            if (documentSnapshot.get(g_freeTrialTestList.get(i).getTestId()) != null) {
+                                top = documentSnapshot.getLong(g_freeTrialTestList.get(i).getTestId()).intValue();
+                            }
+                            g_freeTrialTestList.get(i).setTopScore(top);
+                        }
+
                         for (int i = 0; i < g_testList.size(); i++) {
                             int top = 0;
                             if (documentSnapshot.get(g_testList.get(i).getTestId()) != null) {
@@ -706,6 +910,17 @@ public class DbQuery {
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        for (int i = 0; i < g_freeTrialTestList.size(); i++) {
+                            g_attempt = 0;
+
+                            if (documentSnapshot.get(g_freeTrialTestList.get(i).getTestId()) != null) {
+                                g_attempt = documentSnapshot.getLong(g_freeTrialTestList.get(i).getTestId()).intValue();
+                            }
+
+                            g_freeTrialTestList.get(i).setAttempt(g_attempt);
+                        }
+
+
                         for (int i = 0; i < g_testList.size(); i++) {
                             g_attempt = 0;
 
@@ -755,101 +970,202 @@ public class DbQuery {
                 });
     }
 
-    public static void saveResult(int scoreFromResult, MyCompleteListener completeListener) {
+    public static void saveResult(boolean isFree, int scoreFromResult, MyCompleteListener completeListener) {
+
+        //myList.clear();
+
+        /*if (isFree)
+            myList = g_freeTrialTestList;
+        else
+            myList = g_testList;*/
+
         WriteBatch batchAttempt = g_fireStore.batch();
         WriteBatch batchScore = g_fireStore.batch();
         WriteBatch batchLeaderboard = g_fireStore.batch();
 
         g_attempt = 0;
 
+        Log.d("MY_LIST_IN_SAVE", String.valueOf(isFree));
+
         DocumentReference userDoc = g_fireStore.collection("USERS").document(FirebaseAuth.getInstance().getUid());
 
-        if (g_testList.get(g_selected_test_index).getAttempt() <= 3) {
-            DocumentReference attemptDoc = userDoc.collection("USER_DATA").document("MY_ATTEMPTS");
+        if(isFree) {
+            if (g_freeTrialTestList.get(g_selected_test_index).getAttempt() <= 3) {
+                DocumentReference attemptDoc = userDoc.collection("USER_DATA").document("MY_ATTEMPTS");
 
-            Map<String, Object> attemptData = new ArrayMap<>();
-            attemptData.put(g_testList.get(g_selected_test_index).getTestId(), g_testList.get(g_selected_test_index).getAttempt() + 1);
+                Map<String, Object> attemptData = new ArrayMap<>();
+                attemptData.put(g_freeTrialTestList.get(g_selected_test_index).getTestId(), g_freeTrialTestList.get(g_selected_test_index).getAttempt() + 1);
 
-            batchAttempt.set(attemptDoc, attemptData, SetOptions.merge());
-        }
+                batchAttempt.set(attemptDoc, attemptData, SetOptions.merge());
+            }
 
-        batchAttempt.commit()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        if (g_testList.get(g_selected_test_index).getAttempt() <= 3) {
-                            g_testList.get(g_selected_test_index).setAttempt(g_attempt);
+            batchAttempt.commit()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            if (g_freeTrialTestList.get(g_selected_test_index).getAttempt() <= 3) {
+                                g_freeTrialTestList.get(g_selected_test_index).setAttempt(g_attempt);
 
-                            completeListener.onSuccess();
-                        } else {
-                            completeListener.onSuccess();
+                                completeListener.onSuccess();
+                            } else {
+                                completeListener.onSuccess();
+                            }
                         }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        completeListener.onFailure();
-                    }
-                });
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            completeListener.onFailure();
+                        }
+                    });
 
-        DocumentReference scoreSoc = userDoc.collection("USER_DATA").document("MY_SCORES");
+            DocumentReference scoreSoc = userDoc.collection("USER_DATA").document("MY_SCORES");
 
-        Map<String, Object> scoreDataProfile = new ArrayMap<>();
-        scoreDataProfile.put(g_testList.get(g_selected_test_index).getTestId(), scoreFromResult);
+            Map<String, Object> scoreDataProfile = new ArrayMap<>();
+            scoreDataProfile.put(g_freeTrialTestList.get(g_selected_test_index).getTestId(), scoreFromResult);
 
-        batchScore.set(scoreSoc, scoreDataProfile, SetOptions.merge());
+            batchScore.set(scoreSoc, scoreDataProfile, SetOptions.merge());
 
-        batchScore.commit()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        //if (g_testList.get(g_selected_test_index).getAttempt() <= 3) {
-                        //g_testList.get(g_selected_test_index).setAttempt(g_attempt);
+            batchScore.commit()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            //if (g_freeTrialTestList.get(g_selected_test_index).getAttempt() <= 3) {
+                            //g_freeTrialTestList.get(g_selected_test_index).setAttempt(g_attempt);
 
-                        completeListener.onSuccess();
-                        //} else {
-                        //    completeListener.onSuccess();
-                        //}
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        completeListener.onFailure();
-                    }
-                });
+                            completeListener.onSuccess();
+                            //} else {
+                            //    completeListener.onSuccess();
+                            //}
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            completeListener.onFailure();
+                        }
+                    });
 
-        DocumentReference leaderboardDoc = g_fireStore.collection("LEADERBOARD").document("TESTS_LIST");
+            DocumentReference leaderboardDoc = g_fireStore.collection("LEADERBOARD").document("TESTS_LIST");
 
-        if (scoreFromResult > 0) {
-            DocumentReference scoreDoc = leaderboardDoc.collection(g_testList.get(g_selected_test_index).getTestId()).document(FirebaseAuth.getInstance().getUid());
+            if (scoreFromResult > 0) {
+                DocumentReference scoreDoc = leaderboardDoc.collection(g_freeTrialTestList.get(g_selected_test_index).getTestId()).document(FirebaseAuth.getInstance().getUid());
 
-            Map<String, Object> scoreDataRank = new ArrayMap<>();
-            scoreDataRank.put("SCORE", scoreFromResult);
+                Map<String, Object> scoreDataRank = new ArrayMap<>();
+                scoreDataRank.put("SCORE", scoreFromResult);
 
-            batchLeaderboard.set(scoreDoc, scoreDataRank, SetOptions.merge());
-        }
+                batchLeaderboard.set(scoreDoc, scoreDataRank, SetOptions.merge());
+            }
 
-        batchLeaderboard.commit()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        //if (g_testList.get(g_selected_test_index).getAttempt() <= 3) {
+            batchLeaderboard.commit()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            //if (g_freeTrialTestList.get(g_selected_test_index).getAttempt() <= 3) {
+                            //g_freeTrialTestList.get(g_selected_test_index).setAttempt(g_attempt);
+
+                            completeListener.onSuccess();
+                            //} else {
+                            //    completeListener.onSuccess();
+                            //}
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            completeListener.onFailure();
+                        }
+                    });
+        } else {
+            if (g_testList.get(g_selected_test_index).getAttempt() <= 3) {
+                DocumentReference attemptDoc = userDoc.collection("USER_DATA").document("MY_ATTEMPTS");
+
+                Map<String, Object> attemptData = new ArrayMap<>();
+                attemptData.put(g_testList.get(g_selected_test_index).getTestId(), g_testList.get(g_selected_test_index).getAttempt() + 1);
+
+                batchAttempt.set(attemptDoc, attemptData, SetOptions.merge());
+            }
+
+            batchAttempt.commit()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            if (g_testList.get(g_selected_test_index).getAttempt() <= 3) {
+                                g_testList.get(g_selected_test_index).setAttempt(g_attempt);
+
+                                completeListener.onSuccess();
+                            } else {
+                                completeListener.onSuccess();
+                            }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            completeListener.onFailure();
+                        }
+                    });
+
+            DocumentReference scoreSoc = userDoc.collection("USER_DATA").document("MY_SCORES");
+
+            Map<String, Object> scoreDataProfile = new ArrayMap<>();
+            scoreDataProfile.put(g_testList.get(g_selected_test_index).getTestId(), scoreFromResult);
+
+            batchScore.set(scoreSoc, scoreDataProfile, SetOptions.merge());
+
+            batchScore.commit()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            //if (g_testList.get(g_selected_test_index).getAttempt() <= 3) {
                             //g_testList.get(g_selected_test_index).setAttempt(g_attempt);
 
                             completeListener.onSuccess();
-                        //} else {
-                        //    completeListener.onSuccess();
-                        //}
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        completeListener.onFailure();
-                    }
-                });
+                            //} else {
+                            //    completeListener.onSuccess();
+                            //}
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            completeListener.onFailure();
+                        }
+                    });
+
+            DocumentReference leaderboardDoc = g_fireStore.collection("LEADERBOARD").document("TESTS_LIST");
+
+            if (scoreFromResult > 0) {
+                DocumentReference scoreDoc = leaderboardDoc.collection(g_testList.get(g_selected_test_index).getTestId()).document(FirebaseAuth.getInstance().getUid());
+
+                Map<String, Object> scoreDataRank = new ArrayMap<>();
+                scoreDataRank.put("SCORE", scoreFromResult);
+
+                batchLeaderboard.set(scoreDoc, scoreDataRank, SetOptions.merge());
+            }
+
+            batchLeaderboard.commit()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            //if (g_testList.get(g_selected_test_index).getAttempt() <= 3) {
+                            //g_testList.get(g_selected_test_index).setAttempt(g_attempt);
+
+                            completeListener.onSuccess();
+                            //} else {
+                            //    completeListener.onSuccess();
+                            //}
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            completeListener.onFailure();
+                        }
+                    });
+        }
+
+
 
 
     }

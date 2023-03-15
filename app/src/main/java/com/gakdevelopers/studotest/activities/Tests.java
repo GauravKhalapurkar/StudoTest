@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gakdevelopers.studotest.R;
+import com.gakdevelopers.studotest.adapters.FreeTrialTestAdapter;
 import com.gakdevelopers.studotest.adapters.TestAdapter;
 import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
@@ -26,9 +27,11 @@ public class Tests extends AppCompatActivity {
 
     private Toolbar toolbar;
 
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerView, recyclerViewFreeTrial;
 
     private TestAdapter adapter;
+
+    private FreeTrialTestAdapter freeTrialTestAdapter;
 
     ProgressDialog loading;
 
@@ -36,7 +39,7 @@ public class Tests extends AppCompatActivity {
 
     private String categoryName;
 
-    private TextView txtFreeTrial;
+    //private TextView txtFreeTrial;
 
     public static boolean isCourseBought = false;
 
@@ -49,11 +52,13 @@ public class Tests extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        recyclerViewFreeTrial = (RecyclerView) findViewById(R.id.recyclerViewFreeTrial);
+        recyclerViewFreeTrial.setVisibility(View.GONE);
 
         btnBuyNow = (Button) findViewById(R.id.btnBuyNow);
 
-        txtFreeTrial = (TextView) findViewById(R.id.txtFreeTrial);
-        txtFreeTrial.setVisibility(View.GONE);
+        //txtFreeTrial = (TextView) findViewById(R.id.txtFreeTrial);
+        //txtFreeTrial.setVisibility(View.GONE);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -61,8 +66,11 @@ public class Tests extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager layoutManagerFreeTrial = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
+        layoutManagerFreeTrial.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
+        recyclerViewFreeTrial.setLayoutManager(layoutManagerFreeTrial);
 
         Intent intent = getIntent();
         String testType = intent.getStringExtra("testType");
@@ -71,7 +79,9 @@ public class Tests extends AppCompatActivity {
         loading =  ProgressDialog.show(Tests.this,"Loading","Please Wait",false,false);
 
         if (!testType.equals("FREE_TESTS")) {
-            txtFreeTrial.setVisibility(View.VISIBLE);
+            //txtFreeTrial.setVisibility(View.VISIBLE);
+
+            recyclerViewFreeTrial.setVisibility(View.VISIBLE);
 
             DbQuery.checkMyCourses(new MyCompleteListener() {
                 @Override
@@ -99,6 +109,10 @@ public class Tests extends AppCompatActivity {
                 DbQuery.loadMyScores(new MyCompleteListener() {
                     @Override
                     public void onSuccess() {
+
+                        freeTrialTestAdapter = new FreeTrialTestAdapter(testType, DbQuery.g_freeTrialTestList);
+                        recyclerViewFreeTrial.setAdapter(freeTrialTestAdapter);
+
                         adapter = new TestAdapter(testType, DbQuery.g_testList);
                         recyclerView.setAdapter(adapter);
 

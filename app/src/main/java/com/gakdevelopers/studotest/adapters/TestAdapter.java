@@ -86,7 +86,10 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
                             Intent intent = new Intent(itemView.getContext(), Answers.class);
                             intent.putExtra("fromTestAdapter", true);
                             intent.putExtra("position", getAdapterPosition());
+                            intent.putExtra("isFree", false);
                             itemView.getContext().startActivity(intent);
+
+                            Log.d("FROM_NON_FREE_TRIAL", "aliefgwleufwef");
                         } else {
                             Toast.makeText(itemView.getContext(), "BUY NOW to access!", Toast.LENGTH_SHORT).show();
                         }
@@ -117,12 +120,15 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
                         if (!testType.equals("FREE_TESTS")) {
                             if (Tests.isCourseBought) {
                                 if (attempt < 3) {
+                                    Log.d("P_O_S_", String.valueOf(position));
+
                                     DbQuery.g_selected_test_index = position;
 
-                                    loadQuestions(new MyCompleteListener() {
+                                    loadQuestions(false, new MyCompleteListener() {
                                         @Override
                                         public void onSuccess() {
                                             Intent intent = new Intent(itemView.getContext(), StartTest.class);
+                                            intent.putExtra("isFree", false);
                                             itemView.getContext().startActivity(intent);
                                         }
 
@@ -142,7 +148,7 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
                             if (attempt < 3) {
                                 DbQuery.g_selected_test_index = position;
 
-                                loadQuestions(new MyCompleteListener() {
+                                loadQuestions(false, new MyCompleteListener() {
                                     @Override
                                     public void onSuccess() {
                                         Intent intent = new Intent(itemView.getContext(), StartTest.class);

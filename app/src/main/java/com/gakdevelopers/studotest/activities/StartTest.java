@@ -47,6 +47,9 @@ public class StartTest extends AppCompatActivity {
 
         imgBack = (ImageView) findViewById(R.id.imgBack);
 
+        Intent intent = getIntent();
+        boolean isFree = intent.getBooleanExtra("isFree", false);
+
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,6 +61,7 @@ public class StartTest extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(StartTest.this, Question.class);
+                intent.putExtra("isFree", isFree);
                 startActivity(intent);
                 finish();
             }
@@ -75,7 +79,7 @@ public class StartTest extends AppCompatActivity {
             txtNegativeMarks.setText("-" + DbQuery.g_negative_marks);
         }
 
-        setData();
+        setData(isFree);
 
         /*loadQuestions(new MyCompleteListener() {
             @Override
@@ -93,14 +97,25 @@ public class StartTest extends AppCompatActivity {
 
     }
 
-    private void setData() {
+    private void setData(boolean isFree) {
         txtCategoryName.setText(g_catList.get(DbQuery.g_selected_cat_index).getName());
-        txtTestTitle.setText(String.valueOf(DbQuery.g_testList.get(DbQuery.g_selected_test_index).getTestId()));
-        txtQuestions.setText(String.valueOf(DbQuery.g_question_list.size()));
 
-        txtBestScore.setText(String.valueOf(DbQuery.g_testList.get(DbQuery.g_selected_test_index).getTopScore()));
+        if (isFree) {
+            txtTestTitle.setText(String.valueOf(DbQuery.g_freeTrialTestList.get(DbQuery.g_selected_test_index).getTestId()));
+            txtQuestions.setText(String.valueOf(DbQuery.g_question_list.size()));
 
-        txtTime.setText(String.valueOf(DbQuery.g_testList.get(DbQuery.g_selected_test_index).getTime()) + " m");
+            txtBestScore.setText(String.valueOf(DbQuery.g_freeTrialTestList.get(DbQuery.g_selected_test_index).getTopScore()));
+
+            txtTime.setText(String.valueOf(DbQuery.g_freeTrialTestList.get(DbQuery.g_selected_test_index).getTime()) + " m");
+        } else {
+            txtTestTitle.setText(String.valueOf(DbQuery.g_testList.get(DbQuery.g_selected_test_index).getTestId()));
+            txtQuestions.setText(String.valueOf(DbQuery.g_question_list.size()));
+
+            txtBestScore.setText(String.valueOf(DbQuery.g_testList.get(DbQuery.g_selected_test_index).getTopScore()));
+
+            txtTime.setText(String.valueOf(DbQuery.g_testList.get(DbQuery.g_selected_test_index).getTime()) + " m");
+        }
+
     }
 
 }

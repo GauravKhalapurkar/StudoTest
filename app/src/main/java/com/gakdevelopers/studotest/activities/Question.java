@@ -3,6 +3,7 @@ package com.gakdevelopers.studotest.activities;
 import static com.gakdevelopers.studotest.database.DbQuery.NOT_VISITED;
 import static com.gakdevelopers.studotest.database.DbQuery.UNANSWERED;
 import static com.gakdevelopers.studotest.database.DbQuery.g_catList;
+import static com.gakdevelopers.studotest.database.DbQuery.g_freeTrialTestList;
 import static com.gakdevelopers.studotest.database.DbQuery.g_question_list;
 import static com.gakdevelopers.studotest.database.DbQuery.g_selected_cat_index;
 import static com.gakdevelopers.studotest.database.DbQuery.g_selected_test_index;
@@ -34,7 +35,10 @@ import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.adapters.QuestionsAdapter;
 import com.gakdevelopers.studotest.adapters.QuestionsGridAdapter;
 import com.gakdevelopers.studotest.database.DbQuery;
+import com.gakdevelopers.studotest.models.TestsModel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Question extends AppCompatActivity {
@@ -59,6 +63,10 @@ public class Question extends AppCompatActivity {
 
     private GridView gridView;
 
+    private List<TestsModel> myList = new ArrayList<>();
+
+    private static boolean isFree;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +90,15 @@ public class Question extends AppCompatActivity {
         gridView = (GridView) findViewById(R.id.gridView);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+
+        Intent intent = getIntent();
+        isFree = intent.getBooleanExtra("isFree", false);
+
+        if (isFree) {
+            myList = g_freeTrialTestList;
+        } else {
+            myList = g_testList;
+        }
 
         questionId = 0;
 
@@ -218,8 +235,9 @@ public class Question extends AppCompatActivity {
                         finish();
 
                         Intent intent = new Intent(Question.this, Score.class);
-                        long totalTime = g_testList.get(g_selected_test_index).getTime() * 60 * 1000;
+                        long totalTime = myList.get(g_selected_test_index).getTime() * 60 * 1000;
                         intent.putExtra("timeTaken", totalTime - timeLeft);
+                        intent.putExtra("isFree", isFree);
                         startActivity(intent);
                         Question.this.finish();
                     }
@@ -237,7 +255,7 @@ public class Question extends AppCompatActivity {
     }
 
     private void startTimer() {
-        long totalTime = g_testList.get(g_selected_test_index).getTime() * 60 * 1000;
+        long totalTime = myList.get(g_selected_test_index).getTime() * 60 * 1000;
 
         timer = new CountDownTimer(totalTime + 1000, 1000) {
             @Override
@@ -255,8 +273,9 @@ public class Question extends AppCompatActivity {
             @Override
             public void onFinish() {
                 Intent intent = new Intent(Question.this, Score.class);
-                long totalTime = g_testList.get(g_selected_test_index).getTime() * 60 * 1000;
+                long totalTime = myList.get(g_selected_test_index).getTime() * 60 * 1000;
                 intent.putExtra("timeTaken", totalTime - timeLeft);
+                intent.putExtra("isFree", isFree);
                 startActivity(intent);
                 Question.this.finish();
             }

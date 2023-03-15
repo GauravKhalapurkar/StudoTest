@@ -35,6 +35,8 @@ public class Answers extends AppCompatActivity {
 
     Intent intent;
 
+    private boolean isFree;
+
     ProgressDialog loading;
 
     @Override
@@ -53,6 +55,7 @@ public class Answers extends AppCompatActivity {
         if (intent != null) {
             fromTestAdapter = intent.getBooleanExtra("fromTestAdapter", false);
             position = intent.getIntExtra("position", 0);
+            isFree = intent.getBooleanExtra("isFree", false);
         }
 
         setSupportActionBar(toolbar);
@@ -71,7 +74,7 @@ public class Answers extends AppCompatActivity {
 
             DbQuery.g_selected_test_index = position;
 
-            DbQuery.loadViewAnswers(new MyCompleteListener() {
+            DbQuery.loadViewAnswers(isFree, new MyCompleteListener() {
                 @Override
                 public void onSuccess() {
                     ViewAnswersAdapter adapter = new ViewAnswersAdapter(DbQuery.g_view_answers_list);

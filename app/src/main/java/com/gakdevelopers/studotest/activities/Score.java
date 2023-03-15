@@ -1,5 +1,6 @@
 package com.gakdevelopers.studotest.activities;
 
+import static com.gakdevelopers.studotest.database.DbQuery.g_freeTrialTestList;
 import static com.gakdevelopers.studotest.database.DbQuery.g_selected_test_index;
 import static com.gakdevelopers.studotest.database.DbQuery.g_testList;
 
@@ -14,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,7 +25,10 @@ import android.widget.Toast;
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
+import com.gakdevelopers.studotest.models.TestsModel;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Score extends AppCompatActivity {
@@ -41,6 +46,10 @@ public class Score extends AppCompatActivity {
     private int finalScore, marksObtained;
 
     private String displayScore;
+
+    private List<TestsModel> myList = new ArrayList<>();
+
+    private static boolean isFree;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +78,17 @@ public class Score extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(true);
         getSupportActionBar().setTitle("Result");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent intent = getIntent();
+        isFree = intent.getBooleanExtra("isFree", false);
+
+        Log.d("isFree_IN_SCORE", String.valueOf(isFree));
+
+        if (isFree) {
+            myList = g_freeTrialTestList;
+        } else {
+            myList = g_testList;
+        }
 
         loading =  ProgressDialog.show(Score.this,"Loading","Please Wait",false,false);
 
@@ -99,7 +119,7 @@ public class Score extends AppCompatActivity {
                 sharingIntent.setType("text/plain");
                 String shareBody = "Hi, " +
                         "\n\n" +
-                        "I scored " + displayScore + " in " + g_testList.get(g_selected_test_index).getTestId() + " test in the StudoTest App." +
+                        "I scored " + displayScore + " in " + myList.get(g_selected_test_index).getTestId() + " test in the StudoTest App." +
                         "\n\n" +
                         "Let's come together to compete. Download StudoTest now from Google Play Store: \n\n" +
                         "https://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName();
@@ -160,7 +180,7 @@ public class Score extends AppCompatActivity {
 
         saveResult();
 
-        DbQuery.loadLeaderboard(finalScore, new MyCompleteListener() {
+        DbQuery.loadLeaderboard(isFree, finalScore, new MyCompleteListener() {
             @Override
             public void onSuccess() {
                 txtYourRank.setText("Your Rank: " + DbQuery.g_rank + " / " + DbQuery.g_all_leader_scores.size());
@@ -176,7 +196,7 @@ public class Score extends AppCompatActivity {
     }
 
     private void saveResult() {
-        DbQuery.saveResult(finalScore, new MyCompleteListener() {
+        DbQuery.saveResult(isFree, finalScore, new MyCompleteListener() {
             @Override
             public void onSuccess() {
                 loading.dismiss();
