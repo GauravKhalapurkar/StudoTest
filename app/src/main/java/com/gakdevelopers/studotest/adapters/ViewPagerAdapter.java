@@ -11,18 +11,21 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.gakdevelopers.studotest.R;
+import com.gakdevelopers.studotest.database.DbQuery;
+import com.squareup.picasso.Picasso;
 
+import java.util.List;
 import java.util.Objects;
 
 public class ViewPagerAdapter extends PagerAdapter {
 
     Context context;
 
-    int[] images;
+    List<String> images;
 
     LayoutInflater mLayoutInflater;
 
-    public ViewPagerAdapter(Context context, int[] images) {
+    public ViewPagerAdapter(Context context, List<String> images) {
         this.context = context;
         this.images = images;
         mLayoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -30,7 +33,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
-        return images.length;
+        return images.size();
     }
 
     @Override
@@ -45,7 +48,11 @@ public class ViewPagerAdapter extends PagerAdapter {
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.imgCarousel);
 
-        imageView.setImageResource(images[position]);
+        //imageView.setImageResource(1);
+
+        Picasso.with(context)
+                .load(DbQuery.g_home_posters.get(position))
+                .into(imageView);
 
         Objects.requireNonNull(container).addView(itemView);
 

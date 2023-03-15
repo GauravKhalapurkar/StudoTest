@@ -4,6 +4,7 @@ import static androidx.constraintlayout.helper.widget.MotionEffect.TAG;
 
 import android.util.ArrayMap;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -56,6 +57,8 @@ public class DbQuery {
     public static List<Integer> g_my_courses_list_indexes = new ArrayList<>();
 
     public static List<String> g_my_courses_list = new ArrayList<>();
+
+    public static List<String> g_home_posters = new ArrayList<>();
 
     public static List<Integer> g_all_leader_scores = new ArrayList<>();
 
@@ -124,6 +127,31 @@ public class DbQuery {
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        completeListener.onFailure();
+                    }
+                });
+    }
+
+    public static void loadHomePosters(MyCompleteListener completeListener) {
+        g_home_posters.clear();
+
+        g_fireStore.collection("HOME_POSTERS").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+
+                            for (DocumentSnapshot doc : queryDocumentSnapshots) {
+                                g_home_posters.add(doc.getString("URL"));
+                            }
+
+                        }
+
+                        completeListener.onSuccess();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         completeListener.onFailure();

@@ -34,6 +34,7 @@ public class FirebaseNotification extends FirebaseMessagingService {
                 .setContentTitle(title)
                 .setContentText(message)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setPriority(NotificationManager.IMPORTANCE_HIGH)
                 .setContentIntent(pendingIntent);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -42,7 +43,7 @@ public class FirebaseNotification extends FirebaseMessagingService {
                     CHANNEL_NAME,
                     NotificationManager.IMPORTANCE_HIGH
             );
-            channel1.setDescription("This is expiry reminder");
+            channel1.setDescription("StudoTest Notifications");
 
             NotificationManager manager = getSystemService(NotificationManager.class);
             manager.createNotificationChannel(channel1);

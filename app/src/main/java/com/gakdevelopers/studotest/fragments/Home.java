@@ -3,6 +3,7 @@ package com.gakdevelopers.studotest.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
 import com.tbuonomo.viewpagerdotsindicator.SpringDotsIndicator;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -57,7 +59,21 @@ public class Home extends Fragment {
 
         dot1 =  view.findViewById(R.id.spring_dots_indicator);
 
-        loadCarouselContent();
+        //loadCarouselContent();
+
+        DbQuery.loadHomePosters(new MyCompleteListener() {
+            @Override
+            public void onSuccess() {
+                Log.d("HOME_POSTERS", String.valueOf(DbQuery.g_home_posters));
+
+                loadCarouselContent(DbQuery.g_home_posters);
+            }
+
+            @Override
+            public void onFailure() {
+
+            }
+        });
 
         cardFreeTest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,8 +118,8 @@ public class Home extends Fragment {
         return view;
     }
 
-    private void loadCarouselContent() {
-        mViewPagerAdapter = new ViewPagerAdapter(getActivity(), images);
+    private void loadCarouselContent(List<String> url) {
+        mViewPagerAdapter = new ViewPagerAdapter(getActivity(), url);
 
         mViewPager.setAdapter(mViewPagerAdapter);
 
