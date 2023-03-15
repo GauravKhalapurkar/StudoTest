@@ -106,30 +106,6 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         dialogPrivacy.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
         dialogContact.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
         dialogAbout.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-
-        /*DbQuery.g_fireStore.collection("NOTIFICATIONS")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(QuerySnapshot snapshots, FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w(TAG, "listen:error", e);
-                            return;
-                        }
-                        for (DocumentChange dc : snapshots.getDocumentChanges()) {
-                            if (dc.getType() == DocumentChange.Type.ADDED) {
-                                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                                Intent intent = new Intent(Main.this, NotificationReceiver.class);
-                                PendingIntent pendingIntent = PendingIntent.getBroadcast(Main.this, 1, intent, 0);
-
-                                alarmManager.setExact(AlarmManager.RTC_WAKEUP, 0, pendingIntent);
-
-
-                                break;
-                            }
-                        }
-                    }
-                });*/
-
     }
 
     @Override

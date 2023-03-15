@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="HardcodedText">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single" android:visible="false">
 
         <item
             android:id="@+id/item_home"
