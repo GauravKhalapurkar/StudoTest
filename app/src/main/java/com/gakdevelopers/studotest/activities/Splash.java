@@ -3,6 +3,8 @@ package com.gakdevelopers.studotest.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,12 +14,15 @@ import com.gakdevelopers.studotest.BuildConfig;
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
+import com.gakdevelopers.studotest.internet.NetworkChangeListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Splash extends AppCompatActivity {
 
     FirebaseAuth mAuth;
+
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,5 +85,18 @@ public class Splash extends AppCompatActivity {
                 }
             }
         },3000);
+    }
+
+    @Override
+    protected void onStart() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, filter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
     }
 }

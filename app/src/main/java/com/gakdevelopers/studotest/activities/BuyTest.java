@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
+import com.gakdevelopers.studotest.internet.NetworkChangeListener;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 
@@ -35,6 +38,8 @@ public class BuyTest extends AppCompatActivity implements PaymentResultListener 
     private ProgressDialog loading;
 
     private String couponCode = null;
+
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,5 +189,18 @@ public class BuyTest extends AppCompatActivity implements PaymentResultListener 
                 loading.dismiss();
             }
         });
+    }
+
+    @Override
+    protected void onStart() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, filter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
     }
 }

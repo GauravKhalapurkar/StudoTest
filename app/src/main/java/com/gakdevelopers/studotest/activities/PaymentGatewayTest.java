@@ -2,6 +2,8 @@ package com.gakdevelopers.studotest.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -9,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.gakdevelopers.studotest.R;
+import com.gakdevelopers.studotest.internet.NetworkChangeListener;
 import com.razorpay.Checkout;
 import com.razorpay.PaymentResultListener;
 
@@ -20,6 +23,8 @@ public class PaymentGatewayTest extends AppCompatActivity implements PaymentResu
     EditText editAmount;
 
     Button btnPay;
+
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,5 +100,18 @@ public class PaymentGatewayTest extends AppCompatActivity implements PaymentResu
     public void onPaymentError(int i, String s) {
         // on payment failed.
         Toast.makeText(this, "Payment Failed due to error : " + s, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onStart() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, filter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
     }
 }

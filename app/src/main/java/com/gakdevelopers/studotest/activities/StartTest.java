@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
+import com.gakdevelopers.studotest.internet.NetworkChangeListener;
 
 public class StartTest extends AppCompatActivity {
 
@@ -28,6 +31,8 @@ public class StartTest extends AppCompatActivity {
     private ImageView imgBack;
 
     ProgressDialog loading;
+
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +121,19 @@ public class StartTest extends AppCompatActivity {
             txtTime.setText(String.valueOf(DbQuery.g_testList.get(DbQuery.g_selected_test_index).getTime()) + " m");
         }
 
+    }
+
+    @Override
+    protected void onStart() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, filter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
     }
 
 }

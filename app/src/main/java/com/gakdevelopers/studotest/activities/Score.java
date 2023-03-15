@@ -11,8 +11,10 @@ import androidx.cardview.widget.CardView;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,6 +27,7 @@ import android.widget.Toast;
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
+import com.gakdevelopers.studotest.internet.NetworkChangeListener;
 import com.gakdevelopers.studotest.models.TestsModel;
 
 import java.util.ArrayList;
@@ -50,6 +53,8 @@ public class Score extends AppCompatActivity {
     private List<TestsModel> myList = new ArrayList<>();
 
     private static boolean isFree;
+
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -227,5 +232,18 @@ public class Score extends AppCompatActivity {
 
         startActivity(new Intent(Score.this, Main.class));
         Score.this.finish();
+    }
+
+    @Override
+    protected void onStart() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, filter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
     }
 }

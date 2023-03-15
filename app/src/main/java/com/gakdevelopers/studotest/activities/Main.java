@@ -1,6 +1,8 @@
 package com.gakdevelopers.studotest.activities;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -8,18 +10,21 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.fragments.Home;
 import com.gakdevelopers.studotest.fragments.Notifications;
 import com.gakdevelopers.studotest.fragments.MyCourses;
 import com.gakdevelopers.studotest.fragments.Profile;
+import com.gakdevelopers.studotest.internet.NetworkChangeListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationBarView;
@@ -34,7 +39,7 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     BottomNavigationView bottomNavigationView;
 
     Home home = new Home();
-    MyCourses myCourses  = new MyCourses();
+    MyCourses myCourses = new MyCourses();
     Notifications notifications = new Notifications();
     Profile profile = new Profile();
 
@@ -43,6 +48,8 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     BottomSheetDialog dialogTerms, dialogRefund, dialogPrivacy, dialogContact, dialogAbout;
 
     ImageView imgClose;
+
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,13 +118,17 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.item_home: getSupportFragmentManager().beginTransaction().replace(R.id.container, home).commit();
+            case R.id.item_home:
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, home).commit();
                 break;
-            case R.id.item_my_courses: getSupportFragmentManager().beginTransaction().replace(R.id.container, myCourses).commit();
+            case R.id.item_my_courses:
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, myCourses).commit();
                 break;
-            case R.id.item_notifications: getSupportFragmentManager().beginTransaction().replace(R.id.container, notifications).commit();
+            case R.id.item_notifications:
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, notifications).commit();
                 break;
-            case R.id.item_profile: getSupportFragmentManager().beginTransaction().replace(R.id.container, profile).commit();
+            case R.id.item_profile:
+                getSupportFragmentManager().beginTransaction().replace(R.id.container, profile).commit();
                 break;
             case R.id.item_about: {
                 createAboutDialog();
@@ -138,13 +149,14 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
                 createTermsDialog();
                 dialogTerms.show();
             }
-                break;
+            break;
             case R.id.item_refund_policy: {
                 createRefundDialog();
                 dialogRefund.show();
             }
-                break;
-            case R.id.item_share: shareApp();
+            break;
+            case R.id.item_share:
+                shareApp();
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -235,5 +247,18 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, filter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
     }
 }

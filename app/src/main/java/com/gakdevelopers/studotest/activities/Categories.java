@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,6 +17,7 @@ import android.widget.TextView;
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.adapters.CategoryAdapter;
 import com.gakdevelopers.studotest.database.DbQuery;
+import com.gakdevelopers.studotest.internet.NetworkChangeListener;
 import com.gakdevelopers.studotest.models.CategoryModel;
 
 import java.util.ArrayList;
@@ -27,6 +30,8 @@ public class Categories extends AppCompatActivity {
     String categoryName;
 
     GridView gridView;
+
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +64,19 @@ public class Categories extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, filter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
     }
 
 }

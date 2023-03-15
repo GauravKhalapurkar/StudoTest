@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.SnapHelper;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -35,6 +37,7 @@ import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.adapters.QuestionsAdapter;
 import com.gakdevelopers.studotest.adapters.QuestionsGridAdapter;
 import com.gakdevelopers.studotest.database.DbQuery;
+import com.gakdevelopers.studotest.internet.NetworkChangeListener;
 import com.gakdevelopers.studotest.models.TestsModel;
 
 import java.util.ArrayList;
@@ -66,6 +69,8 @@ public class Question extends AppCompatActivity {
     private List<TestsModel> myList = new ArrayList<>();
 
     private static boolean isFree;
+
+    NetworkChangeListener networkChangeListener = new NetworkChangeListener();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -282,6 +287,19 @@ public class Question extends AppCompatActivity {
         };
 
         timer.start();
+    }
+
+    @Override
+    protected void onStart() {
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeListener, filter);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        unregisterReceiver(networkChangeListener);
+        super.onStop();
     }
 
 }

@@ -1,5 +1,6 @@
 package com.gakdevelopers.studotest.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +16,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.activities.Categories;
+import com.gakdevelopers.studotest.activities.Tests;
 import com.gakdevelopers.studotest.adapters.ViewPagerAdapter;
 import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
@@ -38,6 +40,8 @@ public class Home extends Fragment {
 
     int currentPage = 0;
     Timer timer;
+
+    ProgressDialog loading;
 
     public Home() {
     }
@@ -78,17 +82,22 @@ public class Home extends Fragment {
         cardFreeTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                loading =  ProgressDialog.show(getActivity(),"Loading","Please Wait",false,false);
+
                 DbQuery.loadData("FREE_TESTS", new MyCompleteListener() {
                     @Override
                     public void onSuccess() {
                         Intent intent = new Intent(getActivity(), Categories.class);
                         intent.putExtra("categoryName", "FREE_TESTS");
                         startActivity(intent);
+                        loading.dismiss();
                     }
 
                     @Override
                     public void onFailure() {
                         Toast.makeText(getActivity(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                        loading.dismiss();
                     }
                 });
 
@@ -99,17 +108,22 @@ public class Home extends Fragment {
         cardTestSeries.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                loading =  ProgressDialog.show(getActivity(),"Loading","Please Wait",false,false);
+
                 DbQuery.loadData("PAID_TESTS", new MyCompleteListener() {
                     @Override
                     public void onSuccess() {
                         Intent intent = new Intent(getActivity(), Categories.class);
                         intent.putExtra("categoryName", "PAID_TESTS");
                         startActivity(intent);
+                        loading.dismiss();
                     }
 
                     @Override
                     public void onFailure() {
                         Toast.makeText(getActivity(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                        loading.dismiss();
                     }
                 });
             }
