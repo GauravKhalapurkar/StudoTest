@@ -719,6 +719,7 @@ public class DbQuery {
                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
                             for (DocumentSnapshot doc : queryDocumentSnapshots) {
                                 g_question_list.add(new Question(
                                         doc.getString("QUESTION"),
@@ -732,6 +733,7 @@ public class DbQuery {
                                         NOT_VISITED
                                 ));
                             }
+
                             completeListener.onSuccess();
                         }
                     })

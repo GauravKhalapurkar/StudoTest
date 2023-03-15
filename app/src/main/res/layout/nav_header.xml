@@ -25,7 +25,6 @@
             android:textSize="@dimen/_40sdp"
             android:textColor="@color/colorWhite"
             android:gravity="center"
-            android:layout_marginTop="@dimen/_10sdp"
             android:fontFamily="@font/semibolditalic" />
 
     </androidx.cardview.widget.CardView>

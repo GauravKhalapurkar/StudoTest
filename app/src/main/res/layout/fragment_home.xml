@@ -79,7 +79,8 @@
                     android:textSize="@dimen/text_size"
                     android:textColor="@color/colorBlack"
                     android:layout_gravity="center_horizontal"
-                    android:fontFamily="@font/regular" />
+                    android:fontFamily="@font/regular"
+                    android:layout_marginVertical="@dimen/_6sdp"/>
 
             </LinearLayout>
 
@@ -114,7 +115,8 @@
                     android:textSize="@dimen/text_size"
                     android:textColor="@color/colorBlack"
                     android:layout_gravity="center_horizontal"
-                    android:fontFamily="@font/regular" />
+                    android:fontFamily="@font/regular"
+                    android:layout_marginVertical="@dimen/_6sdp" />
 
             </LinearLayout>
 
