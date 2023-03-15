@@ -189,11 +189,15 @@ public class DbQuery {
 
                         g_rank = 1;
 
-                        for (int s = 0; s < g_all_leader_scores.size(); s++) {
-                            if (g_all_leader_scores.get(s) > myScore)
-                                g_rank++;
-                            else
-                                break;
+                        if (myScore == 0) {
+                            g_rank = g_all_leader_scores.size();
+                        } else {
+                            for (int s = 0; s < g_all_leader_scores.size(); s++) {
+                                if (g_all_leader_scores.get(s) > myScore)
+                                    g_rank++;
+                                else
+                                    break;
+                            }
                         }
 
                         Log.d("ALL_SCORES_MY_RANK", String.valueOf(g_rank));
