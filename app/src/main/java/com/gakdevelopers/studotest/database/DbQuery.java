@@ -50,6 +50,8 @@ public class DbQuery {
 
     public static int g_selected_cat_index = 0;
 
+    public static int g_app_version = 0;
+
     public static List<TestsModel> g_testList = new ArrayList<>();
 
     public static List<String> g_couponList = new ArrayList<>();
@@ -124,6 +126,34 @@ public class DbQuery {
 
                         completeListener.onSuccess();
 
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        completeListener.onFailure();
+                    }
+                });
+    }
+
+    public static void checkForUpdates(MyCompleteListener completeListener) {
+        g_fireStore.collection("APP_VERSION")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                            for (DocumentSnapshot d : list) {
+                                g_app_version = Math.toIntExact(d.getLong("VERSION_CODE"));
+                            }
+
+                            Log.d("V_C_", String.valueOf(g_app_version));
+                        } else {
+                            completeListener.onFailure();
+                        }
+
+                        completeListener.onSuccess();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

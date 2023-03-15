@@ -3,10 +3,12 @@ package com.gakdevelopers.studotest.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.Toast;
 
+import com.gakdevelopers.studotest.BuildConfig;
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
@@ -25,26 +27,45 @@ public class Splash extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         DbQuery.g_fireStore = FirebaseFirestore.getInstance();
 
-        if (mAuth.getCurrentUser() != null) {
-            DbQuery.loadData("PAID_TESTS", new MyCompleteListener() {
-                @Override
-                public void onSuccess() {
-                    Intent intent = new Intent(Splash.this, Main.class);
-                    startTimer(intent);
-                }
-                @Override
-                public void onFailure() {
-                    Toast.makeText(Splash.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(Splash.this, SignIn.class);
+        int versionCode = BuildConfig.VERSION_CODE;
 
-                    startTimer(intent);
-                }
-            });
+        DbQuery.checkForUpdates(new MyCompleteListener() {
+            @Override
+            public void onSuccess() {
+                if (versionCode != DbQuery.g_app_version) {
+                    Toast.makeText(Splash.this, "New update available.", Toast.LENGTH_SHORT).show();
+                    Uri uri = Uri.parse("https://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName());
+                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                } else {
+                    if (mAuth.getCurrentUser() != null) {
+                        DbQuery.loadData("PAID_TESTS", new MyCompleteListener() {
+                            @Override
+                            public void onSuccess() {
+                                Intent intent = new Intent(Splash.this, Main.class);
+                                startTimer(intent);
+                            }
+                            @Override
+                            public void onFailure() {
+                                Toast.makeText(Splash.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(Splash.this, SignIn.class);
 
-        } else {
-            Intent intent = new Intent(Splash.this, SignIn.class);
-            startTimer(intent);
-        }
+                                startTimer(intent);
+                            }
+                        });
+
+                    } else {
+                        Intent intent = new Intent(Splash.this, SignIn.class);
+                        startTimer(intent);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure() {
+                Toast.makeText(Splash.this, "Unable to check App Updates. Please try again!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void startTimer(Intent intent) {
