@@ -1,40 +1,27 @@
 package com.gakdevelopers.studotest.fragments;
 
-import static com.gakdevelopers.studotest.database.DbQuery.g_users_count;
-import static com.gakdevelopers.studotest.database.DbQuery.g_users_list;
-import static com.gakdevelopers.studotest.database.DbQuery.myPerformance;
-
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
-
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.activities.EditProfile;
-import com.gakdevelopers.studotest.activities.Main;
 import com.gakdevelopers.studotest.activities.SignIn;
-import com.gakdevelopers.studotest.activities.SignUp;
 import com.gakdevelopers.studotest.database.DbQuery;
-import com.gakdevelopers.studotest.interfaces.MyCompleteListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class Profile extends Fragment {
 
-    private TextView txtFirstLetter, txtName, txtRank, txtScore;
+    private TextView txtFirstLetter, txtName, txtRank, txtUserId;
 
-    private CardView cardLogout, cardLeaderboard, cardEditProfile;
+    private CardView cardLogout, cardEditProfile;
 
     private BottomNavigationView bottomNavigationView;
-
-    private ProgressDialog loading;
 
     public Profile() {
     }
@@ -58,50 +45,20 @@ public class Profile extends Fragment {
         txtFirstLetter = (TextView) view.findViewById(R.id.txtFirstLetter);
         txtName = (TextView) view.findViewById(R.id.txtName);
         txtRank = (TextView) view.findViewById(R.id.txtRank);
-        txtScore = (TextView) view.findViewById(R.id.txtScore);
 
-        cardLeaderboard = (CardView) view.findViewById(R.id.cardLeaderboard);
+        txtUserId = (TextView) view.findViewById(R.id.txtUserId);
+        txtUserId.setSelected(true);
+
         cardLogout = (CardView) view.findViewById(R.id.cardLogout);
         cardEditProfile = (CardView) view.findViewById(R.id.cardEditProfile);
 
         bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationView);
 
         String username = DbQuery.myProfile.getName();
+        String userID = DbQuery.myProfile.getUserID();
         txtFirstLetter.setText(username.toUpperCase().substring(0,1));
         txtName.setText(username);
-
-        txtScore.setText(String.valueOf(DbQuery.myPerformance.getScore()));
-
-//        if (DbQuery.g_users_list.size() == 0) {
-//            loading =  ProgressDialog.show(getContext(),"Loading","Please Wait",false,false);
-//
-//            DbQuery.getTopUsers(new MyCompleteListener() {
-//                @Override
-//                public void onSuccess() {
-//
-//                    if (myPerformance.getScore() != 0) {
-//                        if (!DbQuery.iAmInTopList) {
-//                            calculateRank();
-//                        }
-//
-//                        txtScore.setText("" + myPerformance.getScore());
-//                        txtRank.setText("" + myPerformance.getRank());
-//                    }
-//
-//                    loading.dismiss();
-//                }
-//
-//                @Override
-//                public void onFailure() {
-//                    Toast.makeText(getContext(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
-//                    loading.dismiss();
-//                }
-//            });
-//        } else {
-//            txtScore.setText("" + myPerformance.getScore());
-//            if (myPerformance.getScore() != 0)
-//                txtRank.setText("" + myPerformance.getRank());
-//        }
+        txtUserId.setText(userID);
 
         cardEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,13 +67,6 @@ public class Profile extends Fragment {
                     startActivity(intent);
             }
         });
-
-        /*cardLeaderboard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bottomNavigationView.setSelectedItemId(R.id.item_leaderboard);
-            }
-        });*/
 
         cardLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,22 +81,4 @@ public class Profile extends Fragment {
 
         return view;
     }
-
-    /*private void calculateRank() {
-        int lowTopScore = g_users_list.get(g_users_list.size() - 1).getScore();
-
-        int remainingSlots = g_users_count - 25;
-
-        int mySlot = myPerformance.getScore() * remainingSlots / lowTopScore;
-
-        int rank;
-
-        if (lowTopScore != myPerformance.getScore()) {
-            rank = g_users_count - mySlot;
-        } else {
-            rank = 26;
-        }
-
-        myPerformance.setRank(rank);
-    }*/
 }

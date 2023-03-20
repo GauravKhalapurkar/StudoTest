@@ -3,10 +3,12 @@ package com.gakdevelopers.studotest.models;
 public class Profile {
     private String name;
     private String email;
+    private String userID;
 
-    public Profile(String name, String email) {
+    public Profile(String name, String email, String userID) {
         this.name = name;
         this.email = email;
+        this.userID = userID;
     }
 
     public String getName() {
@@ -23,5 +25,13 @@ public class Profile {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+
+    public void setUserID(String userID) {
+        this.userID = userID;
     }
 }
