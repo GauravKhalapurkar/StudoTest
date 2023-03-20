@@ -76,7 +76,7 @@ public class DbQuery {
 
     public static List<ViewAnswer> g_view_answers_list = new ArrayList<>();
 
-    public static Profile myProfile = new Profile("NA", null);
+    public static Profile myProfile = new Profile("NA", null, null);
 
     public static Rank myPerformance = new Rank("NULL", 0, -1);
 
@@ -436,9 +436,10 @@ public class DbQuery {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         myProfile.setName(documentSnapshot.getString("NAME"));
                         myProfile.setEmail(documentSnapshot.getString("EMAIL_ID"));
+                        myProfile.setUserID(FirebaseAuth.getInstance().getUid());
 
                         //myPerformance.setScore(documentSnapshot.getLong("TOTAL_SCORE").intValue());
-                        myPerformance.setName(documentSnapshot.getString("NAME"));
+                        //myPerformance.setName(documentSnapshot.getString("NAME"));
 
                         completeListener.onSuccess();
                     }
