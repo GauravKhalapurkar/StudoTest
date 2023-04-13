@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -65,20 +67,29 @@ public class EditProfile extends AppCompatActivity {
 
                 loading =  ProgressDialog.show(EditProfile.this,"Loading","Please Wait",false,false);
 
-                DbQuery.updateProfile(email, fullName, new MyCompleteListener() {
-                    @Override
-                    public void onSuccess() {
-                        Toast.makeText(EditProfile.this, "Profile updated successfully!", Toast.LENGTH_SHORT).show();
-                        loading.dismiss();
-                        EditProfile.this.finish();
-                    }
+                try {
+                    DbQuery.updateProfile(email, fullName, new MyCompleteListener() {
+                        @Override
+                        public void onSuccess() {
+                            Toast.makeText(EditProfile.this, "Profile updated successfully!", Toast.LENGTH_SHORT).show();
+                            loading.dismiss();
+                            startActivity(new Intent(EditProfile.this, Main.class));
+                            EditProfile.this.finish();
+                        }
 
-                    @Override
-                    public void onFailure() {
-                        Toast.makeText(EditProfile.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
-                        loading.dismiss();
-                    }
-                });
+                        @Override
+                        public void onFailure() {
+                            Toast.makeText(EditProfile.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                            loading.dismiss();
+                        }
+                    });
+                } catch (Exception e) {
+                    Toast.makeText(EditProfile.this, "Error Code: 705. Please restart app and try again!", Toast.LENGTH_SHORT).show();
+                    Log.d("ERROR_CODE", e.getMessage());
+                }
+
+                loading.dismiss();
+
             }
         });
 

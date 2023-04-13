@@ -63,71 +63,73 @@ public class Home extends Fragment {
 
         dot1 =  view.findViewById(R.id.spring_dots_indicator);
 
-        //loadCarouselContent();
+        try {
+            DbQuery.loadHomePosters(new MyCompleteListener() {
+                @Override
+                public void onSuccess() {
+                    loadCarouselContent(DbQuery.g_home_posters);
+                }
 
-        DbQuery.loadHomePosters(new MyCompleteListener() {
-            @Override
-            public void onSuccess() {
-                Log.d("HOME_POSTERS", String.valueOf(DbQuery.g_home_posters));
+                @Override
+                public void onFailure() {
 
-                loadCarouselContent(DbQuery.g_home_posters);
-            }
+                }
+            });
 
-            @Override
-            public void onFailure() {
+            cardFreeTest.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-            }
-        });
+                    loading =  ProgressDialog.show(getActivity(),"Loading","Please Wait",false,false);
 
-        cardFreeTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+                    DbQuery.loadData("FREE_TESTS", new MyCompleteListener() {
+                        @Override
+                        public void onSuccess() {
+                            Intent intent = new Intent(getActivity(), Categories.class);
+                            intent.putExtra("categoryName", "FREE_TESTS");
+                            startActivity(intent);
+                            loading.dismiss();
+                        }
 
-                loading =  ProgressDialog.show(getActivity(),"Loading","Please Wait",false,false);
-
-                DbQuery.loadData("FREE_TESTS", new MyCompleteListener() {
-                    @Override
-                    public void onSuccess() {
-                        Intent intent = new Intent(getActivity(), Categories.class);
-                        intent.putExtra("categoryName", "FREE_TESTS");
-                        startActivity(intent);
-                        loading.dismiss();
-                    }
-
-                    @Override
-                    public void onFailure() {
-                        Toast.makeText(getActivity(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
-                        loading.dismiss();
-                    }
-                });
+                        @Override
+                        public void onFailure() {
+                            Toast.makeText(getActivity(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                            loading.dismiss();
+                        }
+                    });
 
 
-            }
-        });
+                }
+            });
 
-        cardTestSeries.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            cardTestSeries.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-                loading =  ProgressDialog.show(getActivity(),"Loading","Please Wait",false,false);
+                    loading =  ProgressDialog.show(getActivity(),"Loading","Please Wait",false,false);
 
-                DbQuery.loadData("PAID_TESTS", new MyCompleteListener() {
-                    @Override
-                    public void onSuccess() {
-                        Intent intent = new Intent(getActivity(), Categories.class);
-                        intent.putExtra("categoryName", "PAID_TESTS");
-                        startActivity(intent);
-                        loading.dismiss();
-                    }
+                    DbQuery.loadData("PAID_TESTS", new MyCompleteListener() {
+                        @Override
+                        public void onSuccess() {
+                            Intent intent = new Intent(getActivity(), Categories.class);
+                            intent.putExtra("categoryName", "PAID_TESTS");
+                            startActivity(intent);
+                            loading.dismiss();
+                        }
 
-                    @Override
-                    public void onFailure() {
-                        Toast.makeText(getActivity(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
-                        loading.dismiss();
-                    }
-                });
-            }
-        });
+                        @Override
+                        public void onFailure() {
+                            Toast.makeText(getActivity(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                            loading.dismiss();
+                        }
+                    });
+                }
+            });
+
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), "Error Code: 700. Please restart app and try again!", Toast.LENGTH_SHORT).show();
+            Log.d("ERROR_CODE", e.getMessage());
+        }
 
         return view;
     }

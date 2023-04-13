@@ -38,6 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Test Title"
+            android:textAlignment="center"
             android:textSize="@dimen/text_size"
             android:textColor="@color/colorGreyDark"
             android:fontFamily="@font/regular"/>

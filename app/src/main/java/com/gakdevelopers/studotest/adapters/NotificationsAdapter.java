@@ -8,11 +8,14 @@ import android.widget.TextView;
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.models.NotificationsModel;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class NotificationsAdapter extends BaseAdapter {
 
     private List<NotificationsModel> notificationsList;
+
+    private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm aa");
 
     public NotificationsAdapter(List<NotificationsModel> notificationsList) {
         this.notificationsList = notificationsList;
@@ -49,7 +52,7 @@ public class NotificationsAdapter extends BaseAdapter {
 
         txtNotificationTitle.setText("" + notificationsList.get(i).getTitle());
         txtNotificationDesc.setText("" + notificationsList.get(i).getDesc());
-        txtNotificationTime.setText("" + notificationsList.get(i).getTime());
+        txtNotificationTime.setText("" + sdf.format(notificationsList.get(i).getTime()));
 
         return v;
     }

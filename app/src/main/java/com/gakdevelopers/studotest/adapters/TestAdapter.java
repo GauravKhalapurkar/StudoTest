@@ -117,18 +117,42 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
                     @Override
                     public void onClick(View view) {
 
-                        if (!testType.equals("FREE_TESTS")) {
-                            if (Tests.isCourseBought) {
-                                if (attempt < 3) {
-                                    Log.d("P_O_S_", String.valueOf(position));
+                        try {
+                            if (!testType.equals("FREE_TESTS")) {
+                                if (Tests.isCourseBought) {
+                                    if (attempt < 3) {
+                                        Log.d("P_O_S_", String.valueOf(position));
 
+                                        DbQuery.g_selected_test_index = position;
+
+                                        loadQuestions(false, new MyCompleteListener() {
+                                            @Override
+                                            public void onSuccess() {
+                                                Intent intent = new Intent(itemView.getContext(), StartTest.class);
+                                                intent.putExtra("isFree", false);
+                                                itemView.getContext().startActivity(intent);
+                                            }
+
+                                            @Override
+                                            public void onFailure() {
+                                                Toast.makeText(itemView.getContext(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    } else {
+                                        Toast.makeText(itemView.getContext(), "Maximum attempts reached.", Toast.LENGTH_SHORT).show();
+                                    }
+                                } else {
+                                    Toast.makeText(itemView.getContext(), "BUY NOW to access!", Toast.LENGTH_SHORT).show();
+                                }
+                            } else {
+
+                                if (attempt < 3) {
                                     DbQuery.g_selected_test_index = position;
 
                                     loadQuestions(false, new MyCompleteListener() {
                                         @Override
                                         public void onSuccess() {
                                             Intent intent = new Intent(itemView.getContext(), StartTest.class);
-                                            intent.putExtra("isFree", false);
                                             itemView.getContext().startActivity(intent);
                                         }
 
@@ -140,31 +164,11 @@ public class TestAdapter extends RecyclerView.Adapter<TestAdapter.ViewHolder> {
                                 } else {
                                     Toast.makeText(itemView.getContext(), "Maximum attempts reached.", Toast.LENGTH_SHORT).show();
                                 }
-                            } else {
-                                Toast.makeText(itemView.getContext(), "BUY NOW to access!", Toast.LENGTH_SHORT).show();
                             }
-                        } else {
-
-                            if (attempt < 3) {
-                                DbQuery.g_selected_test_index = position;
-
-                                loadQuestions(false, new MyCompleteListener() {
-                                    @Override
-                                    public void onSuccess() {
-                                        Intent intent = new Intent(itemView.getContext(), StartTest.class);
-                                        itemView.getContext().startActivity(intent);
-                                    }
-
-                                    @Override
-                                    public void onFailure() {
-                                        Toast.makeText(itemView.getContext(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
-                                    }
-                                });
-                            } else {
-                                Toast.makeText(itemView.getContext(), "Maximum attempts reached.", Toast.LENGTH_SHORT).show();
-                            }
+                        } catch (Exception e) {
+                            Toast.makeText(view.getContext(), "Error Code: 717. Please restart app and try again!", Toast.LENGTH_SHORT).show();
+                            Log.d("ERROR_CODE", e.getMessage());
                         }
-
 
                     }
                 });

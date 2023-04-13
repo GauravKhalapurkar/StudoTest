@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -83,21 +84,26 @@ public class SignIn extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if (task.isSuccessful()) {
-                                    DbQuery.loadData("PAID_TESTS", new MyCompleteListener() {
-                                        @Override
-                                        public void onSuccess() {
-                                            Intent intent = new Intent(SignIn.this, Main.class);
-                                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                            startActivity(intent);
-                                            loading.dismiss();
-                                        }
+                                    try {
+                                        DbQuery.loadData("PAID_TESTS", new MyCompleteListener() {
+                                            @Override
+                                            public void onSuccess() {
+                                                Intent intent = new Intent(SignIn.this, Main.class);
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                startActivity(intent);
+                                                loading.dismiss();
+                                            }
 
-                                        @Override
-                                        public void onFailure() {
-                                            Toast.makeText(SignIn.this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                            loading.dismiss();
-                                        }
-                                    });
+                                            @Override
+                                            public void onFailure() {
+                                                Toast.makeText(SignIn.this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                loading.dismiss();
+                                            }
+                                        });
+                                    } catch (Exception e) {
+                                        Toast.makeText(SignIn.this, "Error Code: 708. Please restart app and try again!", Toast.LENGTH_SHORT).show();
+                                        Log.d("ERROR_CODE", e.getMessage());
+                                    }
                                 } else {
                                     Toast.makeText(SignIn.this, "" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                     loading.dismiss();

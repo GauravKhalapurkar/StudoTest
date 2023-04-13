@@ -8,11 +8,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.adapters.CategoryAdapter;
@@ -20,6 +22,7 @@ import com.gakdevelopers.studotest.database.DbQuery;
 import com.gakdevelopers.studotest.internet.NetworkChangeListener;
 import com.gakdevelopers.studotest.models.CategoryModel;
 
+import java.security.spec.ECField;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,8 +54,13 @@ public class Categories extends AppCompatActivity {
         getSupportActionBar().setTitle("" + categoryName);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        CategoryAdapter adapter = new CategoryAdapter(categoryName, DbQuery.g_catList);
-        gridView.setAdapter(adapter);
+        try {
+            CategoryAdapter adapter = new CategoryAdapter(categoryName, DbQuery.g_catList);
+            gridView.setAdapter(adapter);
+        } catch (Exception e) {
+            Toast.makeText(Categories.this, "Error Code: 713. Please restart app and try again!", Toast.LENGTH_SHORT).show();
+            Log.d("ERROR_CODE", e.getMessage());
+        }
 
     }
 

@@ -83,61 +83,66 @@ public class Tests extends AppCompatActivity {
 
         loading =  ProgressDialog.show(Tests.this,"Loading","Please Wait",false,false);
 
-        if (!testType.equals("FREE_TESTS")) {
-            //txtFreeTrial.setVisibility(View.VISIBLE);
+        try {
+            if (!testType.equals("FREE_TESTS")) {
+                //txtFreeTrial.setVisibility(View.VISIBLE);
 
-            recyclerViewFreeTrial.setVisibility(View.VISIBLE);
+                recyclerViewFreeTrial.setVisibility(View.VISIBLE);
 
-            DbQuery.checkMyCourses(new MyCompleteListener() {
-                @Override
-                public void onSuccess() {
-
-                    isCourseBought = DbQuery.g_my_courses_list.contains(categoryName);
-
-                    if (isCourseBought) {
-                        btnBuyNow.setVisibility(View.GONE);
-                    } else {
-                        btnBuyNow.setVisibility(View.VISIBLE);
-                    }
-                }
-
-                @Override
-                public void onFailure() {
-                    Log.d("DOC_EXIST", "no");
-                }
-            });
-        }
-
-        DbQuery.loadTests(testType, new MyCompleteListener() {
-            @Override
-            public void onSuccess() {
-                DbQuery.loadMyScores(new MyCompleteListener() {
+                DbQuery.checkMyCourses(new MyCompleteListener() {
                     @Override
                     public void onSuccess() {
 
-                        freeTrialTestAdapter = new FreeTrialTestAdapter(testType, DbQuery.g_freeTrialTestList);
-                        recyclerViewFreeTrial.setAdapter(freeTrialTestAdapter);
+                        isCourseBought = DbQuery.g_my_courses_list.contains(categoryName);
 
-                        adapter = new TestAdapter(testType, DbQuery.g_testList);
-                        recyclerView.setAdapter(adapter);
-
-                        loading.dismiss();
+                        if (isCourseBought) {
+                            btnBuyNow.setVisibility(View.GONE);
+                        } else {
+                            btnBuyNow.setVisibility(View.VISIBLE);
+                        }
                     }
 
                     @Override
                     public void onFailure() {
-                        Toast.makeText(Tests.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
-                        loading.dismiss();
+                        Log.d("DOC_EXIST", "no");
                     }
                 });
             }
 
-            @Override
-            public void onFailure() {
-                Toast.makeText(Tests.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
-                loading.dismiss();
-            }
-        });
+            DbQuery.loadTests(testType, new MyCompleteListener() {
+                @Override
+                public void onSuccess() {
+                    DbQuery.loadMyScores(new MyCompleteListener() {
+                        @Override
+                        public void onSuccess() {
+
+                            freeTrialTestAdapter = new FreeTrialTestAdapter(testType, DbQuery.g_freeTrialTestList);
+                            recyclerViewFreeTrial.setAdapter(freeTrialTestAdapter);
+
+                            adapter = new TestAdapter(testType, DbQuery.g_testList);
+                            recyclerView.setAdapter(adapter);
+
+                            loading.dismiss();
+                        }
+
+                        @Override
+                        public void onFailure() {
+                            Toast.makeText(Tests.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                            loading.dismiss();
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailure() {
+                    Toast.makeText(Tests.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                    loading.dismiss();
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(Tests.this, "Error Code: 712. Please restart app and try again!", Toast.LENGTH_SHORT).show();
+            Log.d("ERROR_CODE", e.getMessage());
+        }
 
         btnBuyNow.setOnClickListener(new View.OnClickListener() {
             @Override

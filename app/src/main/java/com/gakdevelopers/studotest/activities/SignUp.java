@@ -79,33 +79,38 @@ public class SignUp extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     loading.dismiss();
 
-                                    DbQuery.createUser(email, fullName, new MyCompleteListener() {
-                                        @Override
-                                        public void onSuccess() {
-                                            DbQuery.loadData("PAID_TESTS", new MyCompleteListener() {
-                                                @Override
-                                                public void onSuccess() {
-                                                    Intent intent = new Intent(SignUp.this, Main.class);
-                                                    intent.putExtra("fullName", fullName);
-                                                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                    startActivity(intent);
-                                                    loading.dismiss();
-                                                }
+                                    try {
+                                        DbQuery.createUser(email, fullName, new MyCompleteListener() {
+                                            @Override
+                                            public void onSuccess() {
+                                                DbQuery.loadData("PAID_TESTS", new MyCompleteListener() {
+                                                    @Override
+                                                    public void onSuccess() {
+                                                        Intent intent = new Intent(SignUp.this, Main.class);
+                                                        intent.putExtra("fullName", fullName);
+                                                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                        startActivity(intent);
+                                                        loading.dismiss();
+                                                    }
 
-                                                @Override
-                                                public void onFailure() {
-                                                    Toast.makeText(SignUp.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
-                                                    loading.dismiss();
-                                                }
-                                            });
-                                        }
+                                                    @Override
+                                                    public void onFailure() {
+                                                        Toast.makeText(SignUp.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                                                        loading.dismiss();
+                                                    }
+                                                });
+                                            }
 
-                                        @Override
-                                        public void onFailure() {
-                                            Toast.makeText(SignUp.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
-                                            loading.dismiss();
-                                        }
-                                    });
+                                            @Override
+                                            public void onFailure() {
+                                                Toast.makeText(SignUp.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                                                loading.dismiss();
+                                            }
+                                        });
+                                    } catch (Exception e) {
+                                        Toast.makeText(SignUp.this, "Error Code: 709. Please restart app and try again!", Toast.LENGTH_SHORT).show();
+                                        Log.d("ERROR_CODE", e.getMessage());
+                                    }
 
                                 } else {
                                     Toast.makeText(SignUp.this, "Authentication failed!", Toast.LENGTH_SHORT).show();

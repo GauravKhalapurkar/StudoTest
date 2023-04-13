@@ -48,8 +48,6 @@ public class ViewPagerAdapter extends PagerAdapter {
 
         ImageView imageView = (ImageView) itemView.findViewById(R.id.imgCarousel);
 
-        //imageView.setImageResource(1);
-
         Picasso.with(context)
                 .load(DbQuery.g_home_posters.get(position))
                 .into(imageView);

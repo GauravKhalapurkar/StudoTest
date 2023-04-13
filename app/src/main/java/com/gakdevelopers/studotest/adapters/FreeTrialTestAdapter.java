@@ -112,21 +112,26 @@ public class FreeTrialTestAdapter extends RecyclerView.Adapter<FreeTrialTestAdap
                         Log.d("P_O_S_FREE", String.valueOf(position));
 
                         if (attempt < 3) {
-                            DbQuery.g_selected_test_index = position;
+                            try {
+                                DbQuery.g_selected_test_index = position;
 
-                            loadQuestions(true, new MyCompleteListener() {
-                                @Override
-                                public void onSuccess() {
-                                    Intent intent = new Intent(itemView.getContext(), StartTest.class);
-                                    intent.putExtra("isFree", true);
-                                    itemView.getContext().startActivity(intent);
-                                }
+                                loadQuestions(true, new MyCompleteListener() {
+                                    @Override
+                                    public void onSuccess() {
+                                        Intent intent = new Intent(itemView.getContext(), StartTest.class);
+                                        intent.putExtra("isFree", true);
+                                        itemView.getContext().startActivity(intent);
+                                    }
 
-                                @Override
-                                public void onFailure() {
-                                    Toast.makeText(itemView.getContext(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                                    @Override
+                                    public void onFailure() {
+                                        Toast.makeText(itemView.getContext(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            } catch (Exception e) {
+                                Toast.makeText(view.getContext(), "Error Code: 716. Please restart app and try again!", Toast.LENGTH_SHORT).show();
+                                Log.d("ERROR_CODE", e.getMessage());
+                            }
                         } else {
                             Toast.makeText(itemView.getContext(), "Maximum attempts reached.", Toast.LENGTH_SHORT).show();
                         }

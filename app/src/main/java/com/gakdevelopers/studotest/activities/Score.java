@@ -89,15 +89,20 @@ public class Score extends AppCompatActivity {
 
         Log.d("isFree_IN_SCORE", String.valueOf(isFree));
 
-        if (isFree) {
-            myList = g_freeTrialTestList;
-        } else {
-            myList = g_testList;
+        try {
+            if (isFree) {
+                myList = g_freeTrialTestList;
+            } else {
+                myList = g_testList;
+            }
+
+            loading =  ProgressDialog.show(Score.this,"Loading","Please Wait",false,false);
+
+            loadData();
+        } catch (Exception e) {
+            Toast.makeText(Score.this, "Error Code: 707. Please restart app and try again!", Toast.LENGTH_SHORT).show();
+            Log.d("ERROR_CODE", e.getMessage());
         }
-
-        loading =  ProgressDialog.show(Score.this,"Loading","Please Wait",false,false);
-
-        loadData();
 
         txtViewAnswers.setOnClickListener(new View.OnClickListener() {
             @Override

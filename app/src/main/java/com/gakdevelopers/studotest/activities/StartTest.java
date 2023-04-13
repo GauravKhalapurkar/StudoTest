@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -76,15 +77,21 @@ public class StartTest extends AppCompatActivity {
 
         //Toast.makeText(this, "" + DbQuery.g_positive_marks + " - " + DbQuery.g_negative_marks, Toast.LENGTH_SHORT).show();
 
-        txtPositiveMarks.setText("" + DbQuery.g_positive_marks);
 
-        if (DbQuery.g_negative_marks == 0) {
-            txtNegativeMarks.setText("" + DbQuery.g_negative_marks);
-        } else {
-            txtNegativeMarks.setText("-" + DbQuery.g_negative_marks);
+        try {
+            txtPositiveMarks.setText("" + DbQuery.g_positive_marks);
+
+            if (DbQuery.g_negative_marks == 0) {
+                txtNegativeMarks.setText("" + DbQuery.g_negative_marks);
+            } else {
+                txtNegativeMarks.setText("-" + DbQuery.g_negative_marks);
+            }
+
+            setData(isFree);
+        } catch (Exception e) {
+            Toast.makeText(StartTest.this, "Error Code: 711. Please restart app and try again!", Toast.LENGTH_SHORT).show();
+            Log.d("ERROR_CODE", e.getMessage());
         }
-
-        setData(isFree);
 
         /*loadQuestions(new MyCompleteListener() {
             @Override

@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -74,30 +75,35 @@ public class Answers extends AppCompatActivity {
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
-        if (fromTestAdapter) {
-            loading =  ProgressDialog.show(Answers.this,"Loading","Please Wait",false,false);
+        try {
+            if (fromTestAdapter) {
+                loading =  ProgressDialog.show(Answers.this,"Loading","Please Wait",false,false);
 
-            DbQuery.g_selected_test_index = position;
+                DbQuery.g_selected_test_index = position;
 
-            DbQuery.loadViewAnswers(isFree, new MyCompleteListener() {
-                @Override
-                public void onSuccess() {
-                    ViewAnswersAdapter adapter = new ViewAnswersAdapter(DbQuery.g_view_answers_list);
-                    recyclerView.setAdapter(adapter);
+                DbQuery.loadViewAnswers(isFree, new MyCompleteListener() {
+                    @Override
+                    public void onSuccess() {
+                        ViewAnswersAdapter adapter = new ViewAnswersAdapter(DbQuery.g_view_answers_list);
+                        recyclerView.setAdapter(adapter);
 
-                    loading.dismiss();
-                }
+                        loading.dismiss();
+                    }
 
-                @Override
-                public void onFailure() {
-                    Toast.makeText(Answers.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
-                    loading.dismiss();
-                }
-            });
+                    @Override
+                    public void onFailure() {
+                        Toast.makeText(Answers.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                        loading.dismiss();
+                    }
+                });
 
-        } else {
-            AnswersAdapter adapter = new AnswersAdapter(DbQuery.g_question_list);
-            recyclerView.setAdapter(adapter);
+            } else {
+                AnswersAdapter adapter = new AnswersAdapter(DbQuery.g_question_list);
+                recyclerView.setAdapter(adapter);
+            }
+        } catch (Exception e) {
+            Toast.makeText(Answers.this, "Error Code: 701. Please restart app and try again!", Toast.LENGTH_SHORT).show();
+            Log.d("ERROR_CODE", e.getMessage());
         }
 
         txtHome.setOnClickListener(new View.OnClickListener() {

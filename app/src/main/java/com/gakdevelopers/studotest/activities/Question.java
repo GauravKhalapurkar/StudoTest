@@ -107,18 +107,23 @@ public class Question extends AppCompatActivity {
 
         questionId = 0;
 
-        questionsAdapter = new QuestionsAdapter(g_question_list);
-        recyclerQuestion.setAdapter(questionsAdapter);
+        try {
+            questionsAdapter = new QuestionsAdapter(g_question_list);
+            recyclerQuestion.setAdapter(questionsAdapter);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
-        recyclerQuestion.setLayoutManager(layoutManager);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+            layoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            recyclerQuestion.setLayoutManager(layoutManager);
 
-        questionsGridAdapter = new QuestionsGridAdapter(this, g_question_list.size());
-        gridView.setAdapter(questionsGridAdapter);
+            questionsGridAdapter = new QuestionsGridAdapter(this, g_question_list.size());
+            gridView.setAdapter(questionsGridAdapter);
 
-        txtQuestionId.setText("1/" + String.valueOf(g_question_list.size()));
-        txtCategoryName.setText(g_catList.get(g_selected_cat_index).getName());
+            txtQuestionId.setText("1/" + String.valueOf(g_question_list.size()));
+            txtCategoryName.setText(g_catList.get(g_selected_cat_index).getName());
+        } catch (Exception e) {
+            Toast.makeText(Question.this, "Error Code: 706. Please restart app and try again!", Toast.LENGTH_SHORT).show();
+            Log.d("ERROR_CODE", e.getMessage());
+        }
 
         setSnapHelper();
 

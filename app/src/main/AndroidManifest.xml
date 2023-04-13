@@ -26,13 +26,6 @@
             android:resource="@color/colorWhite" />
 
         <activity
-            android:name=".activities.PaymentGatewayTest"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".activities.BuyTest"
             android:exported="false">
             <meta-data
@@ -103,14 +96,16 @@
         </activity>
         <activity
             android:name=".activities.SignIn"
-            android:exported="false">
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
             android:name=".activities.SignUp"
-            android:exported="false">
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

@@ -1,9 +1,12 @@
 package com.gakdevelopers.studotest.models;
 
-public class NotificationsModel {
-    String title, desc, time;
+import java.util.Date;
 
-    public NotificationsModel(String title, String desc, String time) {
+public class NotificationsModel {
+    String title, desc;
+    Date time;
+
+    public NotificationsModel(String title, String desc, Date time) {
         this.title = title;
         this.desc = desc;
         this.time = time;
@@ -25,11 +28,11 @@ public class NotificationsModel {
         this.desc = desc;
     }
 
-    public String getTime() {
+    public Date getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Date time) {
         this.time = time;
     }
 }

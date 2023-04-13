@@ -36,6 +36,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.google.firebase.firestore.WriteBatch;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -93,6 +95,8 @@ public class DbQuery {
     public static int g_rank = 0;
 
     public static boolean iAmInTopList = false;
+
+    private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm aa");
 
     public static final int NOT_VISITED = 0;
     public static final int UNANSWERED = 1;
@@ -404,7 +408,11 @@ public class DbQuery {
                         if (!queryDocumentSnapshots.isEmpty()) {
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                             for (DocumentSnapshot d : list) {
-                                g_notifications.add(new NotificationsModel(d.getString("TITLE"), d.getString("DESC"), d.getString("TIME")));
+                                try {
+                                    g_notifications.add(new NotificationsModel(d.getString("TITLE"), d.getString("DESC"), sdf.parse(d.getString("TIME"))));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
                             }
 
                             Collections.sort(g_notifications, new Comparator<NotificationsModel>() {
@@ -457,7 +465,6 @@ public class DbQuery {
 
         userData.put("EMAIL_ID", email);
         userData.put("NAME", name);
-        //userData.put("TOTAL_SCORE", 0);
 
         DocumentReference userDoc = g_fireStore.collection("USERS").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
@@ -681,9 +688,7 @@ public class DbQuery {
                 });
     }
 
-    public static void loadFreeTrialTest(MyCompleteListener completeListener) {
-
-    }
+    public static void loadFreeTrialTest(MyCompleteListener completeListener) {}
 
     public static void loadData(String testType, final MyCompleteListener completeListener) {
         loadCategories(testType, new MyCompleteListener() {

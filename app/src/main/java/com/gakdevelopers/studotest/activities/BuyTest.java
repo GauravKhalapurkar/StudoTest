@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,7 +62,9 @@ public class BuyTest extends AppCompatActivity implements PaymentResultListener 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                couponCode = editCouponCode.getText().toString();
+                payWithRazorpay(DbQuery.g_price, "Payment for " + categoryName);
+
+                /*couponCode = editCouponCode.getText().toString();
 
                 if (couponCode.equals("")) {
                     Toast.makeText(BuyTest.this, "Enter Coupon Code", Toast.LENGTH_SHORT).show();
@@ -70,30 +73,35 @@ public class BuyTest extends AppCompatActivity implements PaymentResultListener 
 
                 loading =  ProgressDialog.show(BuyTest.this,"Loading","Please Wait",false,false);
 
-                DbQuery.loadCouponCodes(new MyCompleteListener() {
-                    @Override
-                    public void onSuccess() {
+                try {
+                    DbQuery.loadCouponCodes(new MyCompleteListener() {
+                        @Override
+                        public void onSuccess() {
 
-                        if (DbQuery.g_couponList.contains(couponCode)) {
-                            payWithRazorpay((DbQuery.g_price * 5) / 100, "Discounted Payment for " + categoryName);
-                            editCouponCode.setText("");
+                            if (DbQuery.g_couponList.contains(couponCode)) {
+                                payWithRazorpay((DbQuery.g_price * 5) / 100, "Discounted Payment for " + categoryName);
+                                editCouponCode.setText("");
 
-                        } else {
-                            Toast.makeText(BuyTest.this, "Your Coupon Code is invalid. Please try again!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(BuyTest.this, "Your Coupon Code is invalid. Please try again!", Toast.LENGTH_SHORT).show();
+                            }
+
+                            loading.dismiss();
+
                         }
 
-                        loading.dismiss();
+                        @Override
+                        public void onFailure() {
+                            Toast.makeText(BuyTest.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                            loading.dismiss();
+                        }
+                    });
+                } catch (Exception e) {
+                    Toast.makeText(BuyTest.this, "Error Code: 702. Please restart app and try again!", Toast.LENGTH_SHORT).show();
+                    Log.d("ERROR_CODE", e.getMessage());
+                }
 
-                    }
-
-                    @Override
-                    public void onFailure() {
-                        Toast.makeText(BuyTest.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
-                        loading.dismiss();
-                    }
-                });
-
-                loading.dismiss();
+                loading.dismiss();*/
             }
         });
 
@@ -160,35 +168,45 @@ public class BuyTest extends AppCompatActivity implements PaymentResultListener 
     private void savePurchasedData(int amount) {
         loading =  ProgressDialog.show(BuyTest.this,"Loading","Please Wait",false,false);
 
-        DbQuery.savePurchaseData(amount, new MyCompleteListener() {
-            @Override
-            public void onSuccess() {
-                loading.dismiss();
-            }
+        try {
+            DbQuery.savePurchaseData(amount, new MyCompleteListener() {
+                @Override
+                public void onSuccess() {
+                    loading.dismiss();
+                }
 
-            @Override
-            public void onFailure() {
-                Toast.makeText(BuyTest.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
-                loading.dismiss();
-            }
-        });
+                @Override
+                public void onFailure() {
+                    Toast.makeText(BuyTest.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                    loading.dismiss();
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(BuyTest.this, "Error Code: 703. Please restart app and try again!", Toast.LENGTH_SHORT).show();
+            Log.d("ERROR_CODE", e.getMessage());
+        }
     }
 
     private void deleteAppliedCouponCode() {
         loading =  ProgressDialog.show(BuyTest.this,"Loading","Please Wait",false,false);
 
-        DbQuery.deleteUsedCoupon(couponCode, new MyCompleteListener() {
-            @Override
-            public void onSuccess() {
-                loading.dismiss();
-            }
+        try {
+            DbQuery.deleteUsedCoupon(couponCode, new MyCompleteListener() {
+                @Override
+                public void onSuccess() {
+                    loading.dismiss();
+                }
 
-            @Override
-            public void onFailure() {
-                Toast.makeText(BuyTest.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
-                loading.dismiss();
-            }
-        });
+                @Override
+                public void onFailure() {
+                    Toast.makeText(BuyTest.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                    loading.dismiss();
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(BuyTest.this, "Error Code: 704. Please restart app and try again!", Toast.LENGTH_SHORT).show();
+            Log.d("ERROR_CODE", e.getMessage());
+        }
     }
 
     @Override

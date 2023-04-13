@@ -39,7 +39,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginTop="@dimen/_10sdp">
+                android:layout_marginTop="@dimen/_10sdp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -72,13 +73,14 @@
                 android:background="@drawable/custom_edit_text"
                 android:layout_marginTop="@dimen/_12sdp"
                 android:fontFamily="@font/regular"
-                android:imeOptions="actionDone"/>
+                android:imeOptions="actionDone"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/btnSubmit"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_btn"
-                android:text="Submit"
+                android:text="Buy Now"
                 android:textSize="@dimen/text_size_btn"
                 android:background="@drawable/custom_button"
                 android:textColor="@color/colorWhite"
@@ -92,7 +94,8 @@
                 android:textSize="@dimen/text_size_small"
                 android:textColor="@color/colorGreyDark"
                 android:fontFamily="@font/bold"
-                android:layout_marginTop="@dimen/_14sdp"/>
+                android:layout_marginTop="@dimen/_14sdp"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/txtNoCoupon"
@@ -102,7 +105,8 @@
                 android:textSize="@dimen/text_size"
                 android:textColor="@color/colorSecondary"
                 android:fontFamily="@font/regular"
-                android:layout_marginTop="@dimen/_14sdp"/>
+                android:layout_marginTop="@dimen/_14sdp"
+                android:visibility="gone"/>
 
         </LinearLayout>
 

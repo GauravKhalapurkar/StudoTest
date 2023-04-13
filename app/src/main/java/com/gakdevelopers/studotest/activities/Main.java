@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -261,4 +262,5 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         unregisterReceiver(networkChangeListener);
         super.onStop();
     }
+
 }

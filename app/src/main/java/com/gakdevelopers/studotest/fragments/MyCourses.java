@@ -51,46 +51,51 @@ public class MyCourses extends Fragment {
 
         loading =  ProgressDialog.show(getActivity(),"Loading","Please Wait",false,false);
 
-        DbQuery.loadData("PAID_TESTS", new MyCompleteListener() {
-            @Override
-            public void onSuccess() {
-                DbQuery.checkMyCourses(new MyCompleteListener() {
-                    @Override
-                    public void onSuccess() {
+        try {
+            DbQuery.loadData("PAID_TESTS", new MyCompleteListener() {
+                @Override
+                public void onSuccess() {
+                    DbQuery.checkMyCourses(new MyCompleteListener() {
+                        @Override
+                        public void onSuccess() {
 
-                        DbQuery.loadMyCourses(new MyCompleteListener() {
-                            @Override
-                            public void onSuccess() {
-                                CategoryAdapter adapter = new CategoryAdapter("PAID_TESTS", DbQuery.g_catList);
-                                gridView.setAdapter(adapter);
+                            DbQuery.loadMyCourses(new MyCompleteListener() {
+                                @Override
+                                public void onSuccess() {
+                                    CategoryAdapter adapter = new CategoryAdapter("PAID_TESTS", DbQuery.g_catList);
+                                    gridView.setAdapter(adapter);
 
-                                loading.dismiss();
-                            }
+                                    loading.dismiss();
+                                }
 
-                            @Override
-                            public void onFailure() {
-                                Toast.makeText(getActivity(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                                @Override
+                                public void onFailure() {
+                                    Toast.makeText(getActivity(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
 
-                                loading.dismiss();
-                            }
-                        });
-                    }
+                                    loading.dismiss();
+                                }
+                            });
+                        }
 
-                    @Override
-                    public void onFailure() {
-                        Toast.makeText(getActivity(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                        @Override
+                        public void onFailure() {
+                            Toast.makeText(getActivity(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
 
-                        loading.dismiss();
-                    }
-                });
-            }
-            @Override
-            public void onFailure() {
-                Toast.makeText(getActivity(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
+                            loading.dismiss();
+                        }
+                    });
+                }
+                @Override
+                public void onFailure() {
+                    Toast.makeText(getActivity(), "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
 
-                loading.dismiss();
-            }
-        });
+                    loading.dismiss();
+                }
+            });
+        } catch (Exception e) {
+            Toast.makeText(getActivity(), "Error Code: 714. Please restart app and try again!", Toast.LENGTH_SHORT).show();
+            Log.d("ERROR_CODE", e.getMessage());
+        }
 
         return view;
     }
