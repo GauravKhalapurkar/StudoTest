@@ -57,63 +57,67 @@ public class Main extends AppCompatActivity implements NavigationView.OnNavigati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
+        try {
+            bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
 
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-        navigationView = (NavigationView) findViewById(R.id.navigationView);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+            drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+            navigationView = (NavigationView) findViewById(R.id.navigationView);
+            toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        txtFirstLetter = navigationView.getHeaderView(0).findViewById(R.id.txtFirstLetter);
-        txtEmail = navigationView.getHeaderView(0).findViewById(R.id.txtEmail);
+            txtFirstLetter = navigationView.getHeaderView(0).findViewById(R.id.txtFirstLetter);
+            txtEmail = navigationView.getHeaderView(0).findViewById(R.id.txtEmail);
 
-        String name = DbQuery.myProfile.getName();
-        txtEmail.setText(name);
-        txtFirstLetter.setText(name.toUpperCase().substring(0, 1));
+            String name = DbQuery.myProfile.getName();
+            txtEmail.setText(name);
+            txtFirstLetter.setText(name.toUpperCase().substring(0, 1));
 
-        setSupportActionBar(toolbar);
+            setSupportActionBar(toolbar);
 
-        navigationView.bringToFront();
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.nav_open, R.string.nav_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
+            navigationView.bringToFront();
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.nav_open, R.string.nav_close);
+            drawerLayout.addDrawerListener(toggle);
+            toggle.syncState();
 
-        navigationView.setNavigationItemSelectedListener(this);
+            navigationView.setNavigationItemSelectedListener(this);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, home).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container, home).commit();
 
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.item_home:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, home).commit();
-                        return true;
-                    case R.id.item_my_courses:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, myCourses).commit();
-                        return true;
-                    case R.id.item_notifications:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, notifications).commit();
-                        return true;
-                    case R.id.item_profile:
-                        getSupportFragmentManager().beginTransaction().replace(R.id.container, profile).commit();
-                        return true;
+            bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.item_home:
+                            getSupportFragmentManager().beginTransaction().replace(R.id.container, home).commit();
+                            return true;
+                        case R.id.item_my_courses:
+                            getSupportFragmentManager().beginTransaction().replace(R.id.container, myCourses).commit();
+                            return true;
+                        case R.id.item_notifications:
+                            getSupportFragmentManager().beginTransaction().replace(R.id.container, notifications).commit();
+                            return true;
+                        case R.id.item_profile:
+                            getSupportFragmentManager().beginTransaction().replace(R.id.container, profile).commit();
+                            return true;
 
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
 
-        dialogTerms = new BottomSheetDialog(this);
-        dialogRefund = new BottomSheetDialog(this);
-        dialogPrivacy = new BottomSheetDialog(this);
-        dialogContact = new BottomSheetDialog(this);
-        dialogAbout = new BottomSheetDialog(this);
+            dialogTerms = new BottomSheetDialog(this);
+            dialogRefund = new BottomSheetDialog(this);
+            dialogPrivacy = new BottomSheetDialog(this);
+            dialogContact = new BottomSheetDialog(this);
+            dialogAbout = new BottomSheetDialog(this);
 
-        dialogTerms.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-        dialogRefund.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-        dialogPrivacy.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-        dialogContact.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-        dialogAbout.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+            dialogTerms.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+            dialogRefund.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+            dialogPrivacy.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+            dialogContact.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+            dialogAbout.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+        } catch (Exception e) {
+            Toast.makeText(this, "Some contents have not loaded successfully! Please try again.", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

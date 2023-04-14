@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Build;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -20,7 +21,11 @@ public class FirebaseNotification extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         if (remoteMessage.getNotification() != null) {
-            generateNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+            try {
+                generateNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+            } catch (Exception e) {
+                Toast.makeText(this, "Some contents have not loaded successfully! Please try again.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

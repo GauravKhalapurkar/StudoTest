@@ -47,70 +47,35 @@ public class BuyTest extends AppCompatActivity implements PaymentResultListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_buy_test);
 
-        Intent intent = getIntent();
-        categoryName = intent.getStringExtra("categoryName");
+        try {
+            Intent intent = getIntent();
+            categoryName = intent.getStringExtra("categoryName");
 
-        editCouponCode = (EditText) findViewById(R.id.editCouponCode);
+            editCouponCode = (EditText) findViewById(R.id.editCouponCode);
 
-        btnSubmit = (Button) findViewById(R.id.btnSubmit);
+            btnSubmit = (Button) findViewById(R.id.btnSubmit);
 
-        txtNoCoupon = (TextView) findViewById(R.id.txtNoCoupon);
-        txtTestPrice = (TextView) findViewById(R.id.txtTestPrice);
+            txtNoCoupon = (TextView) findViewById(R.id.txtNoCoupon);
+            txtTestPrice = (TextView) findViewById(R.id.txtTestPrice);
 
-        txtTestPrice.setText("Test @ ₹" + DbQuery.g_price);
+            txtTestPrice.setText("Test @ ₹" + DbQuery.g_price);
 
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                payWithRazorpay(DbQuery.g_price, "Payment for " + categoryName);
-
-                /*couponCode = editCouponCode.getText().toString();
-
-                if (couponCode.equals("")) {
-                    Toast.makeText(BuyTest.this, "Enter Coupon Code", Toast.LENGTH_SHORT).show();
-                    return;
+            btnSubmit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    payWithRazorpay(DbQuery.g_price, "Payment for " + categoryName);
                 }
+            });
 
-                loading =  ProgressDialog.show(BuyTest.this,"Loading","Please Wait",false,false);
-
-                try {
-                    DbQuery.loadCouponCodes(new MyCompleteListener() {
-                        @Override
-                        public void onSuccess() {
-
-                            if (DbQuery.g_couponList.contains(couponCode)) {
-                                payWithRazorpay((DbQuery.g_price * 5) / 100, "Discounted Payment for " + categoryName);
-                                editCouponCode.setText("");
-
-                            } else {
-                                Toast.makeText(BuyTest.this, "Your Coupon Code is invalid. Please try again!", Toast.LENGTH_SHORT).show();
-                            }
-
-                            loading.dismiss();
-
-                        }
-
-                        @Override
-                        public void onFailure() {
-                            Toast.makeText(BuyTest.this, "Something went wrong. Please try again!", Toast.LENGTH_SHORT).show();
-                            loading.dismiss();
-                        }
-                    });
-                } catch (Exception e) {
-                    Toast.makeText(BuyTest.this, "Error Code: 702. Please restart app and try again!", Toast.LENGTH_SHORT).show();
-                    Log.d("ERROR_CODE", e.getMessage());
+            txtNoCoupon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    payWithRazorpay(DbQuery.g_price, "Payment for " + categoryName);
                 }
-
-                loading.dismiss();*/
-            }
-        });
-
-        txtNoCoupon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                payWithRazorpay(DbQuery.g_price, "Payment for " + categoryName);
-            }
-        });
+            });
+        } catch (Exception e) {
+            Toast.makeText(this, "Some contents have not loaded successfully! Please try again.", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
