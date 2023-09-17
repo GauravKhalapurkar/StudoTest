@@ -1,5 +1,6 @@
 package com.gakdevelopers.studotest.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.models.Question;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.ViewHolder> {
@@ -40,6 +42,7 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.ViewHold
         int answer = quesList.get(position).getAnswer();
 
         holder.setData(position, question, a, b, c, d, selected, answer, explanation);
+
     }
 
     @Override
@@ -49,7 +52,7 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView txtQuestion, txtOptionA, txtOptionB, txtOptionC, txtOptionD, txtCorrectness, txtExplanation;
+        private TextView txtQuestion, txtCorrectness, txtOptionA, txtOptionB, txtOptionC, txtOptionD, txtExplanation;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

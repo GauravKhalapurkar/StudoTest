@@ -55,6 +55,18 @@
                 android:fontFamily="@font/regular"
                 android:layout_marginTop="@dimen/_4sdp"/>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="MPPSC SFS 2020- Ranger (29th Rank)"
+                android:layout_gravity="start"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="@color/colorSecondary"
+                android:justificationMode="inter_word"
+                android:fontFamily="@font/regular"
+                android:textStyle="bold"
+                android:layout_marginTop="@dimen/_4sdp"/>
+
         </LinearLayout>
 
     </ScrollView>

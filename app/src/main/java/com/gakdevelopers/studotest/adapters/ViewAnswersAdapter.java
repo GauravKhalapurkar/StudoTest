@@ -12,6 +12,7 @@ import com.gakdevelopers.studotest.R;
 import com.gakdevelopers.studotest.models.Question;
 import com.gakdevelopers.studotest.models.ViewAnswer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ViewAnswersAdapter extends RecyclerView.Adapter<ViewAnswersAdapter.ViewHolder> {

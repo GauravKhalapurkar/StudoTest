@@ -12,11 +12,171 @@
         android:background="@color/colorWhite"
         android:elevation="@dimen/toolbar_elevation"/>
 
+    <EditText
+        android:id="@+id/editSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search..."
+        android:layout_marginHorizontal="@dimen/_12sdp"
+        android:paddingVertical="@dimen/_14sdp"
+        android:textSize="@dimen/_12sdp"
+        android:layout_below="@+id/toolbar"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/linearFilters"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@id/editSearch">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtViewAll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="View All"
+                android:background="@drawable/custom_edit_text"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/_4sdp"
+                android:padding="@dimen/_10sdp"
+                android:gravity="center"
+                android:textColor="@color/colorBlack"/>
+
+            <TextView
+                android:id="@+id/txtCorrect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Correct"
+                android:background="@drawable/custom_edit_text"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/_4sdp"
+                android:padding="@dimen/_10sdp"
+                android:gravity="center"
+                android:textColor="@color/colorBlack"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtIncorrect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Incorrect"
+                android:background="@drawable/custom_edit_text"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/_4sdp"
+                android:padding="@dimen/_10sdp"
+                android:gravity="center"
+                android:textColor="@color/colorBlack" />
+
+            <TextView
+                android:id="@+id/txtUnattempted"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Unattempted"
+                android:background="@drawable/custom_edit_text"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/_4sdp"
+                android:padding="@dimen/_10sdp"
+                android:gravity="center"
+                android:textColor="@color/colorBlack"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+<!--    <RadioGroup-->
+<!--        android:id="@+id/radioGroup"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:gravity="center_horizontal"-->
+<!--        android:layout_below="@+id/editSearch">-->
+<!--        -->
+<!--        <TableRow>-->
+
+<!--            <RadioButton-->
+<!--                android:id="@+id/rbCorrect"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Correct"-->
+<!--                android:textSize="@dimen/_12sdp"-->
+<!--                android:textAlignment="center"-->
+<!--                android:padding="@dimen/_12sdp"-->
+<!--                android:layout_margin="@dimen/_3sdp"-->
+<!--                android:button="@android:color/transparent"-->
+<!--                android:background="@drawable/radio_selector"-->
+<!--                android:textColor="@drawable/text_color"-->
+<!--                android:elevation="@dimen/_3sdp"-->
+<!--                android:layout_weight="1"/>-->
+
+<!--            <RadioButton-->
+<!--                android:id="@+id/rbIncorrect"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Incorrect"-->
+<!--                android:textSize="@dimen/_12sdp"-->
+<!--                android:textAlignment="center"-->
+<!--                android:padding="@dimen/_12sdp"-->
+<!--                android:layout_margin="@dimen/_3sdp"-->
+<!--                android:button="@android:color/transparent"-->
+<!--                android:background="@drawable/radio_selector"-->
+<!--                android:textColor="@drawable/text_color"-->
+<!--                android:elevation="@dimen/_3sdp"-->
+<!--                android:layout_weight="1" />-->
+<!--            -->
+<!--        </TableRow>-->
+
+<!--        <TableRow>-->
+
+<!--            <RadioButton-->
+<!--                android:id="@+id/rbUnattempted"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Unattempted"-->
+<!--                android:textSize="@dimen/_12sdp"-->
+<!--                android:textAlignment="center"-->
+<!--                android:padding="@dimen/_12sdp"-->
+<!--                android:layout_margin="@dimen/_3sdp"-->
+<!--                android:button="@android:color/transparent"-->
+<!--                android:background="@drawable/radio_selector"-->
+<!--                android:textColor="@drawable/text_color"-->
+<!--                android:elevation="@dimen/_3sdp"-->
+<!--                android:layout_weight="1" />-->
+
+<!--            <RadioButton-->
+<!--                android:id="@+id/rbClear"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Show All"-->
+<!--                android:textSize="@dimen/_12sdp"-->
+<!--                android:textAlignment="center"-->
+<!--                android:padding="@dimen/_12sdp"-->
+<!--                android:layout_margin="@dimen/_3sdp"-->
+<!--                android:button="@android:color/transparent"-->
+<!--                android:background="@drawable/radio_selector"-->
+<!--                android:textColor="@drawable/text_color"-->
+<!--                android:elevation="@dimen/_3sdp"-->
+<!--                android:layout_weight="1" />-->
+<!--            -->
+<!--        </TableRow>-->
+
+<!--    </RadioGroup>-->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
+        android:layout_below="@id/linearFilters"
         android:layout_marginTop="@dimen/_5sdp"
         android:layout_above="@+id/viewBottom"/>
 
