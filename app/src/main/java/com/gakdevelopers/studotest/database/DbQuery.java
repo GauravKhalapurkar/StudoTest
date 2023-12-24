@@ -720,12 +720,12 @@ public class DbQuery {
         if (isFree) {
             g_fireStore.collection("QUESTIONS")
                     .whereEqualTo("CATEGORY", g_catList.get(g_selected_cat_index).getDocId())
-                    .whereEqualTo("TEST", g_freeTrialTestList.get(g_selected_test_index).getTestId())
+                    .whereArrayContains("TEST_LIST", g_freeTrialTestList.get(g_selected_test_index).getTestId())
+                    .orderBy("createdAt")
                     .get()
                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
                         public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
                             for (DocumentSnapshot doc : queryDocumentSnapshots) {
                                 g_question_list.add(new Question(
                                         doc.getString("QUESTION"),
@@ -752,7 +752,8 @@ public class DbQuery {
         } else {
             g_fireStore.collection("QUESTIONS")
                     .whereEqualTo("CATEGORY", g_catList.get(g_selected_cat_index).getDocId())
-                    .whereEqualTo("TEST", g_testList.get(g_selected_test_index).getTestId())
+                    .whereArrayContains("TEST_LIST", g_testList.get(g_selected_test_index).getTestId())
+                    .orderBy("createdAt")
                     .get()
                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
@@ -822,7 +823,8 @@ public class DbQuery {
         if (isFree) {
             g_fireStore.collection("QUESTIONS")
                     .whereEqualTo("CATEGORY", g_catList.get(g_selected_cat_index).getDocId())
-                    .whereEqualTo("TEST", g_freeTrialTestList.get(g_selected_test_index).getTestId())
+                    .whereArrayContains("TEST_LIST", g_freeTrialTestList.get(g_selected_test_index).getTestId())
+                    .orderBy("createdAt")
                     .get()
                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
@@ -851,7 +853,8 @@ public class DbQuery {
         } else {
             g_fireStore.collection("QUESTIONS")
                     .whereEqualTo("CATEGORY", g_catList.get(g_selected_cat_index).getDocId())
-                    .whereEqualTo("TEST", g_testList.get(g_selected_test_index).getTestId())
+                    .whereArrayContains("TEST_LIST", g_testList.get(g_selected_test_index).getTestId())
+                    .orderBy("createdAt")
                     .get()
                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
